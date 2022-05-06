@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: de.robv.android.xposed:api:82">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.robv.android.xposed/api/82/35866b507b360d4789ff389ad7386b6e8bbf6cc4/api-82.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.robv.android.xposed/api/82/2030f71764b06b2f39fa1a85660690aa834cfd84/api-82-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

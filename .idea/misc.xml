@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_bug_report.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_bug_report_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_eject_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_feedback_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_info.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_refresh.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.2295" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2295" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.42291666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
