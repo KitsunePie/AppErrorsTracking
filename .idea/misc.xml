@@ -14,9 +14,10 @@
         <entry key="app/src/main/res/drawable/ic_baseline_refresh.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.2295" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2295" />
+        <entry key="app/src/main/res/layout/activity_crash_detail.xml" value="0.43697916666666664" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.42291666666666666" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
