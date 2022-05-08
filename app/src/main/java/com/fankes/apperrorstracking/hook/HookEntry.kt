@@ -35,5 +35,5 @@ class HookEntry : IYukiHookXposedInit {
         isDebug = false
     }
 
-    override fun onHook() = encase { loadSystem(FrameworkHooker()) }
+    override fun onHook() = encase { loadSystem(FrameworkHooker) }
 }
