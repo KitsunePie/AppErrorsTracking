@@ -148,8 +148,13 @@ object FrameworkHooker : YukiBaseHooker() {
                     val appName = appInfo?.let { context.packageManager.getApplicationLabel(it) } ?: packageName
 
                     /** 是否为 APP */
-                    val isApp = (PackageListClass.clazz.method { name = "size" }
-                        .get(ProcessRecordClass.clazz.method { name = "getPkgList" }.get(proc).call()).int() == 1) && appInfo != null
+                    val isApp = (PackageListClass.clazz.method {
+                        name = "size"
+                        emptyParam()
+                    }.get(ProcessRecordClass.clazz.method {
+                        name = "getPkgList"
+                        emptyParam()
+                    }.get(proc).call()).int() == 1) && appInfo != null
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
