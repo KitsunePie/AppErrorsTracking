@@ -165,22 +165,27 @@ object FrameworkHooker : YukiBaseHooker() {
                     ).create().apply {
                         setTitle("$appName ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
                         setView(LinearLayout(context).apply {
+                            /** 取消对话框并从缓存中移除 */
+                            fun cancelAndRemove() {
+                                cancel()
+                                openedErrorsDialogs.remove(packageName)
+                            }
                             orientation = LinearLayout.VERTICAL
                             /** 应用信息按钮 */
                             val appInfoButton =
                                 createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
-                                    cancel()
+                                    cancelAndRemove()
                                     context.openSelfSetting(packageName)
                                 }
 
                             /** 关闭应用按钮 */
                             val closeAppButton =
-                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() }
+                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancelAndRemove() }
 
                             /** 重新打开按钮 */
                             val reOpenButton =
                                 createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
-                                    cancel()
+                                    cancelAndRemove()
                                     context.openApp(packageName)
                                 }
 
