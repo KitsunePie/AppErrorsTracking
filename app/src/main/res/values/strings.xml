@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">异常跟踪</string>
+    <string name="xposed_desc">为原生 FC 对话框增加更多功能并修复国内定制 ROM 删除 FC 对话框的问题，给 Android 开发者带来更好的体验。\n开发者：酷安 @星夜不荟</string>
 </resources>

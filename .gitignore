@@ -2,7 +2,6 @@
 *.iml
 .gradle
 /local.properties
-.idea
 .DS_Store
 /build
 /captures
@@ -12,3 +11,4 @@ local.properties
 /app/releaseHasController/
 /app/debug/
 /app/release/
+/.idea/

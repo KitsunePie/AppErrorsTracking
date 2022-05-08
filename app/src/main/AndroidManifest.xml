@@ -14,7 +14,7 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="为原生 FC 对话框增加更多功能并修复国内定制 ROM 删除 FC 对话框的问题，给 Android 开发者带来更好的体验。\n开发者：酷安 @星夜不荟" />
+            android:value="@string/xposed_desc" />
         <meta-data
             android:name="xposedminversion"
             android:value="93" />
