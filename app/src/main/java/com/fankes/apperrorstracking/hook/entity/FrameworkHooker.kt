@@ -48,23 +48,20 @@ import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
-class FrameworkHooker : YukiBaseHooker() {
+object FrameworkHooker : YukiBaseHooker() {
 
-    companion object {
+    private const val AppErrorsClass = "com.android.server.am.AppErrors"
 
-        private const val AppErrorsClass = "com.android.server.am.AppErrors"
+    private const val AppErrorResultClass = "com.android.server.am.AppErrorResult"
 
-        private const val AppErrorResultClass = "com.android.server.am.AppErrorResult"
+    private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
 
-        private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
+    private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
 
-        private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
-
-        private val ErrorDialogControllerClass = VariousClass(
-            "com.android.server.am.ProcessRecord\$ErrorDialogController",
-            "com.android.server.am.ErrorDialogController"
-        )
-    }
+    private val ErrorDialogControllerClass = VariousClass(
+        "com.android.server.am.ProcessRecord\$ErrorDialogController",
+        "com.android.server.am.ErrorDialogController"
+    )
 
     /**
      * 创建对话框按钮
