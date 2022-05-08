@@ -168,32 +168,24 @@ object FrameworkHooker : YukiBaseHooker() {
                             android.R.style.Theme_Material_Dialog
                         else android.R.style.Theme_Material_Light_Dialog
                     ).create().apply {
-                        /**
-                         * 取消对话框并从缓存中移除
-                         * @param isRemoveOnly 是否仅移除
-                         */
-                        fun cancelAndRemove(isRemoveOnly: Boolean = false) {
-                            if (isRemoveOnly.not()) cancel()
-                            openedErrorsDialogs.remove(packageName)
-                        }
                         setTitle("$appName ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
                         setView(LinearLayout(context).apply {
                             orientation = LinearLayout.VERTICAL
                             /** 应用信息按钮 */
                             val appInfoButton =
                                 createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
-                                    cancelAndRemove()
+                                    cancel()
                                     context.openSelfSetting(packageName)
                                 }
 
                             /** 关闭应用按钮 */
                             val closeAppButton =
-                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancelAndRemove() }
+                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() }
 
                             /** 重新打开按钮 */
                             val reOpenButton =
                                 createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
-                                    cancelAndRemove()
+                                    cancel()
                                     context.openApp(packageName)
                                 }
 
@@ -217,7 +209,7 @@ object FrameworkHooker : YukiBaseHooker() {
                         /** 记录实例 */
                         openedErrorsDialogs[packageName] = this
                         /** 设置取消对话框监听 */
-                        setOnCancelListener { cancelAndRemove(isRemoveOnly = true) }
+                        setOnCancelListener { openedErrorsDialogs.remove(packageName) }
                     }.show()
                     /** 打印错误日志 */
                     loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
