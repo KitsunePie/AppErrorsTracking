@@ -163,13 +163,16 @@ object FrameworkHooker : YukiBaseHooker() {
                             android.R.style.Theme_Material_Dialog
                         else android.R.style.Theme_Material_Light_Dialog
                     ).create().apply {
+                        /**
+                         * 取消对话框并从缓存中移除
+                         * @param isRemoveOnly 是否仅移除
+                         */
+                        fun cancelAndRemove(isRemoveOnly: Boolean = false) {
+                            if (isRemoveOnly.not()) cancel()
+                            openedErrorsDialogs.remove(packageName)
+                        }
                         setTitle("$appName ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
                         setView(LinearLayout(context).apply {
-                            /** 取消对话框并从缓存中移除 */
-                            fun cancelAndRemove() {
-                                cancel()
-                                openedErrorsDialogs.remove(packageName)
-                            }
                             orientation = LinearLayout.VERTICAL
                             /** 应用信息按钮 */
                             val appInfoButton =
@@ -208,6 +211,8 @@ object FrameworkHooker : YukiBaseHooker() {
                         window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
                         /** 记录实例 */
                         openedErrorsDialogs[packageName] = this
+                        /** 设置取消对话框监听 */
+                        setOnCancelListener { cancelAndRemove(isRemoveOnly = true) }
                     }.show()
                     /** 打印错误日志 */
                     loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
