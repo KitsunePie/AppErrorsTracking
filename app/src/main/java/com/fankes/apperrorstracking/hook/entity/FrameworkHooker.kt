@@ -37,10 +37,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
-import com.fankes.apperrorstracking.utils.factory.dp
-import com.fankes.apperrorstracking.utils.factory.isSystemInDarkMode
-import com.fankes.apperrorstracking.utils.factory.openApp
-import com.fankes.apperrorstracking.utils.factory.openSelfSetting
+import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
@@ -58,10 +55,15 @@ object FrameworkHooker : YukiBaseHooker() {
 
     private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
 
+    private const val PackageListClass = "com.android.server.am.PackageList"
+
     private val ErrorDialogControllerClass = VariousClass(
         "com.android.server.am.ProcessRecord\$ErrorDialogController",
         "com.android.server.am.ErrorDialogController"
     )
+
+    /** 已打开的错误对话框数组 */
+    private var openedErrorsDialogs = HashMap<String, AlertDialog>()
 
     /**
      * 创建对话框按钮
@@ -128,48 +130,82 @@ object FrameworkHooker : YukiBaseHooker() {
                     val errResult = AppErrorResultClass.clazz.method {
                         name = "get"
                         emptyParam()
-                    }.get(AppErrorDialog_DataClass.clazz.field {
-                        name = "result"
-                    }.get(errData).any()).int()
+                    }.get(AppErrorDialog_DataClass.clazz.field { name = "result" }.get(errData).any()).int()
+
+                    /** 当前进程信息 */
+                    val proc = AppErrorDialog_DataClass.clazz.field { name = "proc" }.get(errData).any()
 
                     /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.clazz.field { name = "info" }
-                        .get(AppErrorDialog_DataClass.clazz.field { name = "proc" }
-                            .get(errData).any()).cast<ApplicationInfo>() ?: ApplicationInfo()
+                    val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(proc).cast<ApplicationInfo>()
+
+                    /** 当前进程名称 */
+                    val processName = ProcessRecordClass.clazz.field { name = "processName" }.get(proc).string()
+
+                    /** 当前 APP、进程 包名 */
+                    val packageName = appInfo?.packageName ?: processName
+
+                    /** 当前 APP 名称 */
+                    val appName = appInfo?.let { context.packageManager.getApplicationLabel(it) } ?: packageName
+
+                    /** 是否为 APP */
+                    val isApp = (PackageListClass.clazz.method { name = "size" }
+                        .get(ProcessRecordClass.clazz.method { name = "getPkgList" }.get(proc).call()).int() == 1) && appInfo != null
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
                     /** 判断在后台就不显示对话框 */
                     if (errResult == -2) return@afterHook
+                    /** 关闭重复的对话框 */
+                    openedErrorsDialogs[packageName]?.cancel()
                     /** 创建自定义对话框 */
                     AlertDialog.Builder(
                         context, if (context.isSystemInDarkMode)
                             android.R.style.Theme_Material_Dialog
                         else android.R.style.Theme_Material_Light_Dialog
                     ).create().apply {
-                        setTitle("${appInfo.loadLabel(context.packageManager)} ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
+                        setTitle("$appName ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
                         setView(LinearLayout(context).apply {
                             orientation = LinearLayout.VERTICAL
-                            addView(createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
-                                cancel()
-                                context.openSelfSetting(packageName = appInfo.packageName)
-                            })
-                            if (isRepeating)
-                                addView(createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() })
-                            else addView(createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
-                                cancel()
-                                context.openApp(appInfo.packageName)
-                            })
-                            addView(createButtonItem(context, R.drawable.ic_baseline_bug_report, content = "错误详情") {
-                                // TODO 待开发
-                            })
+                            /** 应用信息按钮 */
+                            val appInfoButton =
+                                createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
+                                    cancel()
+                                    context.openSelfSetting(packageName)
+                                }
+
+                            /** 关闭应用按钮 */
+                            val closeAppButton =
+                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() }
+
+                            /** 重新打开按钮 */
+                            val reOpenButton =
+                                createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
+                                    cancel()
+                                    context.openApp(packageName)
+                                }
+
+                            /** 错误详情按钮 */
+                            val errorDetailButton =
+                                createButtonItem(context, R.drawable.ic_baseline_bug_report, content = "错误详情") {
+                                    // TODO 待开发
+                                }
+                            /** 判断进程是否为 APP */
+                            if (isApp) {
+                                addView(appInfoButton)
+                                addView(if (isRepeating.not() && context.isAppCanOpened(packageName)) reOpenButton else closeAppButton)
+                            } else addView(closeAppButton)
+                            /** 始终添加错误详情按钮 */
+                            addView(errorDetailButton)
+                            /** 设置边距 */
                             setPadding(6.dp(context), 15.dp(context), 6.dp(context), 6.dp(context))
                         })
                         /** 只有 SystemUid 才能响应系统级别的对话框 */
                         window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
+                        /** 记录实例 */
+                        openedErrorsDialogs[packageName] = this
                     }.show()
                     /** 打印错误日志 */
-                    loggerE(msg = "Process \"${appInfo.packageName}\" has crashed, isRepeating --> $isRepeating")
+                    loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
                 }
             }
         }

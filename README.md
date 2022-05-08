@@ -36,8 +36,6 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 - 后台进程可能依然会弹出崩溃对话框且开发者选项里的设置无效，还在排查
 
-- 无法启动后台进程和服务，是否在一定条件隐藏“重新打开”按钮的问题
-
 - 暂不支持国际化语言，Chinese only
 
 ## License

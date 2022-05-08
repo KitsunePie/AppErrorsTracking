@@ -69,6 +69,13 @@ fun Context.openSelfSetting(packageName: String = this.packageName) = runCatchin
 }.onFailure { Toast.makeText(this, "无法打开 $packageName 的设置界面", Toast.LENGTH_SHORT).show() }
 
 /**
+ * 当前 APP 是否可被启动
+ * @param packageName 包名
+ */
+fun Context.isAppCanOpened(packageName: String = this.packageName) =
+    runCatching { packageManager?.getLaunchIntentForPackage(packageName) != null }.getOrNull() ?: false
+
+/**
  * 启动指定 APP
  * @param packageName 包名
  */
