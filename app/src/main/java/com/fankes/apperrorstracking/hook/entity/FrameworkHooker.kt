@@ -48,23 +48,21 @@ import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
-class FrameworkHooker : YukiBaseHooker() {
+object FrameworkHooker : YukiBaseHooker() {
 
-    companion object {
+    private const val AppErrorsClass = "com.android.server.am.AppErrors"
 
-        private const val AppErrorsClass = "com.android.server.am.AppErrors"
+    private const val AppErrorResultClass = "com.android.server.am.AppErrorResult"
 
-        private const val AppErrorResultClass = "com.android.server.am.AppErrorResult"
+    private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
 
-        private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
+    private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
 
-        private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
+    private val ErrorDialogControllerClass = VariousClass(
+        "com.android.server.am.ProcessRecord\$ErrorDialogController",
+        "com.android.server.am.ErrorDialogController"
+    )
 
-        private val ErrorDialogControllerClass = VariousClass(
-            "com.android.server.am.ProcessRecord\$ErrorDialogController",
-            "com.android.server.am.ErrorDialogController"
-        )
-    }
 
     /**
      * 创建对话框按钮
@@ -74,18 +72,29 @@ class FrameworkHooker : YukiBaseHooker() {
      * @param it 点击事件回调
      * @return [LinearLayout]
      */
-    private fun createButtonItem(context: Context, drawableId: Int, content: String, it: () -> Unit) =
+    private fun createButtonItem(
+        context: Context,
+        drawableId: Int,
+        content: String,
+        it: () -> Unit
+    ) =
         LinearLayout(context).apply {
-            background = DrawableBuilder().rounded().cornerRadius(15.dp(context)).ripple().rippleColor(0xFFAAAAAA.toInt()).build()
+            background = DrawableBuilder().rounded().cornerRadius(15.dp(context)).ripple()
+                .rippleColor(0xFFAAAAAA.toInt()).build()
             gravity = Gravity.CENTER or Gravity.START
             layoutParams =
-                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             addView(ImageView(context).apply {
                 setImageDrawable(moduleAppResources.getDrawable(drawableId))
                 layoutParams = ViewGroup.LayoutParams(25.dp(context), 25.dp(context))
                 setColorFilter(if (context.isSystemInDarkMode) Color.WHITE else Color.BLACK)
             })
-            addView(View(context).apply { layoutParams = ViewGroup.LayoutParams(15.dp(context), 0) })
+            addView(View(context).apply {
+                layoutParams = ViewGroup.LayoutParams(15.dp(context), 0)
+            })
             addView(TextView(context).apply {
                 text = content
                 textSize = 16f
@@ -122,7 +131,8 @@ class FrameworkHooker : YukiBaseHooker() {
                 }
                 afterHook {
                     /** 当前实例 */
-                    val context = field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
+                    val context = field { name = "mContext" }.get(instance).cast<Context>()
+                        ?: return@afterHook
 
                     /** 错误数据 */
                     val errData = args().first().cast<Message>()?.obj
@@ -141,7 +151,9 @@ class FrameworkHooker : YukiBaseHooker() {
                             .get(errData).any()).cast<ApplicationInfo>() ?: ApplicationInfo()
 
                     /** 是否短时内重复错误 */
-                    val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
+                    val isRepeating =
+                        AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData)
+                            .boolean()
                     /** 判断在后台就不显示对话框 */
                     if (errResult == -2) return@afterHook
                     /** 创建自定义对话框 */
@@ -153,19 +165,39 @@ class FrameworkHooker : YukiBaseHooker() {
                         setTitle("${appInfo.loadLabel(context.packageManager)} ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
                         setView(LinearLayout(context).apply {
                             orientation = LinearLayout.VERTICAL
-                            addView(createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
-                                cancel()
-                                context.openSelfSetting(packageName = appInfo.packageName)
-                            })
+                            addView(
+                                createButtonItem(
+                                    context,
+                                    R.drawable.ic_baseline_info,
+                                    content = "应用信息"
+                                ) {
+                                    cancel()
+                                    context.openSelfSetting(packageName = appInfo.packageName)
+                                })
                             if (isRepeating)
-                                addView(createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() })
-                            else addView(createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
-                                cancel()
-                                context.openApp(appInfo.packageName)
-                            })
-                            addView(createButtonItem(context, R.drawable.ic_baseline_bug_report, content = "错误详情") {
-                                // TODO 待开发
-                            })
+                                addView(
+                                    createButtonItem(
+                                        context,
+                                        R.drawable.ic_baseline_close,
+                                        content = "关闭应用"
+                                    ) { cancel() })
+                            else addView(
+                                createButtonItem(
+                                    context,
+                                    R.drawable.ic_baseline_refresh,
+                                    content = "重新打开"
+                                ) {
+                                    cancel()
+                                    context.openApp(appInfo.packageName)
+                                })
+                            addView(
+                                createButtonItem(
+                                    context,
+                                    R.drawable.ic_baseline_bug_report,
+                                    content = "错误详情"
+                                ) {
+                                    // TODO 待开发
+                                })
                             setPadding(6.dp(context), 15.dp(context), 6.dp(context), 6.dp(context))
                         })
                         /** 只有 SystemUid 才能响应系统级别的对话框 */
