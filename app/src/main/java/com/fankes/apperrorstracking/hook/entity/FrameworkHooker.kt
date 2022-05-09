@@ -45,6 +45,7 @@ import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
@@ -59,7 +60,10 @@ object FrameworkHooker : YukiBaseHooker() {
 
     private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
 
-    private const val PackageListClass = "com.android.server.am.PackageList"
+    private val PackageListClass = VariousClass(
+        "com.android.server.am.ProcessRecord\$PackageList",
+        "com.android.server.am.PackageList"
+    )
 
     private val ErrorDialogControllerClass = VariousClass(
         "com.android.server.am.ProcessRecord\$ErrorDialogController",
@@ -205,10 +209,15 @@ object FrameworkHooker : YukiBaseHooker() {
                     val isApp = (PackageListClass.clazz.method {
                         name = "size"
                         emptyParam()
-                    }.get(ProcessRecordClass.clazz.method {
+                    }.get(if (ProcessRecordClass.clazz.hasMethod {
+                            name = "getPkgList"
+                            emptyParam()
+                        }) ProcessRecordClass.clazz.method {
                         name = "getPkgList"
                         emptyParam()
-                    }.get(proc).call()).int() == 1) && appInfo != null
+                    }.get(proc).call() else ProcessRecordClass.clazz.field {
+                        name = "pkgList"
+                    }.get(proc).self).int() == 1 && appInfo != null)
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
