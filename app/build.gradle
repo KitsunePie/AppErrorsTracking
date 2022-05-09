@@ -51,21 +51,9 @@ android {
     buildFeatures {
         viewBinding true
     }
-}
-
-/** 移除无效耗时 lint Task */
-tasks.whenTaskAdded {
-    task -> if (task.name == "lintVitalRelease") task.enabled = false
-}
-
-/** 移除无效耗时 lint Task */
-tasks.whenTaskAdded {
-    task -> if (task.name == "lintVitalAnalyzeRelease") task.enabled = false
-}
-
-/** 移除无效耗时 lint Task */
-tasks.whenTaskAdded {
-    task -> if (task.name == "lintVitalReportRelease") task.enabled = false
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
