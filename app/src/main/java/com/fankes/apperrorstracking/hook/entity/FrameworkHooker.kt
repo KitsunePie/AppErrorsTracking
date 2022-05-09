@@ -24,10 +24,14 @@
 package com.fankes.apperrorstracking.hook.entity
 
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.os.Message
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +69,35 @@ object FrameworkHooker : YukiBaseHooker() {
     /** 已打开的错误对话框数组 */
     private var openedErrorsDialogs = HashMap<String, AlertDialog>()
 
+    /** 已忽略错误的 APP 数组 - 直到重新解锁 */
+    private var ignoredErrorsIfUnlockApps = HashSet<String>()
+
+    /** 已忽略错误的 APP 数组 - 直到重新启动 */
+    private var ignoredErrorsIfRestartApps = HashSet<String>()
+
+    /** 是否已经注册广播 */
+    private var isRegisterReceiver = false
+
+    /** 用户解锁屏幕广播接收器 */
+    private val userPresentReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                /** 解锁后清空已记录的忽略错误 APP */
+                ignoredErrorsIfUnlockApps.clear()
+            }
+        }
+    }
+
+    /**
+     * 注册广播接收器
+     * @param context 实例
+     */
+    private fun registerReceiver(context: Context) {
+        if (isRegisterReceiver) return
+        context.registerReceiver(userPresentReceiver, IntentFilter().apply { addAction(Intent.ACTION_USER_PRESENT) })
+        isRegisterReceiver = true
+    }
+
     /**
      * 创建对话框按钮
      * @param context 实例
@@ -88,6 +121,8 @@ object FrameworkHooker : YukiBaseHooker() {
             addView(TextView(context).apply {
                 text = content
                 textSize = 16f
+                ellipsize = TextUtils.TruncateAt.END
+                setSingleLine()
                 setTextColor(if (context.isSystemInDarkMode) 0xFFDDDDDD.toInt() else 0xFF777777.toInt())
             })
             setPadding(19.dp(context), 16.dp(context), 19.dp(context), 16.dp(context))
@@ -158,8 +193,13 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
-                    /** 判断在后台就不显示对话框 */
-                    if (errResult == -2) return@afterHook
+                    /** 注册广播 */
+                    registerReceiver(context)
+                    /** 打印错误日志 */
+                    loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
+                    /** 判断是否被忽略 - 在后台就不显示对话框 */
+                    if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName) || errResult == -2)
+                        return@afterHook
                     /** 关闭重复的对话框 */
                     openedErrorsDialogs[packageName]?.cancel()
                     /** 创建自定义对话框 */
@@ -194,6 +234,22 @@ object FrameworkHooker : YukiBaseHooker() {
                                 createButtonItem(context, R.drawable.ic_baseline_bug_report, content = "错误详情") {
                                     // TODO 待开发
                                 }
+
+                            /** 忽略按钮 - 直到解锁 */
+                            val ignoredUntilUnlockButton =
+                                createButtonItem(context, R.drawable.ic_baseline_eject, content = "忽略（直到设备重新解锁）") {
+                                    cancel()
+                                    ignoredErrorsIfUnlockApps.add(packageName)
+                                    context.toast(msg = "忽略“$appName”的错误直到设备重新解锁")
+                                }
+
+                            /** 忽略按钮 - 直到重启 */
+                            val ignoredUntilRestartButton =
+                                createButtonItem(context, R.drawable.ic_baseline_eject, content = "忽略（直到设备重新启动）") {
+                                    cancel()
+                                    ignoredErrorsIfRestartApps.add(packageName)
+                                    context.toast(msg = "忽略“$appName”的错误直到设备重新启动")
+                                }
                             /** 判断进程是否为 APP */
                             if (isApp) {
                                 addView(appInfoButton)
@@ -201,6 +257,9 @@ object FrameworkHooker : YukiBaseHooker() {
                             } else addView(closeAppButton)
                             /** 始终添加错误详情按钮 */
                             addView(errorDetailButton)
+                            /** 始终添加忽略按钮 */
+                            addView(ignoredUntilUnlockButton)
+                            addView(ignoredUntilRestartButton)
                             /** 设置边距 */
                             setPadding(6.dp(context), 15.dp(context), 6.dp(context), 6.dp(context))
                         })
@@ -211,8 +270,6 @@ object FrameworkHooker : YukiBaseHooker() {
                         /** 设置取消对话框监听 */
                         setOnCancelListener { openedErrorsDialogs.remove(packageName) }
                     }.show()
-                    /** 打印错误日志 */
-                    loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
                 }
             }
         }
