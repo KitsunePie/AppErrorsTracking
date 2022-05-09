@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">异常跟踪</string>
-    <string name="xposed_desc">为原生 FC 对话框增加更多功能并修复国内定制 ROM 删除 FC 对话框的问题，给 Android 开发者带来更好的体验。\n开发者：酷安 @星夜不荟</string>
+    <string name="app_name">AppErrorsTracking</string>
+    <string name="xposed_desc">Added more features to app\'s crash dialog, fixed custom rom deleted dialog, the best experience to Android developer.</string>
+    <string name="app_info">App\'s Info</string>
+    <string name="reopen_app">Reopen App</string>
+    <string name="error_detail">Error Detail</string>
+    <string name="ignore_if_unlock">Mute until device unlocks</string>
+    <string name="ignore_if_restart">Mute until device restarts</string>
+    <string name="close_app">Close App</string>
+    <string name="aerr_title">%1$s has stopped</string>
+    <string name="aerr_repeated_title">%1$s keeps stopping</string>
+    <string name="ignore_if_unlock_tip">Ignore errors for \'%1$s\' until device is re-unlocked</string>
+    <string name="ignore_if_restart_tip">Ignore errors for \'%1$s\' until device reboots</string>
+    <string name="back">Back</string>
 </resources>
