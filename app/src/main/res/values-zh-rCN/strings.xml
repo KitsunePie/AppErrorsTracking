@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">异常跟踪</string>
+    <string name="xposed_desc">为原生 FC 对话框增加更多功能并修复国内定制 ROM 删除 FC 对话框的问题，给 Android 开发者带来更好的体验。\\n开发者：酷安 @星夜不荟</string>
+    <string name="app_info">应用信息</string>
+    <string name="reopen_app">重新打开</string>
+    <string name="error_detail">错误详情</string>
+    <string name="ignore_if_unlock">忽略（直到设备重新解锁）</string>
+    <string name="ignore_if_restart">忽略（直到设备重新启动）</string>
+    <string name="close_app">关闭应用</string>
+    <string name="aerr_title">%1$s 已停止运行</string>
+    <string name="aerr_repeated_title">%1$s 屡次停止运行</string>
+    <string name="ignore_if_unlock_tip">忽略“%1$s”的错误直到设备重新解锁</string>
+    <string name="ignore_if_restart_tip">忽略“%1$s”的错误直到设备重新启动</string>
+    <string name="back">返回</string>
+</resources>

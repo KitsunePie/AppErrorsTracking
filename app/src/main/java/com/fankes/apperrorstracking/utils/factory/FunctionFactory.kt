@@ -72,7 +72,7 @@ fun Context.openSelfSetting(packageName: String = this.packageName) = runCatchin
         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         data = Uri.fromParts("package", packageName, null)
     })
-}.onFailure { toast(msg = "无法打开 $packageName 的设置界面") }
+}.onFailure { toast(msg = "Cannot open '$packageName'") }
 
 /**
  * 当前 APP 是否可被启动
@@ -89,4 +89,4 @@ fun Context.openApp(packageName: String = this.packageName) = runCatching {
     startActivity(packageManager.getLaunchIntentForPackage(packageName)?.apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
-}.onFailure { toast(msg = "无法启动 $packageName") }
+}.onFailure { toast(msg = "Cannot start '$packageName'") }

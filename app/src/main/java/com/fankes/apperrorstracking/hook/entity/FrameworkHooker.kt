@@ -88,6 +88,16 @@ object FrameworkHooker : YukiBaseHooker() {
         }
     }
 
+    /** 语言区域改变广播接收器 */
+    private val localeChangedReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                /** 刷新模块 Resources 缓存 */
+                refreshModuleAppResources()
+            }
+        }
+    }
+
     /**
      * 注册广播接收器
      * @param context 实例
@@ -95,8 +105,17 @@ object FrameworkHooker : YukiBaseHooker() {
     private fun registerReceiver(context: Context) {
         if (isRegisterReceiver) return
         context.registerReceiver(userPresentReceiver, IntentFilter().apply { addAction(Intent.ACTION_USER_PRESENT) })
+        context.registerReceiver(localeChangedReceiver, IntentFilter().apply { addAction(Intent.ACTION_LOCALE_CHANGED) })
         isRegisterReceiver = true
     }
+
+    /**
+     * 获取 I18n 字符串
+     * @param resId 模块资源 Id
+     * @param objArrs 格式化数组
+     * @return [String]
+     */
+    private fun string(resId: Int, vararg objArrs: Any) = moduleAppResources.getString(resId, *objArrs)
 
     /**
      * 创建对话框按钮
@@ -208,47 +227,47 @@ object FrameworkHooker : YukiBaseHooker() {
                             android.R.style.Theme_Material_Dialog
                         else android.R.style.Theme_Material_Light_Dialog
                     ).create().apply {
-                        setTitle("$appName ${if (isRepeating) "屡次停止运行" else "已停止运行"}")
+                        setTitle(string(if (isRepeating) R.string.aerr_repeated_title else R.string.aerr_title, appName))
                         setView(LinearLayout(context).apply {
                             orientation = LinearLayout.VERTICAL
                             /** 应用信息按钮 */
                             val appInfoButton =
-                                createButtonItem(context, R.drawable.ic_baseline_info, content = "应用信息") {
+                                createButtonItem(context, R.drawable.ic_baseline_info, string(R.string.app_info)) {
                                     cancel()
                                     context.openSelfSetting(packageName)
                                 }
 
                             /** 关闭应用按钮 */
                             val closeAppButton =
-                                createButtonItem(context, R.drawable.ic_baseline_close, content = "关闭应用") { cancel() }
+                                createButtonItem(context, R.drawable.ic_baseline_close, string(R.string.close_app)) { cancel() }
 
                             /** 重新打开按钮 */
                             val reOpenButton =
-                                createButtonItem(context, R.drawable.ic_baseline_refresh, content = "重新打开") {
+                                createButtonItem(context, R.drawable.ic_baseline_refresh, string(R.string.reopen_app)) {
                                     cancel()
                                     context.openApp(packageName)
                                 }
 
                             /** 错误详情按钮 */
                             val errorDetailButton =
-                                createButtonItem(context, R.drawable.ic_baseline_bug_report, content = "错误详情") {
+                                createButtonItem(context, R.drawable.ic_baseline_bug_report, string(R.string.error_detail)) {
                                     // TODO 待开发
                                 }
 
                             /** 忽略按钮 - 直到解锁 */
                             val ignoredUntilUnlockButton =
-                                createButtonItem(context, R.drawable.ic_baseline_eject, content = "忽略（直到设备重新解锁）") {
+                                createButtonItem(context, R.drawable.ic_baseline_eject, string(R.string.ignore_if_unlock)) {
                                     cancel()
                                     ignoredErrorsIfUnlockApps.add(packageName)
-                                    context.toast(msg = "忽略“$appName”的错误直到设备重新解锁")
+                                    context.toast(string(R.string.ignore_if_unlock_tip, appName))
                                 }
 
                             /** 忽略按钮 - 直到重启 */
                             val ignoredUntilRestartButton =
-                                createButtonItem(context, R.drawable.ic_baseline_eject, content = "忽略（直到设备重新启动）") {
+                                createButtonItem(context, R.drawable.ic_baseline_eject, string(R.string.ignore_if_restart)) {
                                     cancel()
                                     ignoredErrorsIfRestartApps.add(packageName)
-                                    context.toast(msg = "忽略“$appName”的错误直到设备重新启动")
+                                    context.toast(string(R.string.ignore_if_restart_tip, appName))
                                 }
                             /** 判断进程是否为 APP */
                             if (isApp) {
