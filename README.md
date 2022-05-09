@@ -10,7 +10,7 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 我实在是不能理解，国内 ROM 除了 MIUI(稳定版除外) 都选择了删除应用程序崩溃的对话框(FC 对话框)，我曾以为这一直是一个特性，直到我去反编译了系统框架，才确认确实是被删掉了。
 
-难道产品经理认为，让用户看不到错误，应用直接闪退，逃避就是最好的解决方案吗，还是说<u>另有隐情</u>呢？
+难道产品经理认为，让用户看不到错误，应用直接闪退，逃避就是最好的解决方案吗，还是说**另有隐情**呢？
 
 ## Feature
 
@@ -26,6 +26,8 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 - “屡次停止运行”显示(原生功能)
 
+- “忽略（直到设备重新解锁/重新启动）”显示(原生功能)
+
 - 对话框支持 Android 10 及以上系统的深色模式
 
 ## Future
@@ -35,8 +37,6 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 - “错误详情”按钮现在是无效的，还在开发
 
 - 后台进程可能依然会弹出崩溃对话框且开发者选项里的设置无效，还在排查
-
-- 暂不支持国际化语言，Chinese only
 
 ## License
 
