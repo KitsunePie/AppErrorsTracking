@@ -57,6 +57,12 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
 
 /**
+ * 弹出 [Toast]
+ * @param msg 提示内容
+ */
+fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+/**
  * 跳转 APP 自身设置界面
  * @param packageName 包名
  */
@@ -66,7 +72,7 @@ fun Context.openSelfSetting(packageName: String = this.packageName) = runCatchin
         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         data = Uri.fromParts("package", packageName, null)
     })
-}.onFailure { Toast.makeText(this, "无法打开 $packageName 的设置界面", Toast.LENGTH_SHORT).show() }
+}.onFailure { toast(msg = "无法打开 $packageName 的设置界面") }
 
 /**
  * 当前 APP 是否可被启动
@@ -83,4 +89,4 @@ fun Context.openApp(packageName: String = this.packageName) = runCatching {
     startActivity(packageManager.getLaunchIntentForPackage(packageName)?.apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
-}.onFailure { Toast.makeText(this, "无法启动 $packageName", Toast.LENGTH_SHORT).show() }
+}.onFailure { toast(msg = "无法启动 $packageName") }
