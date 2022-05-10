@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">例外の例</string>
+    <string name="app_name">エラーの例</string>
     <string name="back">戻る</string>
-    <string name="function_desc">一般的なシナリオでのビジネス例外ロジックをここに示します。Xposedモジュールをアクティブ化した後、ここで例外をキャッチできるかどうかをテストできます。Xposedモジュールの有効性を確認するために、現在のアプリには手動用のロジックコードがありません。例外の処理。</string>
-    <string name="throw_native_error">ネイティブレイヤーの例外をスロー</string>
+    <string name="function_desc">一般的なシナリオでのビジネスエラーロジックをここに示します。Xposedモジュールをアクティブ化した後、ここでエラーをキャッチできるかどうかをテストできます。Xposedモジュールの有効性を確認するために、現在のアプリには手動用のロジックコードがありません。エラーの処理。</string>
+    <string name="throw_native_error">ネイティブレイヤーのエラーをスロー</string>
     <string name="throw_exception">Exception をスロー</string>
     <string name="throw_nullpointer">NullPointerException をスロー</string>
     <string name="throw_illegalstate">IllegalStateException をスロー</string>
