@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">異常調查</string>
-    <string name="xposed_desc">為原生 FC 對話框增加更多功能並修復中國大陸定制 ROM 刪除 FC 對話框的問題，給 Android 開發者帶來更好的體驗。 \\n開發者：酷安 @星夜不薈</string>
+    <string name="xposed_desc">為原生 FC 對話框增加更多功能並修復中國大陸定制 ROM 刪除 FC 對話框的問題，給 Android 開發者帶來更好的體驗。 \n開發者：酷安 @星夜不薈</string>
     <string name="app_info">程式情報</string>
     <string name="reopen_app">重新開啟</string>
     <string name="error_detail">異常詳解</string>
