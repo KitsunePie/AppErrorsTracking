@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">例外追跡</string>
+    <string name="app_name">エラー追跡</string>
     <string name="xposed_desc">ネイティブFCダイアログに機能を追加し、中国の国内カスタムROMがFCダイアログを削除する問題を修正して、Android開発者のエクスペリエンスを向上させます。</string>
     <string name="app_info">アプリ情報</string>
-    <string name="reopen_app">再開する</string>
+    <string name="reopen_app">アプリをリスタート</string>
     <string name="error_detail">エラーの詳細</string>
     <string name="ignore_if_unlock">無視（ロックが解除されるまで）</string>
     <string name="ignore_if_restart">無視（システイムが再起動するまで）</string>
@@ -13,10 +13,10 @@
     <string name="ignore_if_restart_tip">システイムが再起動するまで、「%1$s」のエラーを無視します</string>
     <string name="ignore_if_unlock_tip">ロックが解除されるまで、「%1$s」のエラーを無視します</string>
     <string name="back">戻る</string>
-    <string name="copy_error_stack">例外スタックをコピーする</string>
+    <string name="copy_error_stack">エラースタックをコピーする</string>
     <string name="export_to_file">ファイルにエクスポート</string>
-    <string name="error_info">例外情報</string>
-    <string name="error_type">例外タイプ</string>
+    <string name="error_info">エラー情報</string>
+    <string name="error_type">エラータイプ</string>
     <string name="error_file_name">ファイル名</string>
     <string name="error_throw_class">投擲クラス</string>
     <string name="error_throw_method">投擲メソッド</string>
@@ -26,6 +26,6 @@
     <string name="copy_fail">コピーに失敗しました</string>
     <string name="print_to_logcat">コンソールに印刷</string>
     <string name="print_to_logcat_success">コンソールに印刷されていました</string>
-    <string name="output_stack_success">エクスポートされた例外スタックされていました</string>
-    <string name="output_stack_fail">例外スタックのエクスポートに失敗しました</string>
+    <string name="output_stack_success">エクスポートされたエラースタックされていました</string>
+    <string name="output_stack_fail">エラースタックのエクスポートに失敗しました</string>
 </resources>
