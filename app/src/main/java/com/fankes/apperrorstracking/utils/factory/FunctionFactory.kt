@@ -23,12 +23,19 @@
 
 package com.fankes.apperrorstracking.utils.factory
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.fankes.apperrorstracking.R
 
 /**
  * 系统深色模式是否开启
@@ -57,10 +64,55 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
 
 /**
+ * 获取 APP 名称
+ * @param packageName 包名
+ * @return [String]
+ */
+fun Context.appName(packageName: String) =
+    runCatching {
+        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+            .applicationInfo.loadLabel(packageManager).toString()
+    }.getOrNull() ?: packageName
+
+/**
+ * 获取 APP 完整版本
+ * @param packageName 包名
+ * @return [String]
+ */
+fun Context.appVersion(packageName: String) =
+    runCatching {
+        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.let { "${it.versionName} (${it.versionCode})" }
+    }.getOrNull() ?: "unknown"
+
+/**
+ * 获取 APP 图标
+ * @param packageName 包名
+ * @return [Drawable]
+ */
+fun Context.appIcon(packageName: String) =
+    runCatching {
+        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+            .applicationInfo.loadIcon(packageManager)
+    }.getOrNull() ?: ColorDrawable(Color.WHITE)
+
+/**
  * 弹出 [Toast]
  * @param msg 提示内容
  */
 fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+/**
+ * 复制到剪贴板
+ * @param content 要复制的文本
+ */
+fun Context.copyToClipboard(content: String) = runCatching {
+    (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
+        setPrimaryClip(ClipData.newPlainText(null, content))
+        (primaryClip?.getItemAt(0)?.text ?: "").also {
+            if (it != content) toast(getString(R.string.copy_fail)) else toast(getString(R.string.copied))
+        }
+    }
+}
 
 /**
  * 跳转 APP 自身设置界面

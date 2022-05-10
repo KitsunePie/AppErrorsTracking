@@ -12,4 +12,19 @@
     <string name="ignore_if_unlock_tip">Ignore errors for \'%1$s\' until device is re-unlocked</string>
     <string name="ignore_if_restart_tip">Ignore errors for \'%1$s\' until device reboots</string>
     <string name="back">Back</string>
+    <string name="copy_error_stack">Copy error stack</string>
+    <string name="export_to_file">Export to file</string>
+    <string name="error_info">Error Info</string>
+    <string name="error_type">Error Type</string>
+    <string name="error_file_name">File Name</string>
+    <string name="error_throw_class">Throw Class</string>
+    <string name="error_throw_method">Throw Method</string>
+    <string name="error_line_number">Line Number</string>
+    <string name="error_record_time">Record Time</string>
+    <string name="copied">Copied</string>
+    <string name="copy_fail">Copy failed</string>
+    <string name="print_to_logcat">Print to logcat</string>
+    <string name="print_to_logcat_success">Printed to logcat</string>
+    <string name="output_stack_success">Export exception stack succeeded</string>
+    <string name="output_stack_fail">Failed to export exception stack</string>
 </resources>

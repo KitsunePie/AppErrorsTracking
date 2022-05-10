@@ -13,4 +13,19 @@
     <string name="ignore_if_restart_tip">システイムが再起動するまで、「%1$s」のエラーを無視します</string>
     <string name="ignore_if_unlock_tip">ロックが解除されるまで、「%1$s」のエラーを無視します</string>
     <string name="back">戻る</string>
+    <string name="copy_error_stack">例外スタックをコピーする</string>
+    <string name="export_to_file">ファイルにエクスポート</string>
+    <string name="error_info">例外情報</string>
+    <string name="error_type">例外タイプ</string>
+    <string name="error_file_name">ファイル名</string>
+    <string name="error_throw_class">投擲クラス</string>
+    <string name="error_throw_method">投擲メソッド</string>
+    <string name="error_line_number">行番号</string>
+    <string name="error_record_time">記録タイム</string>
+    <string name="copied">コピーしました</string>
+    <string name="copy_fail">コピーに失敗しました</string>
+    <string name="print_to_logcat">コンソールに印刷</string>
+    <string name="print_to_logcat_success">コンソールに印刷されていました</string>
+    <string name="output_stack_success">エクスポートされた例外スタックされていました</string>
+    <string name="output_stack_fail">例外スタックのエクスポートに失敗しました</string>
 </resources>
