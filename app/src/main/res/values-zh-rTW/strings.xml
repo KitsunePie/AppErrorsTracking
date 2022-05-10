@@ -13,4 +13,19 @@
     <string name="ignore_if_unlock_tip">忽略“%1$s”的錯誤直到設備重新開屏</string>
     <string name="ignore_if_restart_tip">忽略“%1$s”的錯誤直到設備重新開機</string>
     <string name="back">回退</string>
+    <string name="copy_error_stack">複製異常堆棧</string>
+    <string name="export_to_file">導出到副案</string>
+    <string name="error_info">異常訊息</string>
+    <string name="error_type">異常類型</string>
+    <string name="error_file_name">文件名</string>
+    <string name="error_throw_class">拋出 Class</string>
+    <string name="error_throw_method">抛出 Method</string>
+    <string name="error_line_number">行號</string>
+    <string name="error_record_time">記錄時間</string>
+    <string name="copied">已復制</string>
+    <string name="copy_fail">複製失敗</string>
+    <string name="print_to_logcat">打印到控制台</string>
+    <string name="print_to_logcat_success">已打印到控制台</string>
+    <string name="output_stack_success">已導出異常堆棧</string>
+    <string name="output_stack_fail">導出異常堆棧失敗</string>
 </resources>

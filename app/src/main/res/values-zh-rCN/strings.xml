@@ -13,4 +13,19 @@
     <string name="ignore_if_unlock_tip">忽略“%1$s”的错误直到设备重新解锁</string>
     <string name="ignore_if_restart_tip">忽略“%1$s”的错误直到设备重新启动</string>
     <string name="back">返回</string>
+    <string name="copy_error_stack">复制异常堆栈</string>
+    <string name="export_to_file">导出到文件</string>
+    <string name="error_info">异常信息</string>
+    <string name="error_type">异常类型</string>
+    <string name="error_file_name">文件名</string>
+    <string name="error_throw_class">抛出类</string>
+    <string name="error_throw_method">抛出方法</string>
+    <string name="error_line_number">行号</string>
+    <string name="error_record_time">记录时间</string>
+    <string name="copied">已复制</string>
+    <string name="copy_fail">复制失败</string>
+    <string name="print_to_logcat">打印到控制台</string>
+    <string name="print_to_logcat_success">已打印到控制台</string>
+    <string name="output_stack_success">已导出异常堆栈</string>
+    <string name="output_stack_fail">导出异常堆栈失败</string>
 </resources>

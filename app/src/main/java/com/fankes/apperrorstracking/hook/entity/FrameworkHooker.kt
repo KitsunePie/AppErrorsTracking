@@ -24,6 +24,7 @@
 package com.fankes.apperrorstracking.hook.entity
 
 import android.app.AlertDialog
+import android.app.ApplicationErrorReport
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -40,6 +41,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.fankes.apperrorstracking.R
+import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.ui.activity.AppErrorsDetailActivity
 import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
 import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.bean.VariousClass
@@ -51,6 +54,8 @@ import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
 object FrameworkHooker : YukiBaseHooker() {
+
+    const val APP_ERRORS_INFO = "app_errors_info"
 
     private const val AppErrorsClass = "com.android.server.am.AppErrors"
 
@@ -78,6 +83,9 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
     private var ignoredErrorsIfRestartApps = HashSet<String>()
+
+    /** 已记录的 APP 异常信息数组 - 直到重新启动 */
+    private val appErrorsRecords = arrayListOf<AppErrorsInfoBean>()
 
     /** 是否已经注册广播 */
     private var isRegisterReceiver = false
@@ -112,6 +120,14 @@ object FrameworkHooker : YukiBaseHooker() {
         context.registerReceiver(localeChangedReceiver, IntentFilter().apply { addAction(Intent.ACTION_LOCALE_CHANGED) })
         isRegisterReceiver = true
     }
+
+    /**
+     * 获取最新的 APP 错误信息
+     * @param packageName 包名
+     * @return [AppErrorsInfoBean] or null
+     */
+    private fun lastAppErrorsInfo(packageName: String) =
+        appErrorsRecords.takeIf { it.isNotEmpty() }?.filter { it.packageName == packageName }?.get(0)
 
     /**
      * 获取 I18n 字符串
@@ -203,7 +219,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     val packageName = appInfo?.packageName ?: processName
 
                     /** 当前 APP 名称 */
-                    val appName = appInfo?.let { context.packageManager.getApplicationLabel(it) } ?: packageName
+                    val appName = appInfo?.let { context.appName(it.packageName) } ?: packageName
 
                     /** 是否为 APP */
                     val isApp = (PackageListClass.clazz.method {
@@ -260,7 +276,9 @@ object FrameworkHooker : YukiBaseHooker() {
                             /** 错误详情按钮 */
                             val errorDetailButton =
                                 createButtonItem(context, R.drawable.ic_baseline_bug_report, string(R.string.error_detail)) {
-                                    // TODO 待开发
+                                    cancel()
+                                    lastAppErrorsInfo(packageName)?.let { AppErrorsDetailActivity.start(context, it) }
+                                        ?: context.toast(msg = "Invalid AppErrorsInfo")
                                 }
 
                             /** 忽略按钮 - 直到解锁 */
@@ -298,6 +316,34 @@ object FrameworkHooker : YukiBaseHooker() {
                         /** 设置取消对话框监听 */
                         setOnCancelListener { openedErrorsDialogs.remove(packageName) }
                     }.show()
+                }
+            }
+            injectMember {
+                method {
+                    name = "crashApplication"
+                    paramCount = 2
+                }
+                afterHook {
+                    /** 当前 APP 信息 */
+                    val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
+                    /** 当前异常信息 */
+                    args().last().cast<ApplicationErrorReport.CrashInfo>()?.also { crashInfo ->
+                        /** 添加到第一位 */
+                        appErrorsRecords.add(
+                            0, AppErrorsInfoBean(
+                                packageName = appInfo?.packageName ?: "",
+                                isNativeCrash = crashInfo.exceptionClassName.lowercase() == "native crash",
+                                exceptionClassName = crashInfo.exceptionClassName ?: "",
+                                exceptionMessage = crashInfo.exceptionMessage ?: "",
+                                throwFileName = crashInfo.throwFileName ?: "",
+                                throwClassName = crashInfo.throwClassName ?: "",
+                                throwMethodName = crashInfo.throwMethodName ?: "",
+                                throwLineNumber = crashInfo.throwLineNumber,
+                                stackTrace = crashInfo.stackTrace?.trim() ?: "",
+                                timestamp = System.currentTimeMillis()
+                            )
+                        )
+                    }
                 }
             }
         }
