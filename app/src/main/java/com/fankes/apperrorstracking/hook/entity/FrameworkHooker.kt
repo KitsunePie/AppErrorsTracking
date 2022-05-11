@@ -19,11 +19,10 @@
  *
  * This file is Created by fankes on 2022/5/7.
  */
-@file:Suppress("DEPRECATION", "UseCompatLoadingForDrawables")
+@file:Suppress("UseCompatLoadingForDrawables")
 
 package com.fankes.apperrorstracking.hook.entity
 
-import android.app.AlertDialog
 import android.app.ApplicationErrorReport
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -36,10 +35,10 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.locale.LocaleString
@@ -77,7 +76,7 @@ object FrameworkHooker : YukiBaseHooker() {
     )
 
     /** 已打开的错误对话框数组 */
-    private var openedErrorsDialogs = HashMap<String, AlertDialog>()
+    private var openedErrorsDialogs = HashMap<String, DialogBuilder>()
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
     private var ignoredErrorsIfUnlockApps = HashSet<String>()
@@ -145,7 +144,7 @@ object FrameworkHooker : YukiBaseHooker() {
             layoutParams =
                 ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             addView(ImageView(context).apply {
-                setImageDrawable(moduleAppResources.getDrawable(drawableId))
+                setImageDrawable(ResourcesCompat.getDrawable(moduleAppResources, drawableId, null))
                 layoutParams = ViewGroup.LayoutParams(25.dp(context), 25.dp(context))
                 setColorFilter(if (context.isSystemInDarkMode) Color.WHITE else Color.BLACK)
             })
@@ -240,13 +239,9 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 关闭重复的对话框 */
                     openedErrorsDialogs[packageName]?.cancel()
                     /** 创建自定义对话框 */
-                    AlertDialog.Builder(
-                        context, if (context.isSystemInDarkMode)
-                            android.R.style.Theme_Material_Dialog
-                        else android.R.style.Theme_Material_Light_Dialog
-                    ).create().apply {
-                        setTitle(if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName))
-                        setView(LinearLayout(context).apply {
+                    context.showDialog {
+                        title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
+                        view = LinearLayout(context).apply {
                             orientation = LinearLayout.VERTICAL
                             /** 应用信息按钮 */
                             val appInfoButton =
@@ -301,14 +296,14 @@ object FrameworkHooker : YukiBaseHooker() {
                             addView(ignoredUntilRestartButton)
                             /** 设置边距 */
                             setPadding(6.dp(context), 15.dp(context), 6.dp(context), 6.dp(context))
-                        })
-                        /** 只有 SystemUid 才能响应系统级别的对话框 */
-                        window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
+                        }
+                        /** 设置取消对话框监听 */
+                        onCancel { openedErrorsDialogs.remove(packageName) }
                         /** 记录实例 */
                         openedErrorsDialogs[packageName] = this
-                        /** 设置取消对话框监听 */
-                        setOnCancelListener { openedErrorsDialogs.remove(packageName) }
-                    }.show()
+                        /** 只有 SystemUid 才能响应系统级别的对话框 */
+                        makeSystemAlert()
+                    }
                 }
             }
             injectMember {
