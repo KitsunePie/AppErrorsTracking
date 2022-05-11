@@ -41,6 +41,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.AppErrorsDetailActivity
 import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
@@ -51,11 +52,10 @@ import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.type.android.ActivityThreadClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
 object FrameworkHooker : YukiBaseHooker() {
-
-    const val APP_ERRORS_INFO = "app_errors_info"
 
     private const val AppErrorsClass = "com.android.server.am.AppErrors"
 
@@ -110,6 +110,23 @@ object FrameworkHooker : YukiBaseHooker() {
         }
     }
 
+    /** 宿主广播接收器 */
+    private val hostHandlerReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent == null) return
+                when (intent.getStringExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL)) {
+                    Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA ->
+                        context?.sendBroadcast(Intent().apply {
+                            action = Const.ACTION_MODULE_HANDLER_RECEIVER
+                            putExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL, Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA)
+                            putExtra(Const.TAG_APP_ERRORS_DATA_CONTENT, appErrorsRecords)
+                        })
+                }
+            }
+        }
+    }
+
     /**
      * 注册广播接收器
      * @param context 实例
@@ -118,6 +135,7 @@ object FrameworkHooker : YukiBaseHooker() {
         if (isRegisterReceiver) return
         context.registerReceiver(userPresentReceiver, IntentFilter().apply { addAction(Intent.ACTION_USER_PRESENT) })
         context.registerReceiver(localeChangedReceiver, IntentFilter().apply { addAction(Intent.ACTION_LOCALE_CHANGED) })
+        context.registerReceiver(hostHandlerReceiver, IntentFilter().apply { addAction(Const.ACTION_HOST_HANDLER_RECEIVER) })
         isRegisterReceiver = true
     }
 
@@ -161,6 +179,16 @@ object FrameworkHooker : YukiBaseHooker() {
         }
 
     override fun onHook() {
+        /** 注入全局监听 */
+        ActivityThreadClass.hook {
+            injectMember {
+                method {
+                    name = "currentApplication"
+                    emptyParam()
+                }
+                afterHook { result<Context>()?.let { registerReceiver(it) } }
+            }
+        }
         /** 干掉原生错误对话框 - 如果有 */
         ErrorDialogControllerClass.hook {
             injectMember {
@@ -229,8 +257,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
-                    /** 注册广播 */
-                    registerReceiver(context)
                     /** 打印错误日志 */
                     loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
                     /** 判断是否被忽略 - 在后台就不显示对话框 */
@@ -317,20 +343,26 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前异常信息 */
                     args().last().cast<ApplicationErrorReport.CrashInfo>()?.also { crashInfo ->
                         /** 添加到第一位 */
-                        appErrorsRecords.add(
-                            0, AppErrorsInfoBean(
-                                packageName = appInfo?.packageName ?: "",
-                                isNativeCrash = crashInfo.exceptionClassName.lowercase() == "native crash",
-                                exceptionClassName = crashInfo.exceptionClassName ?: "",
-                                exceptionMessage = crashInfo.exceptionMessage ?: "",
-                                throwFileName = crashInfo.throwFileName ?: "",
-                                throwClassName = crashInfo.throwClassName ?: "",
-                                throwMethodName = crashInfo.throwMethodName ?: "",
-                                throwLineNumber = crashInfo.throwLineNumber,
-                                stackTrace = crashInfo.stackTrace?.trim() ?: "",
-                                timestamp = System.currentTimeMillis()
+                        (crashInfo.exceptionClassName.lowercase() == "native crash").also { isNativeCrash ->
+                            appErrorsRecords.add(
+                                0, AppErrorsInfoBean(
+                                    packageName = appInfo?.packageName ?: "",
+                                    isNativeCrash = isNativeCrash,
+                                    exceptionClassName = crashInfo.exceptionClassName ?: "",
+                                    exceptionMessage = if (isNativeCrash) crashInfo.stackTrace.let {
+                                        if (it.contains(other = "Abort message: '"))
+                                            runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
+                                                ?: crashInfo.exceptionMessage ?: "" else crashInfo.exceptionMessage ?: ""
+                                    } else crashInfo.exceptionMessage ?: "",
+                                    throwFileName = crashInfo.throwFileName ?: "",
+                                    throwClassName = crashInfo.throwClassName ?: "",
+                                    throwMethodName = crashInfo.throwMethodName ?: "",
+                                    throwLineNumber = crashInfo.throwLineNumber,
+                                    stackTrace = crashInfo.stackTrace?.trim() ?: "",
+                                    timestamp = System.currentTimeMillis()
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
