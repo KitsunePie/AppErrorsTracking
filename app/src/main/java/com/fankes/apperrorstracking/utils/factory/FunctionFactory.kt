@@ -23,10 +23,9 @@
 
 package com.fankes.apperrorstracking.utils.factory
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
+import android.app.Service
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -35,6 +34,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.locale.LocaleString
 
 /**
@@ -100,6 +100,22 @@ fun Context.appIcon(packageName: String) =
  * @param msg 提示内容
  */
 fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+/**
+ * 跳转到指定页面
+ *
+ * [T] 为指定的 [Activity]
+ * @param isOutSide 是否从外部启动
+ * @param callback 回调 [Intent] 方法体
+ */
+inline fun <reified T : Activity> Context.navigate(isOutSide: Boolean = false, callback: Intent.() -> Unit = {}) = runCatching {
+    startActivity((if (isOutSide) Intent() else Intent(if (this is Service) applicationContext else this, T::class.java)).apply {
+        flags = if (this@navigate !is Activity) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        else Intent.FLAG_ACTIVITY_NEW_TASK
+        if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, T::class.java.name)
+        callback(this)
+    })
+}.onFailure { toast(msg = "Start ${T::class.java.name} failed") }
 
 /**
  * 复制到剪贴板
