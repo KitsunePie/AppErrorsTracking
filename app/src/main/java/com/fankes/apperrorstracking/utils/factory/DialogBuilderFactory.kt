@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/5/12.
  */
-@file:Suppress("unused", "OPT_IN_USAGE", "EXPERIMENTAL_API_USAGE", "DEPRECATION")
+@file:Suppress("unused", "DEPRECATION")
 
 package com.fankes.apperrorstracking.utils.factory
 
@@ -42,8 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  * 构造对话框
  * @param it 对话框方法体
  */
-fun Context.showDialog(it: DialogBuilder.() -> Unit) =
-    DialogBuilder(this).apply(it).show()
+fun Context.showDialog(it: DialogBuilder.() -> Unit) = DialogBuilder(this).apply(it).show()
 
 /**
  * 对话框构造器
