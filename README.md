@@ -8,6 +8,8 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 此项目为 Xposed 模块，可用在任何 Android 系统中，目前仅在 **LSPosed** 中测试通过。
 
+> 最低支持 Android 8.1
+
 ## Project Reason
 
 我实在是不能理解，国内 ROM 除了 MIUI(稳定版除外) 都选择了删除应用程序崩溃的对话框(FC 对话框)，我曾以为这一直是一个特性，直到我去反编译了系统框架，才确认确实是被删掉了。
