@@ -7,7 +7,7 @@
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
     tools:context=".ui.activity.AppErrorsDetailActivity"
-    tools:ignore="UnusedAttribute,ContentDescription,UseCompoundDrawables">
+    tools:ignore="ContentDescription,UseCompoundDrawables">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:layout_marginEnd="20dp"
             android:src="@mipmap/ic_back"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/back" />
+            app:tooltipText="@string/back" />
 
         <TextView
             android:layout_width="0dp"
@@ -48,7 +48,7 @@
             android:layout_marginEnd="15dp"
             android:src="@drawable/ic_print"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/print_to_logcat" />
+            app:tooltipText="@string/print_to_logcat" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/copy_icon"
@@ -57,7 +57,7 @@
             android:layout_marginEnd="15dp"
             android:src="@drawable/ic_copy"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/copy_error_stack" />
+            app:tooltipText="@string/copy_error_stack" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/export_icon"
@@ -66,7 +66,7 @@
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_export"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/export_to_file" />
+            app:tooltipText="@string/export_to_file" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
