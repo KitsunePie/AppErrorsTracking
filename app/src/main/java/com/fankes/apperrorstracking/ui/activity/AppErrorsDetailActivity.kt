@@ -82,8 +82,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             }.onFailure { toast(msg = "Start Android SAF failed") }
         }
         binding.appIcon.setImageDrawable(appIcon(appErrorsInfo.packageName))
-        binding.appName.text = appName(appErrorsInfo.packageName)
-        binding.appVersion.text = appVersion(appErrorsInfo.packageName)
+        binding.appNameText.text = appName(appErrorsInfo.packageName)
+        binding.appVersionText.text = appVersion(appErrorsInfo.packageName)
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage
