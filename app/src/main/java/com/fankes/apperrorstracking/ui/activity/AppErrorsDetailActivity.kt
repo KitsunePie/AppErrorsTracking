@@ -24,11 +24,9 @@
 package com.fankes.apperrorstracking.ui.activity
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import androidx.core.view.isGone
-import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
@@ -53,16 +51,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
          * @param appErrorsInfo 应用异常信息
          * @param isOutSide 是否从外部启动
          */
-        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) {
-            runCatching {
-                context.startActivity((if (isOutSide) Intent() else Intent(context, AppErrorsDetailActivity::class.java)).apply {
-                    flags = if (context !is Activity) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    else Intent.FLAG_ACTIVITY_NEW_TASK
-                    if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, AppErrorsDetailActivity::class.java.name)
-                    putExtra(FrameworkHooker.APP_ERRORS_INFO, appErrorsInfo)
-                })
-            }.onFailure { context.toast(msg = "Start AppErrorsDetailActivity failed") }
-        }
+        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) =
+            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(FrameworkHooker.APP_ERRORS_INFO, appErrorsInfo) }
     }
 
     /** 预导出的异常堆栈 */
