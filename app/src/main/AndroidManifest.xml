@@ -31,6 +31,28 @@
         <activity
             android:name=".ui.activity.AppErrorsDetailActivity"
             android:exported="true"
-            android:screenOrientation="behind" />
+            android:launchMode="singleTask"
+            android:screenOrientation="behind"
+            android:taskAffinity=":detail" />
+
+        <activity
+            android:name=".ui.activity.AppErrorsRecordActivity"
+            android:exported="true"
+            android:label="@string/errors_record"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind"
+            android:taskAffinity=":history" />
+
+        <service
+            android:name=".service.QuickStartTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_debug"
+            android:label="@string/errors_record"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

@@ -28,4 +28,8 @@
     <string name="print_to_logcat_success">コンソールに印刷されていました</string>
     <string name="output_stack_success">エクスポートされたエラースタックされていました</string>
     <string name="output_stack_fail">エラースタックのエクスポートに失敗しました</string>
+    <string name="export_all">すべてエクスポート</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="errors_record">エラー履歴記錄</string>
+    <string name="no_errors_data">一時的にエラーなデータレコードはありません</string>
 </resources>

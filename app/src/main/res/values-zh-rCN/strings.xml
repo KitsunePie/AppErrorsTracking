@@ -28,4 +28,8 @@
     <string name="print_to_logcat_success">已打印到控制台</string>
     <string name="output_stack_success">已导出异常堆栈</string>
     <string name="output_stack_fail">导出异常堆栈失败</string>
+    <string name="export_all">导出全部</string>
+    <string name="clear_all">清空全部</string>
+    <string name="errors_record">异常历史记录</string>
+    <string name="no_errors_data">暂时没有异常数据记录</string>
 </resources>

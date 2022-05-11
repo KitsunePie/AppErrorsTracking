@@ -27,4 +27,8 @@
     <string name="print_to_logcat_success">Printed to logcat</string>
     <string name="output_stack_success">Export exception stack succeeded</string>
     <string name="output_stack_fail">Failed to export exception stack</string>
+    <string name="export_all">Export all</string>
+    <string name="clear_all">Clear all</string>
+    <string name="errors_record">AppErrorsRecord</string>
+    <string name="no_errors_data">No errors data for now</string>
 </resources>

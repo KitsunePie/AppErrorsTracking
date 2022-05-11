@@ -29,8 +29,8 @@ import android.content.Intent
 import androidx.core.view.isGone
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
-import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
@@ -52,7 +52,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
          * @param isOutSide 是否从外部启动
          */
         fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) =
-            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(FrameworkHooker.APP_ERRORS_INFO, appErrorsInfo) }
+            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(Const.EXTRA_APP_ERRORS_INFO, appErrorsInfo) }
     }
 
     /** 预导出的异常堆栈 */
@@ -60,7 +60,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
     override fun onCreate() {
         val appErrorsInfo =
-            intent?.getSerializableExtra(FrameworkHooker.APP_ERRORS_INFO) as? AppErrorsInfoBean ?: return toastAndFinish()
+            intent?.getSerializableExtra(Const.EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean ?: return toastAndFinish()
 
         /** 创建异常堆栈模板 */
         fun createStack() =
@@ -113,7 +113,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
 
     override fun onBackPressed() {
-        intent?.removeExtra(FrameworkHooker.APP_ERRORS_INFO)
+        intent?.removeExtra(Const.EXTRA_APP_ERRORS_INFO)
         finish()
     }
 }
