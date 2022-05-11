@@ -50,12 +50,13 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
          * 启动 [AppErrorsDetailActivity]
          * @param context 实例
          * @param appErrorsInfo 应用异常信息
+         * @param isOutSide 是否从外部启动
          */
-        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean) {
+        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) {
             runCatching {
-                context.startActivity(Intent().apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    component = ComponentName(BuildConfig.APPLICATION_ID, AppErrorsDetailActivity::class.java.name)
+                context.startActivity((if (isOutSide) Intent() else Intent(context, AppErrorsDetailActivity::class.java)).apply {
+                    if (context !is Activity) flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, AppErrorsDetailActivity::class.java.name)
                     putExtra(FrameworkHooker.APP_ERRORS_INFO, appErrorsInfo)
                 })
             }.onFailure { context.toast(msg = "Start AppErrorsDetailActivity failed") }

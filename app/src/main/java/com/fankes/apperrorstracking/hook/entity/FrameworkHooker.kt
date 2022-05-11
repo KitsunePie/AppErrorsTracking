@@ -277,7 +277,7 @@ object FrameworkHooker : YukiBaseHooker() {
                             val errorDetailButton =
                                 createButtonItem(context, R.drawable.ic_baseline_bug_report, string(R.string.error_detail)) {
                                     cancel()
-                                    lastAppErrorsInfo(packageName)?.let { AppErrorsDetailActivity.start(context, it) }
+                                    lastAppErrorsInfo(packageName)?.let { AppErrorsDetailActivity.start(context, it, isOutSide = true) }
                                         ?: context.toast(msg = "Invalid AppErrorsInfo")
                                 }
 
