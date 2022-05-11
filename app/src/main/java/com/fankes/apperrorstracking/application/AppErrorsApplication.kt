@@ -22,6 +22,7 @@
 package com.fankes.apperrorstracking.application
 
 import androidx.appcompat.app.AppCompatDelegate
+import com.fankes.apperrorstracking.locale.LocaleString
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
 class AppErrorsApplication : ModuleApplication() {
@@ -30,5 +31,7 @@ class AppErrorsApplication : ModuleApplication() {
         super.onCreate()
         /** 跟随系统夜间模式 */
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        /** 绑定 I18n */
+        LocaleString.bind(instance = this)
     }
 }

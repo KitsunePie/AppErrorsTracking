@@ -33,6 +33,7 @@ import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
 import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
+import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerE
@@ -55,7 +56,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) {
             runCatching {
                 context.startActivity((if (isOutSide) Intent() else Intent(context, AppErrorsDetailActivity::class.java)).apply {
-                    if (context !is Activity) flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    flags = if (context !is Activity) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    else Intent.FLAG_ACTIVITY_NEW_TASK
                     if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, AppErrorsDetailActivity::class.java.name)
                     putExtra(FrameworkHooker.APP_ERRORS_INFO, appErrorsInfo)
                 })
@@ -76,7 +78,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
             loggerE(msg = createStack())
-            toast(getString(R.string.print_to_logcat_success))
+            toast(LocaleString.printToLogcatSuccess)
         }
         binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackTrace) }
         binding.exportIcon.setOnClickListener {
@@ -115,9 +117,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
             data?.data?.let {
                 contentResolver?.openOutputStream(it)?.apply { write(stackTrace.toByteArray()) }?.close()
-                toast(getString(R.string.output_stack_success))
-            } ?: toast(getString(R.string.output_stack_fail))
-        }.onFailure { toast(getString(R.string.output_stack_fail)) }
+                toast(LocaleString.outputStackSuccess)
+            } ?: toast(LocaleString.outputStackFail)
+        }.onFailure { toast(LocaleString.outputStackFail) }
     }
 
     override fun onBackPressed() {

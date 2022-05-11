@@ -35,7 +35,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
-import com.fankes.apperrorstracking.R
+import com.fankes.apperrorstracking.locale.LocaleString
 
 /**
  * 系统深色模式是否开启
@@ -109,7 +109,7 @@ fun Context.copyToClipboard(content: String) = runCatching {
     (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
         setPrimaryClip(ClipData.newPlainText(null, content))
         (primaryClip?.getItemAt(0)?.text ?: "").also {
-            if (it != content) toast(getString(R.string.copy_fail)) else toast(getString(R.string.copied))
+            if (it != content) toast(LocaleString.copyFail) else toast(LocaleString.copied)
         }
     }
 }
