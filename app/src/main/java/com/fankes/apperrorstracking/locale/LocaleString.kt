@@ -202,4 +202,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun areYouSureExportAllErrors(vararg objArrs: Any) = R.string.are_you_sure_export_all_errors.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val exportAllErrorsSuccess get() = exportAllErrorsSuccess()
+
+    /** @string Automatic generated */
+    fun exportAllErrorsSuccess(vararg objArrs: Any) = R.string.export_all_errors_success.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val exportAllErrorsFail get() = exportAllErrorsFail()
+
+    /** @string Automatic generated */
+    fun exportAllErrorsFail(vararg objArrs: Any) = R.string.export_all_errors_fail.bind(*objArrs)
 }

@@ -40,4 +40,6 @@
     <string name="all_errors_clear_success">全部异常记录已清空</string>
     <string name="are_you_sure_export_all_errors">你确定要导出全部日志文件吗？打包过程可能会花费一点时间。</string>
     <string name="view_detail">查看详情</string>
+    <string name="export_all_errors_success">已导出全部异常记录</string>
+    <string name="export_all_errors_fail">导出全部异常记录失败</string>
 </resources>
