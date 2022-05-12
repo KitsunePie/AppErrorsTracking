@@ -38,4 +38,6 @@
     <string name="notice">ヒント</string>
     <string name="are_you_sure_clear_errors">すべてのエラーレコードをクリアしてもよろしいですか？</string>
     <string name="all_errors_clear_success">すべてのアラーレコードがクリアされました</string>
+    <string name="are_you_sure_export_all_errors">すべてのログファイルをエクスポートしてもよろしいですか？ 梱包プロセスには時間がかかる場合があります。</string>
+    <string name="view_detail">詳細を見る</string>
 </resources>

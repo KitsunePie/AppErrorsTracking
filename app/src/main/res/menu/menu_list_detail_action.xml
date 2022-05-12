@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/aerrors_view_detail"
+        android:title="@string/view_detail" />
+    <item
+        android:id="@+id/aerrors_app_info"
+        android:title="@string/app_info" />
+</menu>
