@@ -32,4 +32,10 @@
     <string name="clear_all">清空全部</string>
     <string name="errors_record">异常历史记录</string>
     <string name="no_errors_data">暂时没有异常数据记录</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="more">更多</string>
+    <string name="notice">提示</string>
+    <string name="are_you_sure_clear_errors">你确定要清空全部异常记录吗？</string>
+    <string name="all_errors_clear_success">全部异常记录已清空</string>
 </resources>

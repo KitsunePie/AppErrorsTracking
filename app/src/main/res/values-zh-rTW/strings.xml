@@ -32,4 +32,10 @@
     <string name="clear_all">清空全部</string>
     <string name="errors_record">異常歷史記錄</string>
     <string name="no_errors_data">暫時沒有異常數據紀錄</string>
+    <string name="confirm">確認</string>
+    <string name="cancel">取消</string>
+    <string name="more">更多</string>
+    <string name="notice">提醒</string>
+    <string name="are_you_sure_clear_errors">你確認要清空全部異常紀錄嗎？</string>
+    <string name="all_errors_clear_success">全部異常紀錄已清空</string>
 </resources>

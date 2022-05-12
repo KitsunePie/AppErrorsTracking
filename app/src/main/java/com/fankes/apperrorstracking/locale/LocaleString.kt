@@ -160,4 +160,40 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun ignoreIfRestartTip(vararg objArrs: Any) = R.string.ignore_if_restart_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val confirm get() = confirm()
+
+    /** @string Automatic generated */
+    fun confirm(vararg objArrs: Any) = R.string.confirm.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val cancel get() = cancel()
+
+    /** @string Automatic generated */
+    fun cancel(vararg objArrs: Any) = R.string.cancel.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val more get() = more()
+
+    /** @string Automatic generated */
+    fun more(vararg objArrs: Any) = R.string.more.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val notice get() = notice()
+
+    /** @string Automatic generated */
+    fun notice(vararg objArrs: Any) = R.string.notice.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val areYouSureClearErrors get() = areYouSureClearErrors()
+
+    /** @string Automatic generated */
+    fun areYouSureClearErrors(vararg objArrs: Any) = R.string.are_you_sure_clear_errors.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val allErrorsClearSuccess get() = allErrorsClearSuccess()
+
+    /** @string Automatic generated */
+    fun allErrorsClearSuccess(vararg objArrs: Any) = R.string.all_errors_clear_success.bind(*objArrs)
 }

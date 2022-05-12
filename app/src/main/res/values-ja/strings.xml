@@ -32,4 +32,10 @@
     <string name="clear_all">すべてクリア</string>
     <string name="errors_record">エラー履歴記錄</string>
     <string name="no_errors_data">一時的にエラーなデータレコードはありません</string>
+    <string name="confirm">確認</string>
+    <string name="cancel">キャンセル</string>
+    <string name="more">モア</string>
+    <string name="notice">ヒント</string>
+    <string name="are_you_sure_clear_errors">すべてのエラーレコードをクリアしてもよろしいですか？</string>
+    <string name="all_errors_clear_success">すべてのアラーレコードがクリアされました</string>
 </resources>
