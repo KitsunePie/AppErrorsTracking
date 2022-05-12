@@ -21,9 +21,8 @@
  */
 package com.fankes.apperrorstracking.ui.activity
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.BaseAdapter
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
@@ -32,10 +31,7 @@ import com.fankes.apperrorstracking.databinding.ActivityAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
-import com.fankes.apperrorstracking.utils.factory.appIcon
-import com.fankes.apperrorstracking.utils.factory.appName
-import com.fankes.apperrorstracking.utils.factory.showDialog
-import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import java.text.SimpleDateFormat
 import java.util.*
@@ -97,10 +93,9 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                     }
                     return cView!!
                 }
-            }.apply {
-                setOnItemClickListener { _, _, p, _ -> AppErrorsDetailActivity.start(context, listData[p]) }
-                onChanged = { notifyDataSetChanged() }
-            }
+            }.apply { onChanged = { notifyDataSetChanged() } }
+            registerForContextMenu(this)
+            setOnItemClickListener { _, _, p, _ -> AppErrorsDetailActivity.start(context, listData[p]) }
         }
     }
 
@@ -115,6 +110,22 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             binding.listView.isVisible = listData.isNotEmpty()
             binding.listNoDataView.isVisible = listData.isEmpty()
         }
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        menuInflater.inflate(R.menu.menu_list_detail_action, menu)
+        super.onCreateContextMenu(menu, v, menuInfo)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        if (item.menuInfo is AdapterContextMenuInfo)
+            (item.menuInfo as? AdapterContextMenuInfo?)?.also {
+                when (item.itemId) {
+                    R.id.aerrors_view_detail -> AppErrorsDetailActivity.start(context = this, listData[it.position])
+                    R.id.aerrors_app_info -> openSelfSetting(listData[it.position].packageName)
+                }
+            }
+        return super.onContextItemSelected(item)
     }
 
     override fun onResume() {

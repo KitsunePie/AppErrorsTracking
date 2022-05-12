@@ -38,4 +38,6 @@
     <string name="notice">提醒</string>
     <string name="are_you_sure_clear_errors">你確認要清空全部異常紀錄嗎？</string>
     <string name="all_errors_clear_success">全部異常紀錄已清空</string>
+    <string name="are_you_sure_export_all_errors">你確認要導出全部日誌文件嗎？打包過程可能會花費一點時間。</string>
+    <string name="view_detail">查看詳情</string>
 </resources>

@@ -37,4 +37,6 @@
     <string name="notice">Notice</string>
     <string name="are_you_sure_clear_errors">Are you sure you want to clear all errors records?</string>
     <string name="all_errors_clear_success">All errors records have been cleared</string>
+    <string name="are_you_sure_export_all_errors">Are you sure you want to export all log files? The packaging process may take a while.</string>
+    <string name="view_detail">View detail</string>
 </resources>
