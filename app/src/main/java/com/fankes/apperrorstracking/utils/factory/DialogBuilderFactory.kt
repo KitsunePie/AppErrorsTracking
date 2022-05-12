@@ -36,6 +36,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.fankes.apperrorstracking.locale.LocaleString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -48,7 +49,7 @@ fun Context.showDialog(it: DialogBuilder.() -> Unit) = DialogBuilder(this).apply
  * 对话框构造器
  * @param context 实例
  */
-class DialogBuilder(private val context: Context) {
+class DialogBuilder(val context: Context) {
 
     private var instanceAndroidX: androidx.appcompat.app.AlertDialog.Builder? = null // 实例对象
     private var instanceAndroid: android.app.AlertDialog.Builder? = null // 实例对象
@@ -146,7 +147,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun confirmButton(text: String = "确定", it: () -> Unit = {}) {
+    fun confirmButton(text: String = LocaleString.confirm, it: () -> Unit = {}) {
         if (isUsingAndroidX)
             runCatching { instanceAndroidX?.setPositiveButton(text) { _, _ -> it() } }
         else runCatching { instanceAndroid?.setPositiveButton(text) { _, _ -> it() } }
@@ -157,7 +158,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun cancelButton(text: String = "取消", it: () -> Unit = {}) {
+    fun cancelButton(text: String = LocaleString.cancel, it: () -> Unit = {}) {
         if (isUsingAndroidX)
             runCatching { instanceAndroidX?.setNegativeButton(text) { _, _ -> it() } }
         else runCatching { instanceAndroid?.setNegativeButton(text) { _, _ -> it() } }
@@ -168,7 +169,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun neutralButton(text: String = "更多", it: () -> Unit = {}) {
+    fun neutralButton(text: String = LocaleString.more, it: () -> Unit = {}) {
         if (isUsingAndroidX)
             runCatching { instanceAndroidX?.setNeutralButton(text) { _, _ -> it() } }
         else runCatching { instanceAndroid?.setNeutralButton(text) { _, _ -> it() } }
