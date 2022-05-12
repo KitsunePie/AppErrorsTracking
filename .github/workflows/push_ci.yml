@@ -48,9 +48,16 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew :app:assembleRelease
+          ./gradlew :demo-app:assembleRelease
           echo "APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
-      - name: Upload Artifacts
+          echo "DEMO_APK_FILE=$(find demo-app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
+      - name: Upload Artifacts(module)
         uses: actions/upload-artifact@v2
         with:
           path: ${{ env.APK_FILE }}
-          name: app-release-${{ github.event.head_commit.id }}
+          name: module-release.apk
+      - name: Upload Artifacts(demo-app)
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ env.DEMO_APK_FILE }}
+          name: demo-release.apk
