@@ -19,8 +19,12 @@
  *
  * This file is Created by fankes on 2022/5/11.
  */
+@file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+
 package com.fankes.apperrorstracking.ui.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.view.*
 import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.BaseAdapter
@@ -33,10 +37,20 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
-import java.text.SimpleDateFormat
-import java.util.*
+import com.fankes.apperrorstracking.utils.tool.ZipFileTool
+import java.io.File
+import java.io.FileInputStream
 
 class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
+
+    companion object {
+
+        /** 请求保存文件回调标识 */
+        private const val WRITE_REQUEST_CODE = 0
+    }
+
+    /** 当前导出文件的路径 */
+    private var outPutFilePath = ""
 
     /** 回调适配器改变 */
     private var onChanged: (() -> Unit)? = null
@@ -60,8 +74,12 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             }
         }
         binding.exportAllIcon.setOnClickListener {
-            // TODO 待实现
-            toast(msg = "Coming soon")
+            showDialog {
+                title = LocaleString.notice
+                msg = LocaleString.areYouSureExportAllErrors
+                confirmButton { exportAll() }
+                cancelButton()
+            }
         }
         /** 设置列表元素和 Adapter */
         binding.listView.apply {
@@ -84,7 +102,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                     getItem(position).also {
                         holder.appIcon.setImageDrawable(appIcon(it.packageName))
                         holder.appNameText.text = appName(it.packageName)
-                        holder.errorsTimeText.text = SimpleDateFormat.getDateTimeInstance().format(Date(it.timestamp))
+                        holder.errorsTimeText.text = it.time
                         holder.errorTypeIcon.setImageResource(if (it.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         holder.errorTypeText.text = if (it.isNativeCrash) "Native crash" else it.exceptionClassName.let { text ->
                             if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text
@@ -112,6 +130,32 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         }
     }
 
+    /** 打包导出全部 */
+    private fun exportAll() {
+        clearAllExportTemp()
+        ("${cacheDir.absolutePath}/temp").also { path ->
+            File(path).mkdirs()
+            listData.takeIf { it.isNotEmpty() }?.forEach {
+                File("$path/${it.packageName}_${it.timestamp}.log").writeText(it.stackOutputContent)
+            }
+            outPutFilePath = "${cacheDir.absolutePath}/temp_${System.currentTimeMillis()}.zip"
+            ZipFileTool.zipMultiFile(path, outPutFilePath)
+            runCatching {
+                startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "*/application"
+                    putExtra(Intent.EXTRA_TITLE, "app_errors_info_${System.currentTimeMillis()}.zip")
+                }, WRITE_REQUEST_CODE)
+            }.onFailure { toast(msg = "Start Android SAF failed") }
+        }
+    }
+
+    /** 清空导出的临时文件 */
+    private fun clearAllExportTemp() {
+        cacheDir.deleteRecursively()
+        cacheDir.mkdirs()
+    }
+
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menuInflater.inflate(R.menu.menu_list_detail_action, menu)
         super.onCreateContextMenu(menu, v, menuInfo)
@@ -126,6 +170,17 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 }
             }
         return super.onContextItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
+            data?.data?.let {
+                contentResolver?.openOutputStream(it)?.apply { write(FileInputStream(outPutFilePath).readBytes()) }?.close()
+                clearAllExportTemp()
+                toast(LocaleString.exportAllErrorsSuccess)
+            } ?: toast(LocaleString.exportAllErrorsFail)
+        }.onFailure { toast(LocaleString.exportAllErrorsFail) }
     }
 
     override fun onResume() {
