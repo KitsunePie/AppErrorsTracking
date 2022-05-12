@@ -65,6 +65,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         /** 创建异常堆栈模板 */
         fun createStack() =
             "package name: ${appErrorsInfo.packageName} timestamp: ${appErrorsInfo.timestamp}\n${appErrorsInfo.stackTrace}"
+        binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
             loggerE(msg = createStack())

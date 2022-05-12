@@ -91,11 +91,12 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/app_info_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_permotion_round"
+                    android:background="@drawable/bg_permotion_ripple"
                     android:gravity="center|start"
                     android:padding="10dp">
 
