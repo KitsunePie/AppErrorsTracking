@@ -37,12 +37,15 @@ object Const {
     /** 宿主接收广播 */
     const val ACTION_HOST_HANDLER_RECEIVER = "host_handler_action"
 
-    /** [AppErrorsInfoBean] 控制数据 */
-    const val TYPE_APP_ERRORS_DATA_CONTROL = "app_errors_data_control_type"
+    /** 模块与宿主交互数据 */
+    const val KEY_MODULE_HOST_FETCH = "module_host_data_fetch_key"
 
-    /** [AppErrorsInfoBean] 获取数据 */
-    const val TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA = "app_errors_data_control_get_data_type"
+    /** 获取 [AppErrorsInfoBean] 数据 */
+    const val TYPE_APP_ERRORS_DATA_GET = "app_errors_data_get_type"
 
-    /** [AppErrorsInfoBean] 获取到的数据内容 */
+    /** 清空 [AppErrorsInfoBean] 数据 */
+    const val TYPE_APP_ERRORS_DATA_CLEAR = "app_errors_data_clear_type"
+
+    /** 获取到的 [AppErrorsInfoBean] 数据内容 */
     const val TAG_APP_ERRORS_DATA_CONTENT = "app_errors_data_content_tag"
 }

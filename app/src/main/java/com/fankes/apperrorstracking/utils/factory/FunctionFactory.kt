@@ -28,13 +28,13 @@ import android.app.Service
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.fankes.apperrorstracking.BuildConfig
+import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.locale.LocaleString
 
 /**
@@ -82,7 +82,7 @@ fun Context.appName(packageName: String) =
 fun Context.appVersion(packageName: String) =
     runCatching {
         packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.let { "${it.versionName} (${it.versionCode})" }
-    }.getOrNull() ?: "unknown"
+    }.getOrNull() ?: "<unknown>"
 
 /**
  * 获取 APP 图标
@@ -93,7 +93,7 @@ fun Context.appIcon(packageName: String) =
     runCatching {
         packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
             .applicationInfo.loadIcon(packageManager)
-    }.getOrNull() ?: ColorDrawable(Color.WHITE)
+    }.getOrNull() ?: ResourcesCompat.getDrawable(resources, R.drawable.ic_android, null)
 
 /**
  * 弹出 [Toast]
