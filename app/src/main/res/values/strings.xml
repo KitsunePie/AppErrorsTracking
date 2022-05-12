@@ -31,4 +31,10 @@
     <string name="clear_all">Clear all</string>
     <string name="errors_record">AppErrorsRecord</string>
     <string name="no_errors_data">No errors data for now</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="more">More</string>
+    <string name="notice">Notice</string>
+    <string name="are_you_sure_clear_errors">Are you sure you want to clear all errors records?</string>
+    <string name="all_errors_clear_success">All errors records have been cleared</string>
 </resources>
