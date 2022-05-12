@@ -19,14 +19,8 @@
  *
  * This file is Created by fankes on 2022/5/11.
  */
-@file:Suppress("UNCHECKED_CAST")
-
 package com.fankes.apperrorstracking.ui.activity
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,13 +28,15 @@ import android.widget.BaseAdapter
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
+import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIcon
 import com.fankes.apperrorstracking.utils.factory.appName
+import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,14 +45,23 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     /** 回调适配器改变 */
     private var onChanged: (() -> Unit)? = null
 
-    /** 全部的 APP 异常数据 */
-    private val listData = ArrayList<AppErrorsInfoBean>()
+    /** 全部的 APP 异常信息 */
+    private val listData = arrayListOf<AppErrorsInfoBean>()
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.clearAllIcon.setOnClickListener {
-            // TODO 待实现
-            toast(msg = "Coming soon")
+            showDialog {
+                title = LocaleString.notice
+                msg = LocaleString.areYouSureClearErrors
+                confirmButton {
+                    FrameworkTool.clearAppErrorsInfoData(context) {
+                        refreshData()
+                        toast(LocaleString.allErrorsClearSuccess)
+                    }
+                }
+                cancelButton()
+            }
         }
         binding.exportAllIcon.setOnClickListener {
             // TODO 待实现
@@ -97,34 +102,18 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 onChanged = { notifyDataSetChanged() }
             }
         }
-        /** 注册广播 */
-        registerReceiver(moduleHandlerReceiver, IntentFilter().apply { addAction(Const.ACTION_MODULE_HANDLER_RECEIVER) })
     }
 
     /** 更新列表数据 */
     private fun refreshData() {
-        sendBroadcast(Intent().apply {
-            action = Const.ACTION_HOST_HANDLER_RECEIVER
-            putExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL, Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA)
-        })
-    }
-
-    /** 模块广播接收器 */
-    private val moduleHandlerReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent == null) return
-                when (intent.getStringExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL)) {
-                    Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA ->
-                        (intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_CONTENT) as? ArrayList<AppErrorsInfoBean>)?.also {
-                            listData.clear()
-                            it.takeIf { e -> e.isNotEmpty() }?.forEach { e -> listData.add(e) }
-                            onChanged?.invoke()
-                            binding.listView.isVisible = listData.isNotEmpty()
-                            binding.listNoDataView.isVisible = listData.isEmpty()
-                        }
-                }
-            }
+        FrameworkTool.fetchAppErrorsInfoData(context = this) {
+            listData.clear()
+            it.takeIf { e -> e.isNotEmpty() }?.forEach { e -> listData.add(e) }
+            onChanged?.invoke()
+            binding.clearAllIcon.isVisible = listData.isNotEmpty()
+            binding.exportAllIcon.isVisible = listData.isNotEmpty()
+            binding.listView.isVisible = listData.isNotEmpty()
+            binding.listNoDataView.isVisible = listData.isEmpty()
         }
     }
 
@@ -132,11 +121,5 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         super.onResume()
         /** 执行更新 */
         refreshData()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        /** 取消注册 */
-        unregisterReceiver(moduleHandlerReceiver)
     }
 }

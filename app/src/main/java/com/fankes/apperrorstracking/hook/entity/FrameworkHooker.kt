@@ -76,13 +76,13 @@ object FrameworkHooker : YukiBaseHooker() {
     )
 
     /** 已打开的错误对话框数组 */
-    private var openedErrorsDialogs = HashMap<String, DialogBuilder>()
+    private var openedErrorsDialogs = hashMapOf<String, DialogBuilder>()
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
-    private var ignoredErrorsIfUnlockApps = HashSet<String>()
+    private var ignoredErrorsIfUnlockApps = hashSetOf<String>()
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
-    private var ignoredErrorsIfRestartApps = HashSet<String>()
+    private var ignoredErrorsIfRestartApps = hashSetOf<String>()
 
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
     private val appErrorsRecords = arrayListOf<AppErrorsInfoBean>()
@@ -115,13 +115,21 @@ object FrameworkHooker : YukiBaseHooker() {
         object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent == null) return
-                when (intent.getStringExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL)) {
-                    Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA ->
-                        context?.sendBroadcast(Intent().apply {
-                            action = Const.ACTION_MODULE_HANDLER_RECEIVER
-                            putExtra(Const.TYPE_APP_ERRORS_DATA_CONTROL, Const.TYPE_APP_ERRORS_DATA_CONTROL_GET_DATA)
-                            putExtra(Const.TAG_APP_ERRORS_DATA_CONTENT, appErrorsRecords)
-                        })
+                intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
+                    if (it.isNotBlank()) context?.sendBroadcast(Intent().apply {
+                        action = Const.ACTION_MODULE_HANDLER_RECEIVER
+                        when (it) {
+                            Const.TYPE_APP_ERRORS_DATA_GET -> {
+                                putExtra(Const.TAG_APP_ERRORS_DATA_CONTENT, appErrorsRecords)
+                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_GET)
+                            }
+                            Const.TYPE_APP_ERRORS_DATA_CLEAR -> {
+                                appErrorsRecords.clear()
+                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_CLEAR)
+                            }
+                            else -> {}
+                        }
+                    })
                 }
             }
         }

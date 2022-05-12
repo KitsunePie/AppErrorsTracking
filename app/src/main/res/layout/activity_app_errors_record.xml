@@ -47,7 +47,8 @@
             android:layout_marginEnd="15dp"
             android:src="@drawable/ic_clear"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/clear_all" />
+            android:tooltipText="@string/clear_all"
+            android:visibility="gone" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/export_all_icon"
@@ -56,7 +57,8 @@
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_export"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/export_all" />
+            android:tooltipText="@string/export_all"
+            android:visibility="gone" />
     </LinearLayout>
 
     <FrameLayout
