@@ -35,8 +35,6 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerE
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
@@ -59,21 +57,17 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
-        val appErrorsInfo =
-            intent?.getSerializableExtra(Const.EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean ?: return toastAndFinish()
-
-        /** 创建异常堆栈模板 */
-        fun createStack() =
-            "package name: ${appErrorsInfo.packageName} timestamp: ${appErrorsInfo.timestamp}\n${appErrorsInfo.stackTrace}"
+        val appErrorsInfo = runCatching { intent?.getSerializableExtra(Const.EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
+            ?: return toastAndFinish()
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
-            loggerE(msg = createStack())
+            loggerE(msg = appErrorsInfo.stackTrace)
             toast(LocaleString.printToLogcatSuccess)
         }
         binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackTrace) }
         binding.exportIcon.setOnClickListener {
-            stackTrace = createStack()
+            stackTrace = appErrorsInfo.stackOutputContent
             runCatching {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
@@ -93,7 +87,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorThrowClassText.text = appErrorsInfo.throwClassName
         binding.errorThrowMethodText.text = appErrorsInfo.throwMethodName
         binding.errorLineNumberText.text = appErrorsInfo.throwLineNumber.toString()
-        binding.errorRecordTimeText.text = SimpleDateFormat.getDateTimeInstance().format(Date(appErrorsInfo.timestamp))
+        binding.errorRecordTimeText.text = appErrorsInfo.time
         binding.errorStackText.text = appErrorsInfo.stackTrace
     }
 
