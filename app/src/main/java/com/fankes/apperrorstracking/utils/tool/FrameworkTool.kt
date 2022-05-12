@@ -29,6 +29,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.const.Const
+import com.highcapable.yukihookapi.hook.log.loggerE
 
 /**
  * 系统框架控制工具
@@ -46,17 +47,19 @@ object FrameworkTool {
         object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent == null) return
-                intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
-                    if (it.isNotBlank()) when (it) {
-                        Const.TYPE_APP_ERRORS_DATA_GET -> runCatching {
-                            onAppErrorsInfoDataCallback?.invoke(
-                                intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_CONTENT) as ArrayList<AppErrorsInfoBean>
-                            )
-                        }.onFailure { onAppErrorsInfoDataCallback?.invoke(arrayListOf()) }
-                        Const.TYPE_APP_ERRORS_DATA_CLEAR -> onClearAppErrorsInfoDataCallback?.invoke()
-                        else -> {}
+                runCatching {
+                    intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
+                        if (it.isNotBlank()) when (it) {
+                            Const.TYPE_APP_ERRORS_DATA_GET -> runCatching {
+                                onAppErrorsInfoDataCallback?.invoke(
+                                    intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_CONTENT) as ArrayList<AppErrorsInfoBean>
+                                )
+                            }.onFailure { onAppErrorsInfoDataCallback?.invoke(arrayListOf()) }
+                            Const.TYPE_APP_ERRORS_DATA_CLEAR -> onClearAppErrorsInfoDataCallback?.invoke()
+                            else -> {}
+                        }
                     }
-                }
+                }.onFailure { loggerE(msg = "Cannot receiver message, please restart system", e = it) }
             }
         }
     }
