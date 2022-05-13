@@ -7,7 +7,7 @@
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
     tools:context=".ui.activity.AppErrorsDetailActivity"
-    tools:ignore="ContentDescription,UseCompoundDrawables">
+    tools:ignore="ContentDescription,UseCompoundDrawables,SmallSp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -146,14 +146,37 @@
                                 app:tint="#FFEF5350" />
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/app_version_text"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/colorTextDark"
-                            android:textSize="12sp" />
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/app_abi_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bg_black_round"
+                                android:ellipsize="end"
+                                android:paddingLeft="3dp"
+                                android:paddingTop="0.5dp"
+                                android:paddingRight="3dp"
+                                android:paddingBottom="0.5dp"
+                                android:singleLine="true"
+                                android:text="@string/no_cpu_abi"
+                                android:textColor="@color/white"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/app_version_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:textColor="@color/colorTextDark"
+                                android:textSize="11sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <ImageView

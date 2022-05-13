@@ -36,6 +36,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.locale.LocaleString
+import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
 
 /**
  * 系统深色模式是否开启
@@ -83,6 +85,17 @@ fun Context.appVersion(packageName: String) =
     runCatching {
         packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.let { "${it.versionName} (${it.versionCode})" }
     }.getOrNull() ?: "<unknown>"
+
+/**
+ * 获取 APP CPU ABI 名称
+ * @param packageName 包名
+ * @return [String]
+ */
+fun Context.appCpuAbi(packageName: String) =
+    runCatching {
+        ApplicationInfoClass.field { name = "primaryCpuAbi" }
+            .get(packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.applicationInfo).string()
+    }.getOrNull() ?: ""
 
 /**
  * 获取 APP 图标

@@ -42,4 +42,5 @@
     <string name="view_detail">詳細を見る</string>
     <string name="export_all_errors_success">すべてのエラーレコードがエクスポートされました</string>
     <string name="export_all_errors_fail">すべてのエラーレコードのエクスポートに失敗しました</string>
+    <string name="no_cpu_abi">アビなし</string>
 </resources>

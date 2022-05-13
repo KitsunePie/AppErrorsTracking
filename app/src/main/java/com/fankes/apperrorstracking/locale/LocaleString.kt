@@ -214,4 +214,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun exportAllErrorsFail(vararg objArrs: Any) = R.string.export_all_errors_fail.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val noCpuAbi get() = noCpuAbi()
+
+    /** @string Automatic generated */
+    fun noCpuAbi(vararg objArrs: Any) = R.string.no_cpu_abi.bind(*objArrs)
 }
