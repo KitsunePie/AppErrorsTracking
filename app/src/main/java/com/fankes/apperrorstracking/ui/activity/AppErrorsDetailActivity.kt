@@ -90,6 +90,10 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorLineNumberText.text = appErrorsInfo.throwLineNumber.toString()
         binding.errorRecordTimeText.text = appErrorsInfo.time
         binding.errorStackText.text = appErrorsInfo.stackTrace
+        binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
+            binding.detailTitleText.text = if (y >= 30.dp(context = this)) appName(appErrorsInfo.packageName) else LocaleString.appName
+        }
+        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
     }
 
     /** 弹出提示并退出 */

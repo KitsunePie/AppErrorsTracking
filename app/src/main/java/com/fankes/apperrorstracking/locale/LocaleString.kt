@@ -72,6 +72,12 @@ object LocaleString {
     private fun Int.bind(vararg objArrs: Any) = resources.getString(this, *objArrs)
 
     /** @string Automatic generated */
+    val appName get() = appName()
+
+    /** @string Automatic generated */
+    fun appName(vararg objArrs: Any) = R.string.app_name.bind(*objArrs)
+
+    /** @string Automatic generated */
     val copied get() = copied()
 
     /** @string Automatic generated */
