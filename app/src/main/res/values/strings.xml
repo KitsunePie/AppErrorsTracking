@@ -41,4 +41,5 @@
     <string name="view_detail">View detail</string>
     <string name="export_all_errors_success">All errors record exported</string>
     <string name="export_all_errors_fail">Failed to exported all errors record</string>
+    <string name="no_cpu_abi">No ABI</string>
 </resources>
