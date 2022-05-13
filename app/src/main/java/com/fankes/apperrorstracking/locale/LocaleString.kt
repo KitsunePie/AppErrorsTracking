@@ -220,4 +220,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun noCpuAbi(vararg objArrs: Any) = R.string.no_cpu_abi.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val areYouSureRemoveRecord get() = areYouSureRemoveRecord()
+
+    /** @string Automatic generated */
+    fun areYouSureRemoveRecord(vararg objArrs: Any) = R.string.are_you_sure_remove_record.bind(*objArrs)
 }

@@ -6,4 +6,7 @@
     <item
         android:id="@+id/aerrors_app_info"
         android:title="@string/app_info" />
+    <item
+        android:id="@+id/aerrors_remove_record"
+        android:title="@string/remove_record" />
 </menu>

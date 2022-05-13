@@ -43,4 +43,6 @@
     <string name="export_all_errors_success">已導出全部異常紀錄</string>
     <string name="export_all_errors_fail">導出全部異常紀錄失敗</string>
     <string name="no_cpu_abi">無原生庫</string>
+    <string name="remove_record">移除紀錄</string>
+    <string name="are_you_sure_remove_record">你確認要移除這條紀錄嗎</string>
 </resources>
