@@ -23,6 +23,7 @@ android {
         applicationId "com.fankes.apperrorstracking"
         minSdk 27
         targetSdk 31
+        buildToolsVersion "31.0.0"
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersionName
 
