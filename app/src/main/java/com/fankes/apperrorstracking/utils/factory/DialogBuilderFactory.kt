@@ -38,6 +38,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.shape.MaterialShapeDrawable
 
 /**
  * 构造对话框
@@ -69,9 +70,11 @@ class DialogBuilder(val context: Context) {
     private val isUsingAndroidX get() = runCatching { context is AppCompatActivity }.getOrNull() ?: false
 
     init {
-        if (isUsingAndroidX)
-            runCatching { instanceAndroidX = MaterialAlertDialogBuilder(context) }
-        else runCatching {
+        if (isUsingAndroidX) runCatching {
+            instanceAndroidX = MaterialAlertDialogBuilder(context).apply {
+                background = (background as MaterialShapeDrawable).apply { setCornerSize(15.dpFloat(context)) }
+            }
+        } else runCatching {
             instanceAndroid = android.app.AlertDialog.Builder(
                 context,
                 if (context.isSystemInDarkMode) android.R.style.Theme_Material_Dialog else android.R.style.Theme_Material_Light_Dialog
