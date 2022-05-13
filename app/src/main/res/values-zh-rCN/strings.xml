@@ -45,4 +45,7 @@
     <string name="no_cpu_abi">无原生库</string>
     <string name="remove_record">移除记录</string>
     <string name="are_you_sure_remove_record">你确定要移除这条记录吗？</string>
+    <string name="got_it">我知道了</string>
+    <string name="dont_screenshot">请不要截屏</string>
+    <string name="dont_screenshot_tip">在错误日志中截屏是不明智的做法，你应当点击此界面右上角的按钮提取或复制日志内容。</string>
 </resources>

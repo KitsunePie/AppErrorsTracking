@@ -44,4 +44,7 @@
     <string name="no_cpu_abi">No ABI</string>
     <string name="remove_record">Remove record</string>
     <string name="are_you_sure_remove_record">Are you sure you want to remove this record?</string>
+    <string name="got_it">Got it</string>
+    <string name="dont_screenshot">Do not take screenshots</string>
+    <string name="dont_screenshot_tip">It is not advisable to take a screenshot of the error log, you should extract or copy the log content by clicking the button in the upper right corner of this interface.</string>
 </resources>
