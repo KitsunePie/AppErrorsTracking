@@ -45,4 +45,7 @@
     <string name="no_cpu_abi">無原生庫</string>
     <string name="remove_record">移除紀錄</string>
     <string name="are_you_sure_remove_record">你確認要移除這條紀錄嗎？</string>
+    <string name="got_it">我懂了</string>
+    <string name="dont_screenshot">請不要捕獲熒屏</string>
+    <string name="dont_screenshot_tip">在錯誤日誌中捕獲熒屏是不明理的做法，你應當點擊此界面右上角的按鈕提取或複制日誌內容。</string>
 </resources>

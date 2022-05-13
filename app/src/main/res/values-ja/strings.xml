@@ -45,4 +45,7 @@
     <string name="no_cpu_abi">アビなし</string>
     <string name="remove_record">レコードを削除</string>
     <string name="are_you_sure_remove_record">このレコードを削除してもよろしいですか</string>
+    <string name="got_it">分かります</string>
+    <string name="dont_screenshot">スクリーンショットを撮らないでください</string>
+    <string name="dont_screenshot_tip">エラーログのスクリーンショットを撮ることはお勧めできません。このインターフェイスの右上隅にあるボタンをクリックして、ログの内容を抽出またはコピーする必要があります。</string>
 </resources>
