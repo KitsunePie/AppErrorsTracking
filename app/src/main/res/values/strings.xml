@@ -42,4 +42,6 @@
     <string name="export_all_errors_success">All errors record exported</string>
     <string name="export_all_errors_fail">Failed to exported all errors record</string>
     <string name="no_cpu_abi">No ABI</string>
+    <string name="remove_record">Remove record</string>
+    <string name="are_you_sure_remove_record">Are you sure you want to remove this record?</string>
 </resources>

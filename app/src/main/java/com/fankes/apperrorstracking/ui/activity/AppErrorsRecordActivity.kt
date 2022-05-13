@@ -167,6 +167,13 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 when (item.itemId) {
                     R.id.aerrors_view_detail -> AppErrorsDetailActivity.start(context = this, listData[it.position])
                     R.id.aerrors_app_info -> openSelfSetting(listData[it.position].packageName)
+                    R.id.aerrors_remove_record ->
+                        showDialog {
+                            title = LocaleString.notice
+                            msg = LocaleString.areYouSureRemoveRecord
+                            confirmButton { FrameworkTool.removeAppErrorsInfoData(context, listData[it.position]) { refreshData() } }
+                            cancelButton()
+                        }
                 }
             }
         return super.onContextItemSelected(item)

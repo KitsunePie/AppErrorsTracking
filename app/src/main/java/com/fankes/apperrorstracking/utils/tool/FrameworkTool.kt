@@ -30,6 +30,7 @@ import android.content.IntentFilter
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.const.Const
 import com.highcapable.yukihookapi.hook.log.loggerE
+import java.io.Serializable
 
 /**
  * 系统框架控制工具
@@ -38,6 +39,9 @@ object FrameworkTool {
 
     /** 回调获取的 APP 异常信息 */
     private var onAppErrorsInfoDataCallback: ((ArrayList<AppErrorsInfoBean>) -> Unit)? = null
+
+    /** 回调 APP 异常信息是否移除 */
+    private var onRemoveAppErrorsInfoDataCallback: (() -> Unit)? = null
 
     /** 回调 APP 异常信息是否清空 */
     private var onClearAppErrorsInfoDataCallback: (() -> Unit)? = null
@@ -52,9 +56,10 @@ object FrameworkTool {
                         if (it.isNotBlank()) when (it) {
                             Const.TYPE_APP_ERRORS_DATA_GET -> runCatching {
                                 onAppErrorsInfoDataCallback?.invoke(
-                                    intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_CONTENT) as ArrayList<AppErrorsInfoBean>
+                                    intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT) as ArrayList<AppErrorsInfoBean>
                                 )
                             }.onFailure { onAppErrorsInfoDataCallback?.invoke(arrayListOf()) }
+                            Const.TYPE_APP_ERRORS_DATA_REMOVE -> onRemoveAppErrorsInfoDataCallback?.invoke()
                             Const.TYPE_APP_ERRORS_DATA_CLEAR -> onClearAppErrorsInfoDataCallback?.invoke()
                             else -> {}
                         }
@@ -68,11 +73,22 @@ object FrameworkTool {
      * 发送广播
      * @param context 实例
      * @param type 类型
+     * @param key 可选传值
+     * @param value 可选传值
      */
-    private fun pushReceiver(context: Context, type: String) {
+    private fun pushReceiver(context: Context, type: String, key: String = "", value: Any = "") {
         context.sendBroadcast(Intent().apply {
             action = Const.ACTION_HOST_HANDLER_RECEIVER
             putExtra(Const.KEY_MODULE_HOST_FETCH, type)
+            if (key.isNotBlank()) putExtra(
+                key, when (value) {
+                    is String -> value
+                    is Int -> value
+                    is Boolean -> value
+                    is Serializable -> value
+                    else -> error("value is not allowed")
+                }
+            )
         })
     }
 
@@ -84,6 +100,17 @@ object FrameworkTool {
     fun fetchAppErrorsInfoData(context: Context, it: (ArrayList<AppErrorsInfoBean>) -> Unit) {
         onAppErrorsInfoDataCallback = it
         pushReceiver(context, Const.TYPE_APP_ERRORS_DATA_GET)
+    }
+
+    /**
+     * 移除指定 APP 异常信息
+     * @param context 实例
+     * @param appErrorsInfo 指定 APP 异常信息
+     * @param it 成功后回调
+     */
+    fun removeAppErrorsInfoData(context: Context, appErrorsInfo: AppErrorsInfoBean, it: () -> Unit) {
+        onRemoveAppErrorsInfoDataCallback = it
+        pushReceiver(context, Const.TYPE_APP_ERRORS_DATA_REMOVE, Const.TAG_APP_ERRORS_DATA_REMOVE_CONTENT, appErrorsInfo)
     }
 
     /**

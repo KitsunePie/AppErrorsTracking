@@ -120,8 +120,13 @@ object FrameworkHooker : YukiBaseHooker() {
                         action = Const.ACTION_MODULE_HANDLER_RECEIVER
                         when (it) {
                             Const.TYPE_APP_ERRORS_DATA_GET -> {
-                                putExtra(Const.TAG_APP_ERRORS_DATA_CONTENT, appErrorsRecords)
+                                putExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT, appErrorsRecords)
                                 putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_GET)
+                            }
+                            Const.TYPE_APP_ERRORS_DATA_REMOVE -> {
+                                runCatching { intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_REMOVE_CONTENT) as? AppErrorsInfoBean? }
+                                    .getOrNull()?.also { e -> appErrorsRecords.remove(e) }
+                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_REMOVE)
                             }
                             Const.TYPE_APP_ERRORS_DATA_CLEAR -> {
                                 appErrorsRecords.clear()

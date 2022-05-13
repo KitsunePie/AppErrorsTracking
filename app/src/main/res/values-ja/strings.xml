@@ -43,4 +43,6 @@
     <string name="export_all_errors_success">すべてのエラーレコードがエクスポートされました</string>
     <string name="export_all_errors_fail">すべてのエラーレコードのエクスポートに失敗しました</string>
     <string name="no_cpu_abi">アビなし</string>
+    <string name="remove_record">レコードを削除</string>
+    <string name="are_you_sure_remove_record">このレコードを削除してもよろしいですか</string>
 </resources>

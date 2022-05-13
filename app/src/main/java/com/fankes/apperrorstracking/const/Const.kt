@@ -46,6 +46,12 @@ object Const {
     /** 清空 [AppErrorsInfoBean] 数据 */
     const val TYPE_APP_ERRORS_DATA_CLEAR = "app_errors_data_clear_type"
 
+    /** 删除指定 [AppErrorsInfoBean] 数据 */
+    const val TYPE_APP_ERRORS_DATA_REMOVE = "app_errors_data_remove_type"
+
     /** 获取到的 [AppErrorsInfoBean] 数据内容 */
-    const val TAG_APP_ERRORS_DATA_CONTENT = "app_errors_data_content_tag"
+    const val TAG_APP_ERRORS_DATA_GET_CONTENT = "app_errors_data_get_content_tag"
+
+    /** 指定删除的 [AppErrorsInfoBean] 数据内容 */
+    const val TAG_APP_ERRORS_DATA_REMOVE_CONTENT = "app_errors_data_remove_content_tag"
 }
