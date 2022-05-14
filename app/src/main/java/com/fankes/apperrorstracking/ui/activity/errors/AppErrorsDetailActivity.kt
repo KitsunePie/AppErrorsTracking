@@ -21,7 +21,7 @@
  */
 @file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
 
-package com.fankes.apperrorstracking.ui.activity
+package com.fankes.apperrorstracking.ui.activity.errors
 
 import android.app.Activity
 import android.content.Context

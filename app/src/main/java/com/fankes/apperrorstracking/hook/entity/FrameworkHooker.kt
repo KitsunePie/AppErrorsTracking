@@ -43,7 +43,7 @@ import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
-import com.fankes.apperrorstracking.ui.activity.AppErrorsDetailActivity
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDetailActivity
 import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
 import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.bean.VariousClass

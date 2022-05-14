@@ -29,14 +29,14 @@
             android:resource="@array/module_scope" />
 
         <activity
-            android:name=".ui.activity.AppErrorsDetailActivity"
+            android:name=".ui.activity.errors.AppErrorsDetailActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="behind"
             android:taskAffinity=":detail" />
 
         <activity
-            android:name=".ui.activity.AppErrorsRecordActivity"
+            android:name=".ui.activity.errors.AppErrorsRecordActivity"
             android:exported="true"
             android:label="@string/errors_record"
             android:launchMode="singleTask"
