@@ -48,4 +48,21 @@
     <string name="got_it">我懂了</string>
     <string name="dont_screenshot">請不要捕獲熒屏</string>
     <string name="dont_screenshot_tip">在錯誤日誌中捕獲熒屏是不明理的做法，你應當點擊此界面右上角的按鈕提取或複制日誌內容。</string>
+    <string name="restart_system">重新開機</string>
+    <string name="project_address">項目地址</string>
+    <string name="module_not_activated">模組未激活</string>
+    <string name="module_version">模組版本：%1$s</string>
+    <string name="system_version">系統版本：%1$s</string>
+    <string name="module_is_activated">模組已激活</string>
+    <string name="after_some_settings_need_restart">部分設置修改後可能需要點擊右上角重啟系統才能生效。</string>
+    <string name="display_settings">顯示設置</string>
+    <string name="hide_app_icon_on_desktop">在桌面隱藏模組圖標</string>
+    <string name="hide_app_icon_on_desktop_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面顯示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
+    <string name="hide_app_icon_on_desktop_notice">注意：請務必在 LSPosed 中關閉“強制顯示桌面圖標”功能</string>
+    <string name="about_module">此模組使用 YukiHookAPI 構建。 \n了解更多 https://github.com/fankes/YukiHookAPI</string>
+    <string name="module_not_fully_activated">模組未完全激活，請重新開機</string>
+    <string name="are_your_sure_restart_system">你確定要重新開機嗎？</string>
+    <string name="fast_restart">急速重開</string>
+    <string name="access_root_fail">取得 Root 权利失败</string>
+    <string name="todo_items">更多機能正在開發</string>
 </resources>

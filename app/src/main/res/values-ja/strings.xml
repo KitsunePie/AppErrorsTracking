@@ -36,9 +36,9 @@
     <string name="cancel">キャンセル</string>
     <string name="more">モア</string>
     <string name="notice">ヒント</string>
-    <string name="are_you_sure_clear_errors">すべてのエラーレコードをクリアしてもよろしいですか？</string>
+    <string name="are_you_sure_clear_errors">すべてのエラーレコードをクリアしてもよろしいですか</string>
     <string name="all_errors_clear_success">すべてのアラーレコードがクリアされました</string>
-    <string name="are_you_sure_export_all_errors">すべてのログファイルをエクスポートしてもよろしいですか？ 梱包プロセスには時間がかかる場合があります。</string>
+    <string name="are_you_sure_export_all_errors">すべてのログファイルをエクスポートしてもよろしいですか。梱包プロセスには時間がかかる場合があります。</string>
     <string name="view_detail">詳細を見る</string>
     <string name="export_all_errors_success">すべてのエラーレコードがエクスポートされました</string>
     <string name="export_all_errors_fail">すべてのエラーレコードのエクスポートに失敗しました</string>
@@ -48,4 +48,21 @@
     <string name="got_it">分かります</string>
     <string name="dont_screenshot">スクリーンショットを撮らないでください</string>
     <string name="dont_screenshot_tip">エラーログのスクリーンショットを撮ることはお勧めできません。このインターフェイスの右上隅にあるボタンをクリックして、ログの内容を抽出またはコピーする必要があります。</string>
+    <string name="restart_system">リスタートシステム</string>
+    <string name="project_address">プロジェクトアドレス</string>
+    <string name="module_not_activated">モジュールが無効化でした</string>
+    <string name="module_version">モジュールバージョン: %1$s</string>
+    <string name="system_version">システムバージョン: %1$s</string>
+    <string name="module_is_activated">モジュールが有効化でした</string>
+    <string name="after_some_settings_need_restart">一部の設定を変更した後、リスタートシステムして有効にするには、右上隅をクリックする必要がある場合があります。</string>
+    <string name="display_settings">表示設定</string>
+    <string name="hide_app_icon_on_desktop">デスクトップ上のアプリアイコンを非表示</string>
+    <string name="hide_app_icon_on_desktop_tip">モジュールアイコンを非表示にすると、インターフェイスが閉じてデスクトップに表示されなくなります。モジュール設定は、EdXposedまたはLSPosedで検索して開くことができます。</string>
+    <string name="hide_app_icon_on_desktop_notice">注：LSPosedの「Force apps to show launcher icons」機能を必ずオフにしてください</string>
+    <string name="about_module">このモジュールは、YukiHookAPIを使用して構築できます。 \n詳細 https://github.com/fankes/YukiHookAPI</string>
+    <string name="module_not_fully_activated">モジュールが不完全に有効化でした</string>
+    <string name="are_your_sure_restart_system">リスタートシステムしてもよろしいですか</string>
+    <string name="fast_restart">高速リスタート</string>
+    <string name="access_root_fail">ルート権限を取得できませんでした</string>
+    <string name="todo_items">より多くの機能が開発中です</string>
 </resources>

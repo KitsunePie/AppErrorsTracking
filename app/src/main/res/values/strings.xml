@@ -47,4 +47,21 @@
     <string name="got_it">Got it</string>
     <string name="dont_screenshot">Do not take screenshots</string>
     <string name="dont_screenshot_tip">It is not advisable to take a screenshot of the error log, you should extract or copy the log content by clicking the button in the upper right corner of this interface.</string>
+    <string name="restart_system">Restart system</string>
+    <string name="project_address">Project address</string>
+    <string name="module_not_activated">Module not activated</string>
+    <string name="module_version">Module version: %1$s</string>
+    <string name="system_version">System version: %1$s</string>
+    <string name="module_is_activated">Module is activated</string>
+    <string name="after_some_settings_need_restart">After some settings are modified, you may need to click the upper right corner to restart the system to take effect.</string>
+    <string name="display_settings">Display settings</string>
+    <string name="hide_app_icon_on_desktop">Hide app icons on desktop</string>
+    <string name="hide_app_icon_on_desktop_tip">After hiding the app icon, the interface may be closed and will no longer be displayed on the desktop. You can find and open the module settings in EdXposed or LSPosed.</string>
+    <string name="hide_app_icon_on_desktop_notice">Note: Be sure to turn off the \"Force apps to show launcher icons\" feature in LSPosed</string>
+    <string name="about_module">This module is made by YukiHookAPI. \nLearn more https://github.com/fankes/YukiHookAPI</string>
+    <string name="module_not_fully_activated">Module not fully activated</string>
+    <string name="are_your_sure_restart_system">Are you sure you want to restart system?</string>
+    <string name="fast_restart">Fast restart</string>
+    <string name="access_root_fail">Access Root failed</string>
+    <string name="todo_items">More features are in development</string>
 </resources>

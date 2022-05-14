@@ -28,16 +28,19 @@ import android.app.Service
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
-import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
+import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
+import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
+import com.topjohnwu.superuser.Shell
 
 /**
  * 系统深色模式是否开启
@@ -115,6 +118,19 @@ fun Context.appIcon(packageName: String) =
 fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
 /**
+ * 弹出 [Snackbar]
+ * @param msg 提示内容
+ * @param actionText 按钮文本 - 不写默认取消按钮
+ * @param it 按钮事件回调
+ */
+fun Context.snake(msg: String, actionText: String = "", it: () -> Unit = {}) =
+    Snackbar.make((this as Activity).findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).apply {
+        if (actionText.isBlank()) return@apply
+        setActionTextColor(if (isSystemInDarkMode) Color.BLACK else Color.WHITE)
+        setAction(actionText) { it() }
+    }.show()
+
+/**
  * 跳转到指定页面
  *
  * [T] 为指定的 [Activity]
@@ -125,7 +141,7 @@ inline fun <reified T : Activity> Context.navigate(isOutSide: Boolean = false, c
     startActivity((if (isOutSide) Intent() else Intent(if (this is Service) applicationContext else this, T::class.java)).apply {
         flags = if (this@navigate !is Activity) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         else Intent.FLAG_ACTIVITY_NEW_TASK
-        if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, T::class.java.name)
+        if (isOutSide) component = ComponentName(Const.MODULE_PACKAGE_NAME, T::class.java.name)
         callback(this)
     })
 }.onFailure { toast(msg = "Start ${T::class.java.name} failed") }
@@ -156,6 +172,24 @@ fun Context.openSelfSetting(packageName: String = this.packageName) = runCatchin
 }.onFailure { toast(msg = "Cannot open '$packageName'") }
 
 /**
+ * 启动系统浏览器
+ * @param url 网址
+ * @param packageName 指定包名 - 可不填
+ */
+fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
+    startActivity(Intent().apply {
+        if (packageName.isNotBlank()) setPackage(packageName)
+        action = Intent.ACTION_VIEW
+        data = Uri.parse(url)
+        /** 防止顶栈一样重叠在自己的 APP 中 */
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    })
+}.onFailure {
+    if (packageName.isNotBlank()) snake(msg = "Cannot start '$packageName'")
+    else snake(msg = "Start system browser failed")
+}
+
+/**
  * 当前 APP 是否可被启动
  * @param packageName 包名
  */
@@ -171,3 +205,21 @@ fun Context.openApp(packageName: String = this.packageName) = runCatching {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }.onFailure { toast(msg = "Cannot start '$packageName'") }
+
+/**
+ * 是否有 Root 权限
+ * @return [Boolean]
+ */
+val isRootAccess get() = runCatching { Shell.rootAccess() }.getOrNull() ?: false
+
+/**
+ * 执行命令
+ * @param cmd 命令
+ * @param isSu 是否使用 Root 权限执行 - 默认：是
+ * @return [String] 执行结果
+ */
+fun execShell(cmd: String, isSu: Boolean = true) = runCatching {
+    (if (isSu) Shell.su(cmd) else Shell.sh(cmd)).exec().out.let {
+        if (it.isNotEmpty()) it[0].trim() else ""
+    }
+}.getOrNull() ?: ""
