@@ -19,14 +19,29 @@
  *
  * This file is Created by fankes on 2022/5/12.
  */
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.fankes.apperrorstracking.const
 
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 
 /**
  * 全局常量
  */
 object Const {
+
+    /** 当前模块的包名 */
+    const val MODULE_PACKAGE_NAME = BuildConfig.APPLICATION_ID
+
+    /** 当前模块的版本名称 */
+    const val MODULE_VERSION_NAME = BuildConfig.VERSION_NAME
+
+    /** 当前模块的版本号 */
+    const val MODULE_VERSION_CODE = BuildConfig.VERSION_CODE
+
+    /** 当前模块的版本校验 */
+    const val MODULE_VERSION_VERIFY = "${MODULE_VERSION_NAME}_${MODULE_VERSION_CODE}_202205141842"
 
     /** [AppErrorsInfoBean] 传值 */
     const val EXTRA_APP_ERRORS_INFO = "app_errors_info_extra"
@@ -40,6 +55,9 @@ object Const {
     /** 模块与宿主交互数据 */
     const val KEY_MODULE_HOST_FETCH = "module_host_data_fetch_key"
 
+    /** 校验模块宿主版本一致性 */
+    const val TYPE_MODULE_VERSION_VERIFY = "module_version_verify_type"
+
     /** 获取 [AppErrorsInfoBean] 数据 */
     const val TYPE_APP_ERRORS_DATA_GET = "app_errors_data_get_type"
 
@@ -48,6 +66,9 @@ object Const {
 
     /** 删除指定 [AppErrorsInfoBean] 数据 */
     const val TYPE_APP_ERRORS_DATA_REMOVE = "app_errors_data_remove_type"
+
+    /** 当前模块的版本校验标签 */
+    const val TAG_MODULE_VERSION_VERIFY = "module_version_verify_tag"
 
     /** 获取到的 [AppErrorsInfoBean] 数据内容 */
     const val TAG_APP_ERRORS_DATA_GET_CONTENT = "app_errors_data_get_content_tag"

@@ -48,4 +48,21 @@
     <string name="got_it">我知道了</string>
     <string name="dont_screenshot">请不要截屏</string>
     <string name="dont_screenshot_tip">在错误日志中截屏是不明智的做法，你应当点击此界面右上角的按钮提取或复制日志内容。</string>
+    <string name="restart_system">重启系统</string>
+    <string name="project_address">项目地址</string>
+    <string name="module_not_activated">模块未激活</string>
+    <string name="module_version">模块版本：%1$s</string>
+    <string name="system_version">系统版本：%1$s</string>
+    <string name="module_is_activated">模块已激活</string>
+    <string name="after_some_settings_need_restart">部分设置修改后可能需要点击右上角重启系统才能生效。</string>
+    <string name="display_settings">显示设置</string>
+    <string name="hide_app_icon_on_desktop">在桌面隐藏模块图标</string>
+    <string name="hide_app_icon_on_desktop_tip">隐藏模块图标后界面可能会被关闭，将不会再在桌面显示，你可以在 EdXposed、LSPosed 中找到模块设置并打开。</string>
+    <string name="hide_app_icon_on_desktop_notice">注意：请务必在 LSPosed 中关闭“强制显示桌面图标”功能</string>
+    <string name="about_module">此模块使用 YukiHookAPI 构建。\n了解更多 https://github.com/fankes/YukiHookAPI</string>
+    <string name="module_not_fully_activated">模块未完全激活，请重启系统</string>
+    <string name="are_your_sure_restart_system">你确定要重启系统吗？</string>
+    <string name="fast_restart">快速重启</string>
+    <string name="access_root_fail">获取 Root 权限失败</string>
+    <string name="todo_items">更多功能正在开发</string>
 </resources>

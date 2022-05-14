@@ -52,7 +52,7 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 此项目依然在开发中，现在未解决的问题和包含的问题如下
 
-- 排除列表和模块主界面功能正在开发
+- 排除列表以及更多功能正在开发
 
 - 后台进程可能依然会弹出崩溃对话框且开发者选项里的设置无效，还在排查
 

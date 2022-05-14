@@ -250,4 +250,52 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun dontScreenshotTip(vararg objArrs: Any) = R.string.dont_screenshot_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val moduleVersion get() = moduleVersion()
+
+    /** @string Automatic generated */
+    fun moduleVersion(vararg objArrs: Any) = R.string.module_version.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val systemVersion get() = systemVersion()
+
+    /** @string Automatic generated */
+    fun systemVersion(vararg objArrs: Any) = R.string.system_version.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val areYouSureRestartSystem get() = areYouSureRestartSystem()
+
+    /** @string Automatic generated */
+    fun areYouSureRestartSystem(vararg objArrs: Any) = R.string.are_your_sure_restart_system.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val fastRestart get() = fastRestart()
+
+    /** @string Automatic generated */
+    fun fastRestart(vararg objArrs: Any) = R.string.fast_restart.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val accessRootFail get() = accessRootFail()
+
+    /** @string Automatic generated */
+    fun accessRootFail(vararg objArrs: Any) = R.string.access_root_fail.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val moduleNotActivated get() = moduleNotActivated()
+
+    /** @string Automatic generated */
+    fun moduleNotActivated(vararg objArrs: Any) = R.string.module_not_activated.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val moduleIsActivated get() = moduleIsActivated()
+
+    /** @string Automatic generated */
+    fun moduleIsActivated(vararg objArrs: Any) = R.string.module_is_activated.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val moduleNotFullyActivated get() = moduleNotFullyActivated()
+
+    /** @string Automatic generated */
+    fun moduleNotFullyActivated(vararg objArrs: Any) = R.string.module_not_fully_activated.bind(*objArrs)
 }

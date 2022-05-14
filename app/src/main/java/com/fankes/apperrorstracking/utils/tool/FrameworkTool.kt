@@ -29,6 +29,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.const.Const
+import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.utils.factory.execShell
+import com.fankes.apperrorstracking.utils.factory.isRootAccess
+import com.fankes.apperrorstracking.utils.factory.showDialog
+import com.fankes.apperrorstracking.utils.factory.snake
 import com.highcapable.yukihookapi.hook.log.loggerE
 import java.io.Serializable
 
@@ -36,6 +41,9 @@ import java.io.Serializable
  * 系统框架控制工具
  */
 object FrameworkTool {
+
+    /** 回调模块激活状态 */
+    private var onModuleActiveStatusCallback: ((Boolean) -> Unit)? = null
 
     /** 回调获取的 APP 异常信息 */
     private var onAppErrorsInfoDataCallback: ((ArrayList<AppErrorsInfoBean>) -> Unit)? = null
@@ -54,6 +62,8 @@ object FrameworkTool {
                 runCatching {
                     intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
                         if (it.isNotBlank()) when (it) {
+                            Const.TYPE_MODULE_VERSION_VERIFY ->
+                                onModuleActiveStatusCallback?.invoke(intent.getStringExtra(Const.TAG_MODULE_VERSION_VERIFY) == Const.MODULE_VERSION_VERIFY)
                             Const.TYPE_APP_ERRORS_DATA_GET -> runCatching {
                                 onAppErrorsInfoDataCallback?.invoke(
                                     intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT) as ArrayList<AppErrorsInfoBean>
@@ -68,6 +78,27 @@ object FrameworkTool {
             }
         }
     }
+
+    /**
+     * 重启系统
+     * @param context 实例
+     */
+    fun restartSystem(context: Context) =
+        context.showDialog {
+            title = LocaleString.notice
+            msg = LocaleString.areYouSureRestartSystem
+            confirmButton {
+                if (isRootAccess)
+                    execShell(cmd = "reboot")
+                else context.snake(LocaleString.accessRootFail)
+            }
+            neutralButton(LocaleString.fastRestart) {
+                if (isRootAccess)
+                    execShell(cmd = "killall zygote")
+                else context.snake(LocaleString.accessRootFail)
+            }
+            cancelButton()
+        }
 
     /**
      * 发送广播
@@ -90,6 +121,16 @@ object FrameworkTool {
                 }
             )
         })
+    }
+
+    /**
+     * 检查模块是否激活
+     * @param context 实例
+     * @param it 成功后回调 - ([Boolean] 是否激活)
+     */
+    fun checkingActivated(context: Context, it: (Boolean) -> Unit) {
+        onModuleActiveStatusCallback = it
+        pushReceiver(context, Const.TYPE_MODULE_VERSION_VERIFY)
     }
 
     /**

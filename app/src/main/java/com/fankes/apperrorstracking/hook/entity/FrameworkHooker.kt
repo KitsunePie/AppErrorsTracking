@@ -119,6 +119,10 @@ object FrameworkHooker : YukiBaseHooker() {
                     if (it.isNotBlank()) context?.sendBroadcast(Intent().apply {
                         action = Const.ACTION_MODULE_HANDLER_RECEIVER
                         when (it) {
+                            Const.TYPE_MODULE_VERSION_VERIFY -> {
+                                putExtra(Const.TAG_MODULE_VERSION_VERIFY, Const.MODULE_VERSION_VERIFY)
+                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_MODULE_VERSION_VERIFY)
+                            }
                             Const.TYPE_APP_ERRORS_DATA_GET -> {
                                 putExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT, appErrorsRecords)
                                 putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_GET)
