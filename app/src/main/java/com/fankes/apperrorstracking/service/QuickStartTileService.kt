@@ -22,7 +22,7 @@
 package com.fankes.apperrorstracking.service
 
 import android.service.quicksettings.TileService
-import com.fankes.apperrorstracking.ui.activity.AppErrorsRecordActivity
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.navigate
 
 class QuickStartTileService : TileService() {

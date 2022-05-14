@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
-    tools:context=".ui.activity.AppErrorsRecordActivity"
+    tools:context=".ui.activity.errors.AppErrorsRecordActivity"
     tools:ignore="ContentDescription,UseCompoundDrawables">
 
     <LinearLayout
