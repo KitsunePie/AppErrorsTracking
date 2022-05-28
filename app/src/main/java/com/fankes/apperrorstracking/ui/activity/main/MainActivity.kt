@@ -35,9 +35,8 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.openBrowser
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
-import com.highcapable.yukihookapi.hook.factory.isXposedModuleActive
+import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
-import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -68,25 +67,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun refreshModuleStatus() {
         binding.mainLinStatus.setBackgroundResource(
             when {
-                isXposedModuleActive && isModuleValied.not() -> R.drawable.bg_yellow_round
-                isXposedModuleActive -> R.drawable.bg_green_round
+                YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> R.drawable.bg_yellow_round
+                YukiHookAPI.Status.isXposedModuleActive -> R.drawable.bg_green_round
                 else -> R.drawable.bg_dark_round
             }
         )
         binding.mainImgStatus.setImageResource(
             when {
-                isXposedModuleActive -> R.mipmap.ic_success
+                YukiHookAPI.Status.isXposedModuleActive -> R.mipmap.ic_success
                 else -> R.mipmap.ic_warn
             }
         )
         binding.mainTextStatus.text =
             when {
-                isXposedModuleActive && isModuleValied.not() -> LocaleString.moduleNotFullyActivated
-                isXposedModuleActive -> LocaleString.moduleIsActivated
+                YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> LocaleString.moduleNotFullyActivated
+                YukiHookAPI.Status.isXposedModuleActive -> LocaleString.moduleIsActivated
                 else -> LocaleString.moduleNotActivated
             }
-        binding.mainTextApiWay.isVisible = isXposedModuleActive
-        binding.mainTextApiWay.text = "Activated by ${YukiHookModuleStatus.executorName} API ${YukiHookModuleStatus.executorVersion}"
+        binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
+        binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
     }
 
     override fun onResume() {
