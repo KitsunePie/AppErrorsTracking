@@ -42,9 +42,9 @@ import com.google.android.material.shape.MaterialShapeDrawable
 
 /**
  * 构造对话框
- * @param it 对话框方法体
+ * @param initiate 对话框方法体
  */
-fun Context.showDialog(it: DialogBuilder.() -> Unit) = DialogBuilder(this).apply(it).show()
+fun Context.showDialog(initiate: DialogBuilder.() -> Unit) = DialogBuilder(context = this).apply(initiate).show()
 
 /**
  * 对话框构造器
