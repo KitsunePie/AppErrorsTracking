@@ -148,34 +148,34 @@ class DialogBuilder(val context: Context) {
     /**
      * 设置对话框确定按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun confirmButton(text: String = LocaleString.confirm, it: () -> Unit = {}) {
+    fun confirmButton(text: String = LocaleString.confirm, callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setPositiveButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setPositiveButton(text) { _, _ -> it() } }
+            runCatching { instanceAndroidX?.setPositiveButton(text) { _, _ -> callback() } }
+        else runCatching { instanceAndroid?.setPositiveButton(text) { _, _ -> callback() } }
     }
 
     /**
      * 设置对话框取消按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun cancelButton(text: String = LocaleString.cancel, it: () -> Unit = {}) {
+    fun cancelButton(text: String = LocaleString.cancel, callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setNegativeButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setNegativeButton(text) { _, _ -> it() } }
+            runCatching { instanceAndroidX?.setNegativeButton(text) { _, _ -> callback() } }
+        else runCatching { instanceAndroid?.setNegativeButton(text) { _, _ -> callback() } }
     }
 
     /**
      * 设置对话框第三个按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun neutralButton(text: String = LocaleString.more, it: () -> Unit = {}) {
+    fun neutralButton(text: String = LocaleString.more, callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setNeutralButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setNeutralButton(text) { _, _ -> it() } }
+            runCatching { instanceAndroidX?.setNeutralButton(text) { _, _ -> callback() } }
+        else runCatching { instanceAndroid?.setNeutralButton(text) { _, _ -> callback() } }
     }
 
     /**
