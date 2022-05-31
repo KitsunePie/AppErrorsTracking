@@ -23,58 +23,80 @@
 
 package com.fankes.apperrorstracking.utils.tool
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.execShell
 import com.fankes.apperrorstracking.utils.factory.isRootAccess
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.snake
-import com.highcapable.yukihookapi.hook.log.loggerE
-import java.io.Serializable
+import com.highcapable.yukihookapi.hook.factory.dataChannel
+import com.highcapable.yukihookapi.hook.param.PackageParam
+import com.highcapable.yukihookapi.hook.xposed.channel.data.ChannelData
 
 /**
  * 系统框架控制工具
  */
 object FrameworkTool {
 
-    /** 回调模块激活状态 */
-    private var onModuleActiveStatusCallback: ((Boolean) -> Unit)? = null
+    /** 系统框架包名 */
+    private const val SYSTEM_FRAMEWORK_NAME = "android"
 
-    /** 回调获取的 APP 异常信息 */
-    private var onAppErrorsInfoDataCallback: ((ArrayList<AppErrorsInfoBean>) -> Unit)? = null
+    private const val CALL_APP_ERRORS_DATA_GET = "call_app_errors_data_get"
+    private const val CALL_APP_ERRORS_DATA_REMOVE_RESULT = "call_app_errors_data_remove_result"
+    private const val CALL_APP_ERRORS_DATA_CLEAR = "call_app_errors_data_clear"
+    private const val CALL_APP_ERRORS_DATA_CLEAR_RESULT = "call_app_errors_data_clear_result"
 
-    /** 回调 APP 异常信息是否移除 */
-    private var onRemoveAppErrorsInfoDataCallback: (() -> Unit)? = null
+    private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
+    private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
 
-    /** 回调 APP 异常信息是否清空 */
-    private var onClearAppErrorsInfoDataCallback: (() -> Unit)? = null
+    /**
+     * 宿主注册监听
+     */
+    object Host {
 
-    /** 模块广播接收器 */
-    private val moduleHandlerReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent == null) return
-                runCatching {
-                    intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
-                        if (it.isNotBlank()) when (it) {
-                            Const.TYPE_MODULE_VERSION_VERIFY ->
-                                onModuleActiveStatusCallback?.invoke(intent.getStringExtra(Const.TAG_MODULE_VERSION_VERIFY) == Const.MODULE_VERSION_VERIFY)
-                            Const.TYPE_APP_ERRORS_DATA_GET -> runCatching {
-                                onAppErrorsInfoDataCallback?.invoke(
-                                    intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT) as ArrayList<AppErrorsInfoBean>
-                                )
-                            }.onFailure { onAppErrorsInfoDataCallback?.invoke(arrayListOf()) }
-                            Const.TYPE_APP_ERRORS_DATA_REMOVE -> onRemoveAppErrorsInfoDataCallback?.invoke()
-                            Const.TYPE_APP_ERRORS_DATA_CLEAR -> onClearAppErrorsInfoDataCallback?.invoke()
-                            else -> {}
-                        }
-                    }
-                }.onFailure { loggerE(msg = "Cannot receiver message, please restart system", e = it) }
+        /** [PackageParam] 实例 */
+        private var instance: PackageParam? = null
+
+        /**
+         * 注册监听
+         * @param instance 实例
+         * @param initiate 实例方法体
+         * @return [Host]
+         */
+        fun with(instance: PackageParam, initiate: Host.() -> Unit) = apply { this.instance = instance }.apply(initiate)
+
+        /**
+         * 监听发送 APP 异常信息数组
+         * @param result 回调数据
+         */
+        fun onPushAppErrorsInfoData(result: () -> ArrayList<AppErrorsInfoBean>) {
+            instance?.dataChannel?.with { wait(CALL_APP_ERRORS_DATA_GET) { put(CALL_APP_ERRORS_DATA_GET_RESULT, result()) } }
+        }
+
+        /**
+         * 监听移除指定 APP 异常信息
+         * @param result 回调数据
+         */
+        fun onRemoveAppErrorsInfoData(result: (AppErrorsInfoBean) -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_APP_ERRORS_DATA_REMOVE) {
+                    result(it)
+                    put(CALL_APP_ERRORS_DATA_REMOVE_RESULT)
+                }
+            }
+        }
+
+        /**
+         * 监听清空 APP 异常信息数组
+         * @param callback 回调
+         */
+        fun onClearAppErrorsInfoData(callback: () -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_APP_ERRORS_DATA_CLEAR) {
+                    callback()
+                    put(CALL_APP_ERRORS_DATA_CLEAR_RESULT)
+                }
             }
         }
     }
@@ -101,82 +123,46 @@ object FrameworkTool {
         }
 
     /**
-     * 发送广播
-     * @param context 实例
-     * @param type 类型
-     * @param key 可选传值
-     * @param value 可选传值
-     */
-    private fun pushReceiver(context: Context, type: String, key: String = "", value: Any = "") {
-        context.sendBroadcast(Intent().apply {
-            action = Const.ACTION_HOST_HANDLER_RECEIVER
-            putExtra(Const.KEY_MODULE_HOST_FETCH, type)
-            if (key.isNotBlank()) putExtra(
-                key, when (value) {
-                    is String -> value
-                    is Int -> value
-                    is Boolean -> value
-                    is Serializable -> value
-                    else -> error("value is not allowed")
-                }
-            )
-        })
-    }
-
-    /**
      * 检查模块是否激活
      * @param context 实例
-     * @param it 成功后回调 - ([Boolean] 是否激活)
+     * @param result 成功后回调
      */
-    fun checkingActivated(context: Context, it: (Boolean) -> Unit) {
-        onModuleActiveStatusCallback = it
-        pushReceiver(context, Const.TYPE_MODULE_VERSION_VERIFY)
-    }
+    fun checkingActivated(context: Context, result: (Boolean) -> Unit) = context.dataChannel(SYSTEM_FRAMEWORK_NAME).checkingVersionEquals(result)
 
     /**
      * 获取 APP 异常信息数组
      * @param context 实例
-     * @param it 回调数据
+     * @param result 回调数据
      */
-    fun fetchAppErrorsInfoData(context: Context, it: (ArrayList<AppErrorsInfoBean>) -> Unit) {
-        onAppErrorsInfoDataCallback = it
-        pushReceiver(context, Const.TYPE_APP_ERRORS_DATA_GET)
+    fun fetchAppErrorsInfoData(context: Context, result: (ArrayList<AppErrorsInfoBean>) -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_APP_ERRORS_DATA_GET_RESULT) { result(it) }
+            put(CALL_APP_ERRORS_DATA_GET)
+        }
     }
 
     /**
      * 移除指定 APP 异常信息
      * @param context 实例
      * @param appErrorsInfo 指定 APP 异常信息
-     * @param it 成功后回调
+     * @param callback 成功后回调
      */
-    fun removeAppErrorsInfoData(context: Context, appErrorsInfo: AppErrorsInfoBean, it: () -> Unit) {
-        onRemoveAppErrorsInfoDataCallback = it
-        pushReceiver(context, Const.TYPE_APP_ERRORS_DATA_REMOVE, Const.TAG_APP_ERRORS_DATA_REMOVE_CONTENT, appErrorsInfo)
+    fun removeAppErrorsInfoData(context: Context, appErrorsInfo: AppErrorsInfoBean, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_APP_ERRORS_DATA_REMOVE_RESULT) { callback() }
+            put(CALL_APP_ERRORS_DATA_REMOVE, appErrorsInfo)
+        }
     }
 
     /**
      * 清空 APP 异常信息数组
      * @param context 实例
-     * @param it 成功后回调
+     * @param callback 成功后回调
      */
-    fun clearAppErrorsInfoData(context: Context, it: () -> Unit) {
-        onClearAppErrorsInfoDataCallback = it
-        pushReceiver(context, Const.TYPE_APP_ERRORS_DATA_CLEAR)
-    }
-
-    /**
-     * 注册广播
-     * @param context 实例
-     */
-    fun registerReceiver(context: Context) = runCatching {
-        context.registerReceiver(moduleHandlerReceiver, IntentFilter().apply { addAction(Const.ACTION_MODULE_HANDLER_RECEIVER) })
-    }
-
-    /**
-     * 取消注册
-     * @param context 实例
-     */
-    fun unregisterReceiver(context: Context) = runCatching {
-        context.unregisterReceiver(moduleHandlerReceiver)
+    fun clearAppErrorsInfoData(context: Context, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_APP_ERRORS_DATA_CLEAR_RESULT) { callback() }
+            put(CALL_APP_ERRORS_DATA_CLEAR)
+        }
     }
 }

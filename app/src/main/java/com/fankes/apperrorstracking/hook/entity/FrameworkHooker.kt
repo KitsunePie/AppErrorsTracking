@@ -24,10 +24,8 @@
 package com.fankes.apperrorstracking.hook.entity
 
 import android.app.ApplicationErrorReport
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.os.Message
@@ -41,18 +39,17 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDetailActivity
 import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
 import com.fankes.apperrorstracking.utils.factory.*
+import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
-import com.highcapable.yukihookapi.hook.type.android.ActivityThreadClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
 object FrameworkHooker : YukiBaseHooker() {
@@ -86,75 +83,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
     private val appErrorsRecords = arrayListOf<AppErrorsInfoBean>()
-
-    /** 是否已经注册广播 */
-    private var isRegisterReceiver = false
-
-    /** 用户解锁屏幕广播接收器 */
-    private val userPresentReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                /** 解锁后清空已记录的忽略错误 APP */
-                ignoredErrorsIfUnlockApps.clear()
-            }
-        }
-    }
-
-    /** 语言区域改变广播接收器 */
-    private val localeChangedReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                /** 刷新模块 Resources 缓存 */
-                refreshModuleAppResources()
-            }
-        }
-    }
-
-    /** 宿主广播接收器 */
-    private val hostHandlerReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent == null) return
-                intent.getStringExtra(Const.KEY_MODULE_HOST_FETCH)?.also {
-                    if (it.isNotBlank()) context?.sendBroadcast(Intent().apply {
-                        action = Const.ACTION_MODULE_HANDLER_RECEIVER
-                        when (it) {
-                            Const.TYPE_MODULE_VERSION_VERIFY -> {
-                                putExtra(Const.TAG_MODULE_VERSION_VERIFY, Const.MODULE_VERSION_VERIFY)
-                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_MODULE_VERSION_VERIFY)
-                            }
-                            Const.TYPE_APP_ERRORS_DATA_GET -> {
-                                putExtra(Const.TAG_APP_ERRORS_DATA_GET_CONTENT, appErrorsRecords)
-                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_GET)
-                            }
-                            Const.TYPE_APP_ERRORS_DATA_REMOVE -> {
-                                runCatching { intent.getSerializableExtra(Const.TAG_APP_ERRORS_DATA_REMOVE_CONTENT) as? AppErrorsInfoBean? }
-                                    .getOrNull()?.also { e -> appErrorsRecords.remove(e) }
-                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_REMOVE)
-                            }
-                            Const.TYPE_APP_ERRORS_DATA_CLEAR -> {
-                                appErrorsRecords.clear()
-                                putExtra(Const.KEY_MODULE_HOST_FETCH, Const.TYPE_APP_ERRORS_DATA_CLEAR)
-                            }
-                            else -> {}
-                        }
-                    })
-                }
-            }
-        }
-    }
-
-    /**
-     * 注册广播接收器
-     * @param context 实例
-     */
-    private fun registerReceiver(context: Context) {
-        if (isRegisterReceiver) return
-        context.registerReceiver(userPresentReceiver, IntentFilter().apply { addAction(Intent.ACTION_USER_PRESENT) })
-        context.registerReceiver(localeChangedReceiver, IntentFilter().apply { addAction(Intent.ACTION_LOCALE_CHANGED) })
-        context.registerReceiver(hostHandlerReceiver, IntentFilter().apply { addAction(Const.ACTION_HOST_HANDLER_RECEIVER) })
-        isRegisterReceiver = true
-    }
 
     /**
      * 获取最新的 APP 错误信息
@@ -195,17 +123,24 @@ object FrameworkHooker : YukiBaseHooker() {
             setOnClickListener { it() }
         }
 
-    override fun onHook() {
-        /** 注入全局监听 */
-        ActivityThreadClass.hook {
-            injectMember {
-                method {
-                    name = "currentApplication"
-                    emptyParam()
-                }
-                afterHook { result<Context>()?.let { registerReceiver(it) } }
-            }
+    /** 注册 */
+    private fun register() {
+        onAppLifecycle {
+            /** 解锁后清空已记录的忽略错误 APP */
+            registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> ignoredErrorsIfUnlockApps.clear() }
+            /** 刷新模块 Resources 缓存 */
+            registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
         }
+        FrameworkTool.Host.with(instance = this) {
+            onPushAppErrorsInfoData { appErrorsRecords }
+            onRemoveAppErrorsInfoData { appErrorsRecords.remove(it) }
+            onClearAppErrorsInfoData { appErrorsRecords.clear() }
+        }
+    }
+
+    override fun onHook() {
+        /** 注册 */
+        register()
         /** 干掉原生错误对话框 - 如果有 */
         ErrorDialogControllerClass.hook {
             injectMember {
@@ -363,19 +298,19 @@ object FrameworkHooker : YukiBaseHooker() {
                         (crashInfo.exceptionClassName.lowercase() == "native crash").also { isNativeCrash ->
                             appErrorsRecords.add(
                                 0, AppErrorsInfoBean(
-                                    packageName = appInfo?.packageName ?: "",
+                                    packageName = appInfo?.packageName ?: "null",
                                     isNativeCrash = isNativeCrash,
-                                    exceptionClassName = crashInfo.exceptionClassName ?: "",
+                                    exceptionClassName = crashInfo.exceptionClassName ?: "null",
                                     exceptionMessage = if (isNativeCrash) crashInfo.stackTrace.let {
                                         if (it.contains(other = "Abort message: '"))
                                             runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
-                                                ?: crashInfo.exceptionMessage ?: "" else crashInfo.exceptionMessage ?: ""
-                                    } else crashInfo.exceptionMessage ?: "",
-                                    throwFileName = crashInfo.throwFileName ?: "",
-                                    throwClassName = crashInfo.throwClassName ?: "",
-                                    throwMethodName = crashInfo.throwMethodName ?: "",
+                                                ?: crashInfo.exceptionMessage ?: "" else crashInfo.exceptionMessage ?: "null"
+                                    } else crashInfo.exceptionMessage ?: "null",
+                                    throwFileName = crashInfo.throwFileName ?: "null",
+                                    throwClassName = crashInfo.throwClassName ?: "null",
+                                    throwMethodName = crashInfo.throwMethodName ?: "null",
                                     throwLineNumber = crashInfo.throwLineNumber,
-                                    stackTrace = crashInfo.stackTrace?.trim() ?: "",
+                                    stackTrace = crashInfo.stackTrace?.trim() ?: "null",
                                     timestamp = System.currentTimeMillis()
                                 )
                             )
