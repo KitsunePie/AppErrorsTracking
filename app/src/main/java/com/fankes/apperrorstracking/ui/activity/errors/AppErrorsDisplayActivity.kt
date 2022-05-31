@@ -62,9 +62,11 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
         showDialog {
             title = appErrorsDisplay.title
             bind<DiaAppErrorsDisplayBinding>().apply {
-                appInfoItem.isVisible = appErrorsDisplay.isApp
+                processNameText.isVisible = appErrorsDisplay.packageName != appErrorsDisplay.processName
+                appInfoItem.isVisible = appErrorsDisplay.isShowAppInfoButton
+                closeAppItem.isVisible = appErrorsDisplay.isShowReopenButton.not() && appErrorsDisplay.isShowCloseAppButton
                 reopenAppItem.isVisible = appErrorsDisplay.isShowReopenButton
-                closeAppItem.isVisible = appErrorsDisplay.isShowReopenButton.not()
+                processNameText.text = LocaleString.crashProcess(appErrorsDisplay.processName)
                 appInfoItem.setOnClickListener {
                     cancel()
                     openSelfSetting(appErrorsDisplay.packageName)

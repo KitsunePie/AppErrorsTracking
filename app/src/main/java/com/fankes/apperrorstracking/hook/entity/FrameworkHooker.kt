@@ -49,8 +49,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
     private const val AppErrorsClass = "com.android.server.am.AppErrors"
 
-    private const val AppErrorResultClass = "com.android.server.am.AppErrorResult"
-
     private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
 
     private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
@@ -126,12 +124,6 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 错误数据 */
                     val errData = args().first().cast<Message>()?.obj
 
-                    /** 错误结果 */
-                    val errResult = AppErrorResultClass.clazz.method {
-                        name = "get"
-                        emptyParam()
-                    }.get(AppErrorDialog_DataClass.clazz.field { name = "result" }.get(errData).any()).int()
-
                     /** 当前进程信息 */
                     val proc = AppErrorDialog_DataClass.clazz.field { name = "proc" }.get(errData).any()
 
@@ -173,19 +165,19 @@ object FrameworkHooker : YukiBaseHooker() {
                         context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
                         return@afterHook
                     }
-                    /** 判断是否被忽略 - 在后台就不显示对话框 */
-                    if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName) || errResult == -2)
-                        return@afterHook
                     /** 启动错误对话框显示窗口 */
-                    AppErrorsDisplayActivity.start(
-                        context, AppErrorsDisplayBean(
-                            packageName = packageName,
-                            appName = appName,
-                            title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
-                            isApp = isApp,
-                            isShowReopenButton = isRepeating.not() && context.isAppCanOpened(packageName)
+                    if (ignoredErrorsIfUnlockApps.contains(packageName).not() && ignoredErrorsIfRestartApps.contains(packageName).not())
+                        AppErrorsDisplayActivity.start(
+                            context, AppErrorsDisplayBean(
+                                packageName = packageName,
+                                processName = processName,
+                                appName = appName,
+                                title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
+                                isShowAppInfoButton = isApp,
+                                isShowReopenButton = isApp && isRepeating.not() && context.isAppCanOpened(packageName) && packageName == processName,
+                                isShowCloseAppButton = isApp
+                            )
                         )
-                    )
                 }
             }
             injectMember {

@@ -328,4 +328,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun yearAgo(vararg objArrs: Any) = R.string.year_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val crashProcess get() = crashProcess()
+
+    /** @string Automatic generated */
+    fun crashProcess(vararg objArrs: Any) = R.string.crash_process.bind(*objArrs)
 }

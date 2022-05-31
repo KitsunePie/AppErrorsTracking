@@ -26,15 +26,19 @@ import java.io.Serializable
 /**
  * 应用异常信息显示 bean
  * @param packageName APP 包名
+ * @param processName APP 进程名
  * @param appName APP 名称
  * @param title 标题
- * @param isApp 是否为 APP
+ * @param isShowAppInfoButton 是否显示应用信息按钮
+ * @param isShowCloseAppButton 是否显示关闭应用按钮
  * @param isShowReopenButton 是否显示重新打开按钮
  */
 data class AppErrorsDisplayBean(
     var packageName: String,
+    var processName: String,
     var appName: String,
     var title: String,
-    var isApp: Boolean,
+    var isShowAppInfoButton: Boolean,
+    var isShowCloseAppButton: Boolean,
     var isShowReopenButton: Boolean
 ) : Serializable
