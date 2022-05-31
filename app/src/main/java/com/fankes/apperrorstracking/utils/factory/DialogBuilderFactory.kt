@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/5/12.
  */
-@file:Suppress("unused", "DEPRECATION")
+@file:Suppress("unused", "DEPRECATION", "OPT_IN_USAGE", "EXPERIMENTAL_API_USAGE")
 
 package com.fankes.apperrorstracking.utils.factory
 
@@ -29,16 +29,20 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.highcapable.yukihookapi.annotation.CauseProblemsApi
+import com.highcapable.yukihookapi.hook.factory.method
+import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
 /**
  * 构造对话框
@@ -55,13 +59,12 @@ class DialogBuilder(val context: Context) {
     private var instanceAndroidX: androidx.appcompat.app.AlertDialog.Builder? = null // 实例对象
     private var instanceAndroid: android.app.AlertDialog.Builder? = null // 实例对象
 
-    private var isSystemAlert = false // 标识为系统级别的对话框
-
     private var onCancel: (() -> Unit)? = null // 对话框取消监听
 
     private var dialogInstance: Dialog? = null // 对话框实例
 
-    private var customLayoutView: View? = null // 自定义布局
+    @CauseProblemsApi
+    var customLayoutView: View? = null // 自定义布局
 
     /**
      * 是否需要使用 AndroidX 风格对话框
@@ -87,15 +90,6 @@ class DialogBuilder(val context: Context) {
         if (isUsingAndroidX)
             runCatching { instanceAndroidX?.setCancelable(false) }
         else runCatching { instanceAndroid?.setCancelable(false) }
-    }
-
-    /**
-     * 设置为系统级别对话框
-     *
-     * - ❗仅可在系统级别的 APP 中生效
-     */
-    fun makeSystemAlert() {
-        isSystemAlert = true
     }
 
     /** 设置对话框标题 */
@@ -137,13 +131,15 @@ class DialogBuilder(val context: Context) {
 
     /**
      * 设置对话框自定义布局
-     * @return [customLayoutView]
+     * @return [ViewBinding]
      */
-    var view
-        get() = customLayoutView
-        set(value) {
-            customLayoutView = value
-        }
+    inline fun <reified T : ViewBinding> bind() =
+        T::class.java.method {
+            name = "inflate"
+            param(LayoutInflaterClass)
+        }.get().invoke<T>(LayoutInflater.from(context))?.apply {
+            customLayoutView = root
+        } ?: error("binding failed")
 
     /**
      * 设置对话框确定按钮
@@ -196,8 +192,6 @@ class DialogBuilder(val context: Context) {
                 customLayoutView?.let { setView(it) }
                 dialogInstance = this
                 setOnCancelListener { onCancel?.invoke() }
-                /** 只有 SystemUid 才能响应系统级别的对话框 */
-                if (isSystemAlert) runCatching { window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT) }
             }?.show()
         } else runCatching {
             instanceAndroid?.create()?.apply {
@@ -217,8 +211,6 @@ class DialogBuilder(val context: Context) {
                 )
                 dialogInstance = this
                 setOnCancelListener { onCancel?.invoke() }
-                /** 只有 SystemUid 才能响应系统级别的对话框 */
-                if (isSystemAlert) runCatching { window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT) }
             }?.show()
         }
     }

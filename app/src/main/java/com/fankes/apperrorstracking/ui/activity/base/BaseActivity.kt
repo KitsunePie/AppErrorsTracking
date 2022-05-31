@@ -31,6 +31,7 @@ import androidx.core.view.ViewCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.utils.factory.isNotSystemInDarkMode
+import com.fankes.apperrorstracking.utils.factory.toast
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 import java.lang.reflect.ParameterizedType
@@ -69,4 +70,13 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     /** 回调 [onCreate] 方法 */
     abstract fun onCreate()
+
+    /**
+     * 弹出提示并退出
+     * @param name 名称
+     */
+    fun toastAndFinish(name: String) {
+        toast(msg = "Invalid $name, exit")
+        finish()
+    }
 }

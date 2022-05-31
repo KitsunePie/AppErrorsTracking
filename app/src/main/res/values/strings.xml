@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AppErrorsTracking</string>
     <string name="xposed_desc">Added more features to app\'s crash dialog, fixed custom rom deleted dialog, the best experience to Android developer.</string>
+    <string name="empty_lable" translatable="false" />
     <string name="app_info">App\'s Info</string>
     <string name="reopen_app">Reopen App</string>
     <string name="error_detail">Error Detail</string>

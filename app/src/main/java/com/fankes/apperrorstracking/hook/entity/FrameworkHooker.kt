@@ -27,22 +27,14 @@ import android.app.ApplicationErrorReport
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.graphics.Color
 import android.os.Message
-import android.text.TextUtils
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
-import com.fankes.apperrorstracking.R
+import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.locale.LocaleString
-import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDetailActivity
-import com.fankes.apperrorstracking.utils.drawable.drawabletoolbox.DrawableBuilder
-import com.fankes.apperrorstracking.utils.factory.*
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
+import com.fankes.apperrorstracking.utils.factory.appName
+import com.fankes.apperrorstracking.utils.factory.isAppCanOpened
+import com.fankes.apperrorstracking.utils.factory.openApp
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
@@ -72,9 +64,6 @@ object FrameworkHooker : YukiBaseHooker() {
         "com.android.server.am.ErrorDialogController"
     )
 
-    /** 已打开的错误对话框数组 */
-    private var openedErrorsDialogs = hashMapOf<String, DialogBuilder>()
-
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
     private var ignoredErrorsIfUnlockApps = hashSetOf<String>()
 
@@ -83,45 +72,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
     private val appErrorsRecords = arrayListOf<AppErrorsInfoBean>()
-
-    /**
-     * 获取最新的 APP 错误信息
-     * @param packageName 包名
-     * @return [AppErrorsInfoBean] or null
-     */
-    private fun lastAppErrorsInfo(packageName: String) =
-        appErrorsRecords.takeIf { it.isNotEmpty() }?.filter { it.packageName == packageName }?.get(0)
-
-    /**
-     * 创建对话框按钮
-     * @param context 实例
-     * @param drawableId 按钮图标
-     * @param content 按钮文本
-     * @param it 点击事件回调
-     * @return [LinearLayout]
-     */
-    private fun createButtonItem(context: Context, drawableId: Int, content: String, it: () -> Unit) =
-        LinearLayout(context).apply {
-            background = DrawableBuilder().rounded().cornerRadius(15.dp(context)).ripple().rippleColor(0xFFAAAAAA.toInt()).build()
-            gravity = Gravity.CENTER or Gravity.START
-            layoutParams =
-                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            addView(ImageView(context).apply {
-                setImageDrawable(ResourcesCompat.getDrawable(moduleAppResources, drawableId, null))
-                layoutParams = ViewGroup.LayoutParams(25.dp(context), 25.dp(context))
-                setColorFilter(if (context.isSystemInDarkMode) Color.WHITE else Color.BLACK)
-            })
-            addView(View(context).apply { layoutParams = ViewGroup.LayoutParams(15.dp(context), 0) })
-            addView(TextView(context).apply {
-                text = content
-                textSize = 16f
-                ellipsize = TextUtils.TruncateAt.END
-                setSingleLine()
-                setTextColor(if (context.isSystemInDarkMode) 0xFFDDDDDD.toInt() else 0xFF777777.toInt())
-            })
-            setPadding(19.dp(context), 16.dp(context), 19.dp(context), 16.dp(context))
-            setOnClickListener { it() }
-        }
 
     /** 注册 */
     private fun register() {
@@ -132,9 +82,12 @@ object FrameworkHooker : YukiBaseHooker() {
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
         }
         FrameworkTool.Host.with(instance = this) {
+            onOpenAppUsedFramework { appContext.openApp(it) }
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData { appErrorsRecords.remove(it) }
             onClearAppErrorsInfoData { appErrorsRecords.clear() }
+            onIgnoredErrorsIfUnlock { ignoredErrorsIfUnlockApps.add(it) }
+            onIgnoredErrorsIfRestart { ignoredErrorsIfRestartApps.add(it) }
         }
     }
 
@@ -214,74 +167,16 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 判断是否被忽略 - 在后台就不显示对话框 */
                     if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName) || errResult == -2)
                         return@afterHook
-                    /** 关闭重复的对话框 */
-                    openedErrorsDialogs[packageName]?.cancel()
-                    /** 创建自定义对话框 */
-                    context.showDialog {
-                        title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
-                        view = LinearLayout(context).apply {
-                            orientation = LinearLayout.VERTICAL
-                            /** 应用信息按钮 */
-                            val appInfoButton =
-                                createButtonItem(context, R.drawable.ic_baseline_info, LocaleString.appInfo) {
-                                    cancel()
-                                    context.openSelfSetting(packageName)
-                                }
-
-                            /** 关闭应用按钮 */
-                            val closeAppButton =
-                                createButtonItem(context, R.drawable.ic_baseline_close, LocaleString.closeApp) { cancel() }
-
-                            /** 重新打开按钮 */
-                            val reOpenButton =
-                                createButtonItem(context, R.drawable.ic_baseline_refresh, LocaleString.reopenApp) {
-                                    cancel()
-                                    context.openApp(packageName)
-                                }
-
-                            /** 错误详情按钮 */
-                            val errorDetailButton =
-                                createButtonItem(context, R.drawable.ic_baseline_bug_report, LocaleString.errorDetail) {
-                                    cancel()
-                                    lastAppErrorsInfo(packageName)?.let { AppErrorsDetailActivity.start(context, it, isOutSide = true) }
-                                        ?: context.toast(msg = "Invalid AppErrorsInfo")
-                                }
-
-                            /** 忽略按钮 - 直到解锁 */
-                            val ignoredUntilUnlockButton =
-                                createButtonItem(context, R.drawable.ic_baseline_eject, LocaleString.ignoreIfUnlock) {
-                                    cancel()
-                                    ignoredErrorsIfUnlockApps.add(packageName)
-                                    context.toast(LocaleString.ignoreIfUnlockTip(appName))
-                                }
-
-                            /** 忽略按钮 - 直到重启 */
-                            val ignoredUntilRestartButton =
-                                createButtonItem(context, R.drawable.ic_baseline_eject, LocaleString.ignoreIfRestart) {
-                                    cancel()
-                                    ignoredErrorsIfRestartApps.add(packageName)
-                                    context.toast(LocaleString.ignoreIfRestartTip(appName))
-                                }
-                            /** 判断进程是否为 APP */
-                            if (isApp) {
-                                addView(appInfoButton)
-                                addView(if (isRepeating.not() && context.isAppCanOpened(packageName)) reOpenButton else closeAppButton)
-                            } else addView(closeAppButton)
-                            /** 始终添加错误详情按钮 */
-                            addView(errorDetailButton)
-                            /** 始终添加忽略按钮 */
-                            addView(ignoredUntilUnlockButton)
-                            addView(ignoredUntilRestartButton)
-                            /** 设置边距 */
-                            setPadding(6.dp(context), 15.dp(context), 6.dp(context), 6.dp(context))
-                        }
-                        /** 设置取消对话框监听 */
-                        onCancel { openedErrorsDialogs.remove(packageName) }
-                        /** 记录实例 */
-                        openedErrorsDialogs[packageName] = this
-                        /** 只有 SystemUid 才能响应系统级别的对话框 */
-                        makeSystemAlert()
-                    }
+                    /** 启动错误对话框显示窗口 */
+                    AppErrorsDisplayActivity.start(
+                        context, AppErrorsDisplayBean(
+                            packageName = packageName,
+                            appName = appName,
+                            title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
+                            isApp = isApp,
+                            isShowReopenButton = isRepeating.not() && context.isAppCanOpened(packageName)
+                        )
+                    )
                 }
             }
             injectMember {

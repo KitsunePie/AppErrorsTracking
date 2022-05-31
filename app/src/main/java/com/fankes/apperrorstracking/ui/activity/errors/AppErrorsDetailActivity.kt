@@ -54,10 +54,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
          * 启动 [AppErrorsDetailActivity]
          * @param context 实例
          * @param appErrorsInfo 应用异常信息
-         * @param isOutSide 是否从外部启动
          */
-        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) =
-            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(EXTRA_APP_ERRORS_INFO, appErrorsInfo) }
+        fun start(context: Context, appErrorsInfo: AppErrorsInfoBean) =
+            context.navigate<AppErrorsDetailActivity> { putExtra(EXTRA_APP_ERRORS_INFO, appErrorsInfo) }
     }
 
     /** 预导出的异常堆栈 */
@@ -89,7 +88,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
     override fun onCreate() {
         val appErrorsInfo = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
-            ?: return toastAndFinish()
+            ?: return toastAndFinish(name = "AppErrorsInfo")
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
@@ -127,12 +126,6 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
         /** 注册截图监听 */
         contentResolver?.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, observer)
-    }
-
-    /** 弹出提示并退出 */
-    private fun toastAndFinish() {
-        toast(msg = "Invalid AppErrorsInfo, exit")
-        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
