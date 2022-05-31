@@ -70,4 +70,5 @@
     <string name="day_ago">天前</string>
     <string name="month_ago">月前</string>
     <string name="year_ago">年前</string>
+    <string name="crash_process">异常进程 \"%1$s\"</string>
 </resources>
