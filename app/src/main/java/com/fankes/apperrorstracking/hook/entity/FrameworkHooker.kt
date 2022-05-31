@@ -162,7 +162,10 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
                     /** 打印错误日志 */
-                    loggerE(msg = "Process \"$packageName\" has crashed${if (isRepeating) " again" else ""}")
+                    if (isApp) loggerE(
+                        msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
+                                " has crashed${if (isRepeating) " again" else ""}"
+                    ) else loggerE(msg = "Process \"$processName\" has crashed${if (isRepeating) " again" else ""}")
                     /** 判断是否被忽略 - 在后台就不显示对话框 */
                     if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName) || errResult == -2)
                         return@afterHook
