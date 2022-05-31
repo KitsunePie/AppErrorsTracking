@@ -27,8 +27,8 @@ import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.view.isVisible
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.data.DataConst
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var isModuleValied = false
 
     override fun onCreate() {
-        binding.mainTextVersion.text = LocaleString.moduleVersion(Const.MODULE_VERSION_NAME)
+        binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text =
             LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
         binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
@@ -52,7 +52,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_HIDE_ICON, b)
             packageManager.setComponentEnabledSetting(
-                ComponentName(packageName, "${Const.MODULE_PACKAGE_NAME}.Home"),
+                ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home"),
                 if (b) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP
             )
@@ -92,7 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onResume()
         /** 刷新模块状态 */
         refreshModuleStatus()
-        /** 发送广播检查模块激活状态 */
+        /** 检查模块激活状态 */
         FrameworkTool.checkingActivated(context = this) { isValied ->
             isModuleValied = isValied
             refreshModuleStatus()

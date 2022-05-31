@@ -31,7 +31,6 @@ import androidx.core.view.ViewCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.utils.factory.isNotSystemInDarkMode
-import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 import java.lang.reflect.ParameterizedType
@@ -64,18 +63,10 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             window?.navigationBarColor = it
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
         }
-        /** 注册 */
-        FrameworkTool.registerReceiver(context = this)
         /** 装载子类 */
         onCreate()
     }
 
     /** 回调 [onCreate] 方法 */
     abstract fun onCreate()
-
-    override fun onDestroy() {
-        super.onDestroy()
-        /** 取消 */
-        FrameworkTool.unregisterReceiver(context = this)
-    }
 }

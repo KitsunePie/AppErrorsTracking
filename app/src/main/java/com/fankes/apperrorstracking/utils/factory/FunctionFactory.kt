@@ -34,8 +34,8 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
@@ -135,14 +135,14 @@ fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {
  *
  * [T] 为指定的 [Activity]
  * @param isOutSide 是否从外部启动
- * @param callback 回调 [Intent] 方法体
+ * @param initiate [Intent] 方法体
  */
-inline fun <reified T : Activity> Context.navigate(isOutSide: Boolean = false, callback: Intent.() -> Unit = {}) = runCatching {
+inline fun <reified T : Activity> Context.navigate(isOutSide: Boolean = false, initiate: Intent.() -> Unit = {}) = runCatching {
     startActivity((if (isOutSide) Intent() else Intent(if (this is Service) applicationContext else this, T::class.java)).apply {
         flags = if (this@navigate !is Activity) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         else Intent.FLAG_ACTIVITY_NEW_TASK
-        if (isOutSide) component = ComponentName(Const.MODULE_PACKAGE_NAME, T::class.java.name)
-        callback(this)
+        if (isOutSide) component = ComponentName(BuildConfig.APPLICATION_ID, T::class.java.name)
+        initiate(this)
     })
 }.onFailure { toast(msg = "Start ${T::class.java.name} failed") }
 

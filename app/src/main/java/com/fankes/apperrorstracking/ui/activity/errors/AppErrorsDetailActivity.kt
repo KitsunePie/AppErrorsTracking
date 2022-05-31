@@ -34,7 +34,6 @@ import android.view.WindowManager
 import androidx.core.view.isGone
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.const.Const
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
@@ -48,6 +47,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         /** 请求保存文件回调标识 */
         private const val WRITE_REQUEST_CODE = 0
 
+        /** [AppErrorsInfoBean] 传值 */
+        private const val EXTRA_APP_ERRORS_INFO = "app_errors_info_extra"
+
         /**
          * 启动 [AppErrorsDetailActivity]
          * @param context 实例
@@ -55,7 +57,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
          * @param isOutSide 是否从外部启动
          */
         fun start(context: Context, appErrorsInfo: AppErrorsInfoBean, isOutSide: Boolean = false) =
-            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(Const.EXTRA_APP_ERRORS_INFO, appErrorsInfo) }
+            context.navigate<AppErrorsDetailActivity>(isOutSide) { putExtra(EXTRA_APP_ERRORS_INFO, appErrorsInfo) }
     }
 
     /** 预导出的异常堆栈 */
@@ -86,7 +88,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
 
     override fun onCreate() {
-        val appErrorsInfo = runCatching { intent?.getSerializableExtra(Const.EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
+        val appErrorsInfo = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
             ?: return toastAndFinish()
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
@@ -144,7 +146,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
 
     override fun onBackPressed() {
-        intent?.removeExtra(Const.EXTRA_APP_ERRORS_INFO)
+        intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
         finish()
     }
 

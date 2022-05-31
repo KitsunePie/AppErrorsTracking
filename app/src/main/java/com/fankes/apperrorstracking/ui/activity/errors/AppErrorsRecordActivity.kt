@@ -82,7 +82,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             }
         }
         /** 设置列表元素和 Adapter */
-        binding.listView.apply {
+        binding.listView.apply { // 改成 recycleview?
             adapter = object : BaseAdapter() {
 
                 override fun getCount() = listData.size
