@@ -27,6 +27,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Message
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.locale.LocaleString
@@ -34,6 +35,7 @@ import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.utils.factory.appName
 import com.fankes.apperrorstracking.utils.factory.isAppCanOpened
 import com.fankes.apperrorstracking.utils.factory.openApp
+import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
@@ -166,6 +168,11 @@ object FrameworkHooker : YukiBaseHooker() {
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
                                 " has crashed${if (isRepeating) " again" else ""}"
                     ) else loggerE(msg = "Process \"$processName\" has crashed${if (isRepeating) " again" else ""}")
+                    /** 判断是否为模块自身崩溃 */
+                    if (packageName == BuildConfig.APPLICATION_ID) {
+                        context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
+                        return@afterHook
+                    }
                     /** 判断是否被忽略 - 在后台就不显示对话框 */
                     if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName) || errResult == -2)
                         return@afterHook
