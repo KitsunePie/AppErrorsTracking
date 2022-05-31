@@ -286,4 +286,46 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun moduleNotFullyActivated(vararg objArrs: Any) = R.string.module_not_fully_activated.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val momentAgo get() = momentAgo()
+
+    /** @string Automatic generated */
+    fun momentAgo(vararg objArrs: Any) = R.string.moment_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val secondAgo get() = secondAgo()
+
+    /** @string Automatic generated */
+    fun secondAgo(vararg objArrs: Any) = R.string.second_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val minuteAgo get() = minuteAgo()
+
+    /** @string Automatic generated */
+    fun minuteAgo(vararg objArrs: Any) = R.string.minute_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val hourAgo get() = hourAgo()
+
+    /** @string Automatic generated */
+    fun hourAgo(vararg objArrs: Any) = R.string.hour_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val dayAgo get() = dayAgo()
+
+    /** @string Automatic generated */
+    fun dayAgo(vararg objArrs: Any) = R.string.day_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val monthAgo get() = monthAgo()
+
+    /** @string Automatic generated */
+    fun monthAgo(vararg objArrs: Any) = R.string.month_ago.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val yearAgo get() = yearAgo()
+
+    /** @string Automatic generated */
+    fun yearAgo(vararg objArrs: Any) = R.string.year_ago.bind(*objArrs)
 }

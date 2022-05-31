@@ -112,6 +112,34 @@ fun Context.appIcon(packageName: String) =
     }.getOrNull() ?: ResourcesCompat.getDrawable(resources, R.drawable.ic_android, null)
 
 /**
+ * 计算与当前时间戳相差的友好时间
+ * @param now 刚刚
+ * @param second 秒前
+ * @param minute 分钟前
+ * @param hour 小时前
+ * @param day 天前
+ * @param month 月前
+ * @param year 年前
+ * @return [String] 友好时间
+ */
+fun Long.difference(now: String, second: String, minute: String, hour: String, day: String, month: String, year: String) =
+    ((System.currentTimeMillis() - this) / 1000).toInt().let { diff ->
+        when (diff) {
+            in 0..10 -> now
+            in 11..20 -> "10 $second"
+            in 21..30 -> "20 $second"
+            in 31..40 -> "30 $second"
+            in 41..50 -> "40 $second"
+            in 51..59 -> "50 $second"
+            in 60..3599 -> "${(diff / 60).coerceAtLeast(1)} $minute"
+            in 3600..86399 -> "${diff / 3600} $hour"
+            in 86400..2591999 -> "${diff / 86400} $day"
+            in 2592000..31103999 -> "${diff / 2592000} $month"
+            else -> "${diff / 31104000} $year"
+        }
+    }
+
+/**
  * 弹出 [Toast]
  * @param msg 提示内容
  */

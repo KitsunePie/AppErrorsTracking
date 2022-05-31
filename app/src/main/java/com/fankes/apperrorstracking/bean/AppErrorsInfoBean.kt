@@ -21,7 +21,10 @@
  */
 package com.fankes.apperrorstracking.bean
 
+import android.app.ApplicationErrorReport
 import android.os.Build
+import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.utils.factory.difference
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,11 +55,56 @@ data class AppErrorsInfoBean(
     var timestamp: Long,
 ) : Serializable {
 
+    companion object {
+
+        /**
+         * 从 [ApplicationErrorReport.CrashInfo] 克隆
+         * @param packageName APP 包名
+         * @param crashInfo [ApplicationErrorReport.CrashInfo]
+         * @return [AppErrorsInfoBean]
+         */
+        fun clone(packageName: String?, crashInfo: ApplicationErrorReport.CrashInfo?) =
+            (crashInfo?.exceptionClassName?.lowercase() == "native crash").let { isNativeCrash ->
+                AppErrorsInfoBean(
+                    packageName = packageName ?: "null",
+                    isNativeCrash = isNativeCrash,
+                    exceptionClassName = crashInfo?.exceptionClassName ?: "null",
+                    exceptionMessage = if (isNativeCrash) crashInfo?.stackTrace.let {
+                        if (it?.contains(other = "Abort message: '") == true)
+                            runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
+                                ?: crashInfo?.exceptionMessage ?: "null"
+                        else crashInfo?.exceptionMessage ?: "null"
+                    } else crashInfo?.exceptionMessage ?: "null",
+                    throwFileName = crashInfo?.throwFileName ?: "null",
+                    throwClassName = crashInfo?.throwClassName ?: "null",
+                    throwMethodName = crashInfo?.throwMethodName ?: "null",
+                    throwLineNumber = crashInfo?.throwLineNumber ?: -1,
+                    stackTrace = crashInfo?.stackTrace?.trim() ?: "null",
+                    timestamp = System.currentTimeMillis()
+                )
+            }
+    }
+
     /**
-     * 获取异常本地化时间
+     * 获取异常本地化经过时间
      * @return [String]
      */
-    val time get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp)) ?: ""
+    val crossTime
+        get() = timestamp.difference(
+            now = LocaleString.momentAgo,
+            second = LocaleString.secondAgo,
+            minute = LocaleString.minuteAgo,
+            hour = LocaleString.hourAgo,
+            day = LocaleString.dayAgo,
+            month = LocaleString.monthAgo,
+            year = LocaleString.yearAgo
+        )
+
+    /**
+     * 获取异常本地化量化时间
+     * @return [String]
+     */
+    val dateTime get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp)) ?: "DateTime not found"
 
     /**
      * 获取异常堆栈模板
@@ -74,7 +122,7 @@ data class AppErrorsInfoBean(
                 "[API Version]: ${Build.VERSION.SDK_INT}\n" +
                 "[Package Name]: $packageName\n" +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
-                "[Crash Time]: $time\n" +
+                "[Crash Time]: $dateTime\n" +
                 "[Stack Trace]:\n" +
                 stackTrace
 }

@@ -63,4 +63,11 @@
     <string name="fast_restart">高速リスタート</string>
     <string name="access_root_fail">ルート権限を取得できませんでした</string>
     <string name="todo_items">より多くの機能が開発中です</string>
+    <string name="moment_ago">現在</string>
+    <string name="second_ago">秒前</string>
+    <string name="minute_ago">分前</string>
+    <string name="hour_ago">時間前</string>
+    <string name="day_ago">日前</string>
+    <string name="month_ago">月前</string>
+    <string name="year_ago">年前</string>
 </resources>
