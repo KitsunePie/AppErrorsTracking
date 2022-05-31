@@ -71,4 +71,5 @@
     <string name="month_ago">月前</string>
     <string name="year_ago">年前</string>
     <string name="crash_process">エラープロセス「%1$s」</string>
+    <string name="share_error_stack">エラースタックをシェアする</string>
 </resources>

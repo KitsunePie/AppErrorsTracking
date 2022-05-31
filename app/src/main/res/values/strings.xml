@@ -71,4 +71,5 @@
     <string name="month_ago">month ago</string>
     <string name="year_ago">year ago</string>
     <string name="crash_process">Crash Process \"%1$s\"</string>
+    <string name="share_error_stack">Share error stack</string>
 </resources>

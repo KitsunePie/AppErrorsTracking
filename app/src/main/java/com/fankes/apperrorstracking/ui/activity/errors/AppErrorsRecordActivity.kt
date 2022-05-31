@@ -136,7 +136,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         ("${cacheDir.absolutePath}/temp").also { path ->
             File(path).mkdirs()
             listData.takeIf { it.isNotEmpty() }?.forEach {
-                File("$path/${it.packageName}_${it.timestamp}.log").writeText(it.stackOutputContent)
+                File("$path/${it.packageName}_${it.timestamp}.log").writeText(it.stackOutputFileContent)
             }
             outPutFilePath = "${cacheDir.absolutePath}/temp_${System.currentTimeMillis()}.zip"
             ZipFileTool.zipMultiFile(path, outPutFilePath)

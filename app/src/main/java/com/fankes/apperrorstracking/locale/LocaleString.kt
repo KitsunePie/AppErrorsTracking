@@ -334,4 +334,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun crashProcess(vararg objArrs: Any) = R.string.crash_process.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val shareErrorStack get() = shareErrorStack()
+
+    /** @string Automatic generated */
+    fun shareErrorStack(vararg objArrs: Any) = R.string.share_error_stack.bind(*objArrs)
 }

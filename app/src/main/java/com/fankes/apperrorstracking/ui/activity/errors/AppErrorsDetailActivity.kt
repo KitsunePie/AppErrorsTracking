@@ -68,7 +68,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         }
         binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackTrace) }
         binding.exportIcon.setOnClickListener {
-            stackTrace = appErrorsInfo.stackOutputContent
+            stackTrace = appErrorsInfo.stackOutputFileContent
             runCatching {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
@@ -76,6 +76,12 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                     putExtra(Intent.EXTRA_TITLE, "${appErrorsInfo.packageName}_${appErrorsInfo.timestamp}.log")
                 }, WRITE_REQUEST_CODE)
             }.onFailure { toast(msg = "Start Android SAF failed") }
+        }
+        binding.shareIcon.setOnClickListener {
+            startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent)
+            }, LocaleString.shareErrorStack))
         }
         binding.appIcon.setImageDrawable(appIcon(appErrorsInfo.packageName))
         binding.appNameText.text = appName(appErrorsInfo.packageName)
