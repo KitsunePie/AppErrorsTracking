@@ -56,7 +56,7 @@ data class AppErrorsInfoBean(
      * 获取异常本地化时间
      * @return [String]
      */
-    val time get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp))
+    val time get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp)) ?: ""
 
     /**
      * 获取异常堆栈模板
