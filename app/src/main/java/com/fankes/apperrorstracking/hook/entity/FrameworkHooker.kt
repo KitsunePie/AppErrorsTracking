@@ -64,13 +64,13 @@ object FrameworkHooker : YukiBaseHooker() {
     )
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
-    private var ignoredErrorsIfUnlockApps = hashSetOf<String>()
+    private var ignoredErrorsIfUnlockApps = HashSet<String>()
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
-    private var ignoredErrorsIfRestartApps = hashSetOf<String>()
+    private var ignoredErrorsIfRestartApps = HashSet<String>()
 
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
-    private val appErrorsRecords = arrayListOf<AppErrorsInfoBean>()
+    private val appErrorsRecords = ArrayList<AppErrorsInfoBean>()
 
     /** 注册 */
     private fun register() {

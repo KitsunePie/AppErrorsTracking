@@ -56,7 +56,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     private var onChanged: (() -> Unit)? = null
 
     /** 全部的 APP 异常信息 */
-    private val listData = arrayListOf<AppErrorsInfoBean>()
+    private val listData = ArrayList<AppErrorsInfoBean>()
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
