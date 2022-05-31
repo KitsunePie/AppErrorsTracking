@@ -23,7 +23,6 @@
 
 package com.fankes.apperrorstracking.hook.entity
 
-import android.app.ApplicationErrorReport
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -187,30 +186,8 @@ object FrameworkHooker : YukiBaseHooker() {
                 afterHook {
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
-                    /** 当前异常信息 */
-                    args().last().cast<ApplicationErrorReport.CrashInfo>()?.also { crashInfo ->
-                        /** 添加到第一位 */
-                        (crashInfo.exceptionClassName.lowercase() == "native crash").also { isNativeCrash ->
-                            appErrorsRecords.add(
-                                0, AppErrorsInfoBean(
-                                    packageName = appInfo?.packageName ?: "null",
-                                    isNativeCrash = isNativeCrash,
-                                    exceptionClassName = crashInfo.exceptionClassName ?: "null",
-                                    exceptionMessage = if (isNativeCrash) crashInfo.stackTrace.let {
-                                        if (it.contains(other = "Abort message: '"))
-                                            runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
-                                                ?: crashInfo.exceptionMessage ?: "" else crashInfo.exceptionMessage ?: "null"
-                                    } else crashInfo.exceptionMessage ?: "null",
-                                    throwFileName = crashInfo.throwFileName ?: "null",
-                                    throwClassName = crashInfo.throwClassName ?: "null",
-                                    throwMethodName = crashInfo.throwMethodName ?: "null",
-                                    throwLineNumber = crashInfo.throwLineNumber,
-                                    stackTrace = crashInfo.stackTrace?.trim() ?: "null",
-                                    timestamp = System.currentTimeMillis()
-                                )
-                            )
-                        }
-                    }
+                    /** 添加当前异常信息到第一位 */
+                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(appInfo?.packageName, args().last().cast()))
                 }
             }
         }

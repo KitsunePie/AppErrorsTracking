@@ -102,7 +102,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                     getItem(position).also {
                         holder.appIcon.setImageDrawable(appIcon(it.packageName))
                         holder.appNameText.text = appName(it.packageName)
-                        holder.errorsTimeText.text = it.time
+                        holder.errorsTimeText.text = it.crossTime
                         holder.errorTypeIcon.setImageResource(if (it.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         holder.errorTypeText.text = if (it.isNativeCrash) "Native crash" else it.exceptionClassName.let { text ->
                             if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text

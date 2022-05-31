@@ -89,7 +89,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorThrowClassText.text = appErrorsInfo.throwClassName
         binding.errorThrowMethodText.text = appErrorsInfo.throwMethodName
         binding.errorLineNumberText.text = appErrorsInfo.throwLineNumber.toString()
-        binding.errorRecordTimeText.text = appErrorsInfo.time
+        binding.errorRecordTimeText.text = appErrorsInfo.dateTime
         binding.errorStackText.text = appErrorsInfo.stackTrace
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appName(appErrorsInfo.packageName) else LocaleString.appName

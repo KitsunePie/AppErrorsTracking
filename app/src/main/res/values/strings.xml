@@ -63,4 +63,11 @@
     <string name="fast_restart">Fast restart</string>
     <string name="access_root_fail">Access Root failed</string>
     <string name="todo_items">More features are in development</string>
+    <string name="moment_ago">moment ago</string>
+    <string name="second_ago">second ago</string>
+    <string name="minute_ago">minutes ago</string>
+    <string name="hour_ago">hour ago</string>
+    <string name="day_ago">days ago</string>
+    <string name="month_ago">month ago</string>
+    <string name="year_ago">year ago</string>
 </resources>

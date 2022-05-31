@@ -63,4 +63,11 @@
     <string name="fast_restart">急速重開</string>
     <string name="access_root_fail">取得 Root 权利失败</string>
     <string name="todo_items">更多機能正在開發</string>
+    <string name="moment_ago">剛剛</string>
+    <string name="second_ago">秒前</string>
+    <string name="minute_ago">分鐘前</string>
+    <string name="hour_ago">小時前</string>
+    <string name="day_ago">天前</string>
+    <string name="month_ago">月前</string>
+    <string name="year_ago">年前</string>
 </resources>
