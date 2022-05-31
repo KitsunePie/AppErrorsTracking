@@ -46,9 +46,14 @@ object FrameworkTool {
     private const val CALL_APP_ERRORS_DATA_REMOVE_RESULT = "call_app_errors_data_remove_result"
     private const val CALL_APP_ERRORS_DATA_CLEAR = "call_app_errors_data_clear"
     private const val CALL_APP_ERRORS_DATA_CLEAR_RESULT = "call_app_errors_data_clear_result"
+    private const val CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT = "call_ignored_errors_if_unlock_result"
+    private const val CALL_IGNORED_ERRORS_IF_RESTART_RESULT = "call_ignored_errors_if_restart_result"
 
+    private val CALL_OPEN_SPECIFY_APP = ChannelData<String>("call_open_specify_app")
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
     private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
+    private val CALL_IGNORED_ERRORS_IF_UNLOCK = ChannelData<String>("call_ignored_errors_if_unlock")
+    private val CALL_IGNORED_ERRORS_IF_RESTART = ChannelData<String>("call_ignored_errors_if_restart")
 
     /**
      * 宿主注册监听
@@ -65,6 +70,12 @@ object FrameworkTool {
          * @return [Host]
          */
         fun with(instance: PackageParam, initiate: Host.() -> Unit) = apply { this.instance = instance }.apply(initiate)
+
+        /**
+         * 监听使用系统框架打开 APP
+         * @param result 回调包名
+         */
+        fun onOpenAppUsedFramework(result: (String) -> Unit) = instance?.dataChannel?.wait(CALL_OPEN_SPECIFY_APP) { result(it) }
 
         /**
          * 监听发送 APP 异常信息数组
@@ -99,6 +110,32 @@ object FrameworkTool {
                 }
             }
         }
+
+        /**
+         * 监听忽略 APP 的错误直到设备重新解锁
+         * @param result 回调包名
+         */
+        fun onIgnoredErrorsIfUnlock(result: (String) -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_IGNORED_ERRORS_IF_UNLOCK) {
+                    result(it)
+                    put(CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT)
+                }
+            }
+        }
+
+        /**
+         * 监听忽略 APP 的错误直到设备重新启动
+         * @param result 回调包名
+         */
+        fun onIgnoredErrorsIfRestart(result: (String) -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_IGNORED_ERRORS_IF_RESTART) {
+                    result(it)
+                    put(CALL_IGNORED_ERRORS_IF_RESTART_RESULT)
+                }
+            }
+        }
     }
 
     /**
@@ -128,6 +165,14 @@ object FrameworkTool {
      * @param result 成功后回调
      */
     fun checkingActivated(context: Context, result: (Boolean) -> Unit) = context.dataChannel(SYSTEM_FRAMEWORK_NAME).checkingVersionEquals(result)
+
+    /**
+     * 使用系统框架打开 [packageName]
+     * @param context 实例
+     * @param packageName APP 包名
+     */
+    fun openAppUsedFramework(context: Context, packageName: String) =
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).put(CALL_OPEN_SPECIFY_APP, packageName)
 
     /**
      * 获取 APP 异常信息数组
@@ -163,6 +208,32 @@ object FrameworkTool {
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
             wait(CALL_APP_ERRORS_DATA_CLEAR_RESULT) { callback() }
             put(CALL_APP_ERRORS_DATA_CLEAR)
+        }
+    }
+
+    /**
+     * 忽略 [packageName] 的错误直到设备重新解锁
+     * @param context 实例
+     * @param packageName APP 包名
+     * @param callback 成功后回调
+     */
+    fun ignoredErrorsIfUnlock(context: Context, packageName: String, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT) { callback() }
+            put(CALL_IGNORED_ERRORS_IF_UNLOCK, packageName)
+        }
+    }
+
+    /**
+     * 忽略 [packageName] 的错误直到设备重新启动
+     * @param context 实例
+     * @param packageName APP 包名
+     * @param callback 成功后回调
+     */
+    fun ignoredErrorsIfRestart(context: Context, packageName: String, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_IGNORED_ERRORS_IF_RESTART_RESULT) { callback() }
+            put(CALL_IGNORED_ERRORS_IF_RESTART, packageName)
         }
     }
 }
