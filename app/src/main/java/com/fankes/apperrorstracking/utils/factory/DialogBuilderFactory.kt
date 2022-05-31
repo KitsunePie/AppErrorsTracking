@@ -180,10 +180,10 @@ class DialogBuilder(val context: Context) {
 
     /**
      * 当对话框关闭时
-     * @param it 回调
+     * @param callback 回调
      */
-    fun onCancel(it: () -> Unit) {
-        onCancel = it
+    fun onCancel(callback: () -> Unit) {
+        onCancel = callback
     }
 
     /** 取消对话框 */
