@@ -26,11 +26,6 @@ package com.fankes.apperrorstracking.ui.activity.errors
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.database.ContentObserver
-import android.net.Uri
-import android.os.Handler
-import android.provider.MediaStore
-import android.view.WindowManager
 import androidx.core.view.isGone
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
@@ -61,30 +56,6 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
     /** 预导出的异常堆栈 */
     private var stackTrace = ""
-
-    /** 已经显示的截图对话框 */
-    private var observerDialog: DialogBuilder? = null
-
-    /** 已截图的路径数组 */
-    private val observerPaths = hashSetOf<String>()
-
-    /** 截图监听注册 */
-    private val observer = object : ContentObserver(Handler()) {
-        override fun onChange(selfChange: Boolean, uri: Uri?) {
-            if (observerPaths.contains(uri?.path ?: "")) return
-            observerDialog?.cancel()
-            showDialog {
-                observerDialog = this
-                title = LocaleString.dontScreenshot
-                msg = LocaleString.dontScreenshotTip
-                confirmButton(LocaleString.gotIt)
-                noCancelable()
-            }
-            uri?.path?.let { observerPaths.add(it) }
-            /** 截图一次后就禁止再次截图 */
-            window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        }
-    }
 
     override fun onCreate() {
         val appErrorsInfo = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
@@ -124,8 +95,6 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appName(appErrorsInfo.packageName) else LocaleString.appName
         }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
-        /** 注册截图监听 */
-        contentResolver?.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, observer)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -141,11 +110,5 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     override fun onBackPressed() {
         intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
         finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        /** 解除注册截图监听 */
-        contentResolver?.unregisterContentObserver(observer)
     }
 }
