@@ -240,18 +240,6 @@ object LocaleString {
     fun gotIt(vararg objArrs: Any) = R.string.got_it.bind(*objArrs)
 
     /** @string Automatic generated */
-    val dontScreenshot get() = dontScreenshot()
-
-    /** @string Automatic generated */
-    fun dontScreenshot(vararg objArrs: Any) = R.string.dont_screenshot.bind(*objArrs)
-
-    /** @string Automatic generated */
-    val dontScreenshotTip get() = dontScreenshotTip()
-
-    /** @string Automatic generated */
-    fun dontScreenshotTip(vararg objArrs: Any) = R.string.dont_screenshot_tip.bind(*objArrs)
-
-    /** @string Automatic generated */
     val moduleVersion get() = moduleVersion()
 
     /** @string Automatic generated */
