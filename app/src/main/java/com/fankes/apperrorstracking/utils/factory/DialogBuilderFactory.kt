@@ -202,7 +202,6 @@ class DialogBuilder(val context: Context) {
         } else runCatching {
             instanceAndroid?.create()?.apply {
                 customLayoutView?.let { setView(it) }
-                window?.attributes
                 window?.setBackgroundDrawable(
                     InsetDrawable(
                         GradientDrawable(
