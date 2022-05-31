@@ -68,6 +68,15 @@
             android:src="@drawable/ic_export"
             android:tint="@color/colorTextGray"
             android:tooltipText="@string/export_to_file" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/share_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_share"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/share_error_stack" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
