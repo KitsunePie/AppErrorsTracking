@@ -62,7 +62,6 @@
     <string name="are_your_sure_restart_system">你确定要重启系统吗？</string>
     <string name="fast_restart">快速重启</string>
     <string name="access_root_fail">获取 Root 权限失败</string>
-    <string name="todo_items">更多功能正在开发</string>
     <string name="moment_ago">刚刚</string>
     <string name="second_ago">秒前</string>
     <string name="minute_ago">分钟前</string>

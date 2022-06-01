@@ -62,7 +62,6 @@
     <string name="are_your_sure_restart_system">リスタートシステムしてもよろしいですか</string>
     <string name="fast_restart">高速リスタート</string>
     <string name="access_root_fail">ルート権限を取得できませんでした</string>
-    <string name="todo_items">より多くの機能が開発中です</string>
     <string name="moment_ago">現在</string>
     <string name="second_ago">秒前</string>
     <string name="minute_ago">分前</string>
