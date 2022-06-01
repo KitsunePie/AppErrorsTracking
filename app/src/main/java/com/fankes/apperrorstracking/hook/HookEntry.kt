@@ -34,6 +34,7 @@ class HookEntry : IYukiHookXposedInit {
     override fun onInit() = configs {
         debugTag = "AppErrorsTracking"
         isDebug = false
+        isEnableModulePrefsCache = false
     }
 
     override fun onHook() = encase {

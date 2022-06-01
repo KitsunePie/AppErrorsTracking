@@ -71,4 +71,17 @@
     <string name="year_ago">年前</string>
     <string name="crash_process">异常进程 \"%1$s\"</string>
     <string name="share_error_stack">分享异常堆栈</string>
+    <string name="preference_settings">偏好设置</string>
+    <string name="function_mgr">功能管理</string>
+    <string name="only_show_errors_in_front">仅对前台应用展示错误对话框</string>
+    <string name="only_show_errors_in_main_process">仅对应用主进程展示错误对话框</string>
+    <string name="enable_apps_config_template">启用应用配置模板</string>
+    <string name="mgr_apps_config_template">管理应用配置模板</string>
+    <string name="view_errors_record">查看异常历史记录</string>
+    <string name="view_ignored_errors_apps">查看已忽略异常的应用</string>
+    <string name="only_show_errors_in_front_tip">启用后，只有发生异常的应用处于前台（正在使用中）时才会展示错误对话框，发生异常的后台应用虽然不会展示错误对话框，但是它们都会被记录到异常历史记录中。</string>
+    <string name="only_show_errors_in_main_process_tip">启用后，只有应用发生的异常位于主进程（第一个 Application 实例对象）时才会展示错误对话框。</string>
+    <string name="apps_config_template_tip">你可以在这里对每个应用发生异常时，单独配置其在发生异常时是否展示错误对话框。</string>
+    <string name="view_errors_record_tip">在这里，你可以找到从系统开机以来到现在为止的全部应用异常记录，异常历史记录在重新启动后会自动清空，你可以对记录进行查看、导出和分享以及清空。</string>
+    <string name="view_ignored_errors_apps_tip">在这里，你可以找到已被你以不同形式手动忽略异常的应用，这个列表将会在重新启动后自动清空，你可以对这些已忽略的应用进行管理以及从忽略列表中移除它们。</string>
 </resources>

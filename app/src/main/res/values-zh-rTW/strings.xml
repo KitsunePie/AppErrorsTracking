@@ -71,4 +71,17 @@
     <string name="year_ago">年前</string>
     <string name="crash_process">異常進程 \"%1$s\"</string>
     <string name="share_error_stack">分享異常堆棧</string>
+    <string name="preference_settings">偏好設置</string>
+    <string name="function_mgr">功能管理</string>
+    <string name="only_show_errors_in_front">僅為前台程式展示錯誤對話框</string>
+    <string name="only_show_errors_in_main_process">僅為程式主進程展示錯誤對話框</string>
+    <string name="enable_apps_config_template">啟用程式配置模板</string>
+    <string name="mgr_apps_config_template">管理程式配置模板</string>
+    <string name="view_errors_record">查看異常歷史記錄</string>
+    <string name="view_ignored_errors_apps">查看已忽略異常的程式</string>
+    <string name="only_show_errors_in_front_tip">啟用後，只有發生異常的程式處於前台（正在使用中）時才會展示錯誤對話框，發生異常的後台程式雖然不會展示錯誤對話框，但是它們都會被記錄到異常歷史記錄中。</string>
+    <string name="only_show_errors_in_main_process_tip">啟用後，只有程式發生的異常位於主進程（第一個 Application 實例對象）時才會展示錯誤對話框。</string>
+    <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框。</string>
+    <string name="view_errors_record_tip">在這裡，你可以找到從系統開機以來到現在為止的全部程式異常記錄，異常歷史記錄在重新啟動後會自動清空，你可以對記錄進行查看、導出和分享以及清空。</string>
+    <string name="view_ignored_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
 </resources>
