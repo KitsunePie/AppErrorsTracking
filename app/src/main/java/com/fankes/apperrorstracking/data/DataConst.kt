@@ -26,4 +26,6 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 object DataConst {
 
     val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
+    val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PrefsData("_enable_only_show_errors_in_front", false)
+    val ENABLE_ONLY_SHOW_ERRORS_IN_MAIN = PrefsData("_enable_only_show_errors_in_main", false)
 }

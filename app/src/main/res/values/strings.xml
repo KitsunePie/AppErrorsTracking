@@ -69,6 +69,19 @@
     <string name="day_ago">days ago</string>
     <string name="month_ago">month ago</string>
     <string name="year_ago">year ago</string>
-    <string name="crash_process">Crash Process \"%1$s\"</string>
+    <string name="crash_process">Crashed Process \"%1$s\"</string>
     <string name="share_error_stack">Share error stack</string>
+    <string name="preference_settings">Preference Settings</string>
+    <string name="function_mgr">Function Management</string>
+    <string name="only_show_errors_in_front">Show error dialogs only for foreground apps</string>
+    <string name="only_show_errors_in_main_process">Show error dialogs only for main process apps</string>
+    <string name="enable_apps_config_template">Enable apps config template</string>
+    <string name="mgr_apps_config_template">Management apps config template</string>
+    <string name="view_errors_record">View apps errors record</string>
+    <string name="view_ignored_errors_apps">View ignored errors apps</string>
+    <string name="only_show_errors_in_front_tip">After enabling, the error dialog will only be displayed when the abnormal apps is in the foreground (in use). Although the abnormal background application will not display the error dialog, they will be recorded in the errors history.</string>
+    <string name="only_show_errors_in_main_process_tip">After enabling, the error dialog will only be displayed if the exception occurred in the application is in the main process (the first Application instance object).</string>
+    <string name="apps_config_template_tip">Here you can individually configure whether to display an error dialog when an exception occurs for each apps.</string>
+    <string name="view_errors_record_tip">Here you can find all apps exception records since the system was turned on until now. The exception history will be automatically cleared after restarting. You can view, export, share and clear the records.</string>
+    <string name="view_ignored_errors_apps_tip">Here you can find apps that you have manually ignored exceptions in different forms. This list will be automatically cleared after restarting. You can manage these ignored applications and remove them from the ignore list.</string>
 </resources>

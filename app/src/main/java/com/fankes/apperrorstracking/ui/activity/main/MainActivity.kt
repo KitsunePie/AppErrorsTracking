@@ -33,7 +33,10 @@ import com.fankes.apperrorstracking.data.DataConst
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
+import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openBrowser
+import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
@@ -47,6 +50,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text =
             LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
+        binding.onlyShowErrorsInFrontSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
+        binding.onlyShowErrorsInMainProcessSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
@@ -57,6 +62,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 PackageManager.DONT_KILL_APP
             )
         }
+        binding.onlyShowErrorsInFrontSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT, b)
+        }
+        binding.onlyShowErrorsInMainProcessSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN, b)
+        }
+        binding.enableAppsConfigsTemplateSwitch.setOnCheckedChangeListener { btn, b ->
+            if (b) btn.isChecked = false
+            toastComingSooon()
+        }
+        /** 管理应用配置模板按钮点击事件 */
+        binding.mgrAppsConfigsTemplateButton.setOnClickListener { toastComingSooon() }
+        /** 功能管理按钮点击事件 */
+        binding.viewErrorsRecordButton.setOnClickListener { navigate<AppErrorsRecordActivity>() }
+        binding.viewIgnoredErrorsAppsButton.setOnClickListener { toastComingSooon() }
         /** 重启按钮点击事件 */
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */
@@ -87,6 +109,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
         binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
     }
+
+    /** 敬请期待 */
+    private fun toastComingSooon() = toast(msg = "Coming soon")
 
     override fun onResume() {
         super.onResume()

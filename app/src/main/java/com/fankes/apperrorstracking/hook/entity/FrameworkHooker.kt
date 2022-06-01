@@ -30,6 +30,7 @@ import android.os.Message
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.data.DataConst
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.utils.factory.appName
@@ -47,10 +48,10 @@ import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
 object FrameworkHooker : YukiBaseHooker() {
 
+    private const val ActivityManagerServiceClass = "com.android.server.am.ActivityManagerService"
+    private const val UserControllerClass = "com.android.server.am.UserController"
     private const val AppErrorsClass = "com.android.server.am.AppErrors"
-
     private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
-
     private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
 
     private val PackageListClass = VariousClass(
@@ -127,6 +128,9 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前进程信息 */
                     val proc = AppErrorDialog_DataClass.clazz.field { name = "proc" }.get(errData).any()
 
+                    /** 当前 UserId 信息 */
+                    val userId = ProcessRecordClass.clazz.field { name = "userId" }.get(proc).int()
+
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(proc).cast<ApplicationInfo>()
 
@@ -153,6 +157,15 @@ object FrameworkHooker : YukiBaseHooker() {
                         name = "pkgList"
                     }.get(proc).self).int() == 1 && appInfo != null)
 
+                    /** 是否为主进程 */
+                    val isMainProcess = packageName == processName
+
+                    /** 是否为后台进程 */
+                    val isBackgroundProcess = UserControllerClass.clazz.method { name = "getCurrentProfileIds" }
+                        .get(ActivityManagerServiceClass.clazz.field { name = "mUserController" }
+                            .get(field { name = "mService" }.get(instance).any()).any())
+                        .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
+
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
                     /** 打印错误日志 */
@@ -165,19 +178,26 @@ object FrameworkHooker : YukiBaseHooker() {
                         context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
                         return@afterHook
                     }
+                    /** 判断是否为已忽略的 APP */
+                    if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName)) return@afterHook
+                    /** 判断是否为后台进程 */
+                    if ((isBackgroundProcess || context.isAppCanOpened(packageName).not())
+                        && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
+                    ) return@afterHook
+                    /** 判断是否为主进程 */
+                    if (isMainProcess.not() && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)) return@afterHook
                     /** 启动错误对话框显示窗口 */
-                    if (ignoredErrorsIfUnlockApps.contains(packageName).not() && ignoredErrorsIfRestartApps.contains(packageName).not())
-                        AppErrorsDisplayActivity.start(
-                            context, AppErrorsDisplayBean(
-                                packageName = packageName,
-                                processName = processName,
-                                appName = appName,
-                                title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
-                                isShowAppInfoButton = isApp,
-                                isShowReopenButton = isApp && isRepeating.not() && context.isAppCanOpened(packageName) && packageName == processName,
-                                isShowCloseAppButton = isApp
-                            )
+                    AppErrorsDisplayActivity.start(
+                        context, AppErrorsDisplayBean(
+                            packageName = packageName,
+                            processName = processName,
+                            appName = appName,
+                            title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
+                            isShowAppInfoButton = isApp,
+                            isShowReopenButton = isApp && isRepeating.not() && context.isAppCanOpened(packageName) && isMainProcess,
+                            isShowCloseAppButton = isApp
                         )
+                    )
                 }
             }
             injectMember {

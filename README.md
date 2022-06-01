@@ -44,7 +44,7 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 - 打印异常堆栈到控制台功能
 
-- 异常历史记录功能，可通过通知栏磁贴“异常历史记录”进入和模块主界面进入(正在开发)
+- 异常历史记录功能，可通过通知栏磁贴“异常历史记录”进入和模块主界面进入
 
 - 多进程 APP 的异常将会显示异常的进程名
 
@@ -55,10 +55,6 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 此项目依然在开发中，现在未解决的问题和包含的问题如下
 
 - 排除列表功能
-
-- 模块主界面进入“异常历史记录”功能
-
-- 隐藏 APP 多进程和后台进程崩溃对话框功能
 
 - 已忽略异常的 APP 查看功能
 
