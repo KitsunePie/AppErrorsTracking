@@ -62,7 +62,6 @@
     <string name="are_your_sure_restart_system">Are you sure you want to restart system?</string>
     <string name="fast_restart">Fast restart</string>
     <string name="access_root_fail">Access Root failed</string>
-    <string name="todo_items">More features are in development</string>
     <string name="moment_ago">moment ago</string>
     <string name="second_ago">second ago</string>
     <string name="minute_ago">minutes ago</string>
