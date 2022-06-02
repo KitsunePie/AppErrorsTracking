@@ -55,6 +55,11 @@
         </activity-alias>
 
         <activity
+            android:name=".ui.activity.errors.AppErrorsRecordActivity"
+            android:exported="true"
+            android:screenOrientation="behind" />
+
+        <activity
             android:name=".ui.activity.errors.AppErrorsDisplayActivity"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -70,14 +75,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="behind"
             android:taskAffinity=":detail" />
-
-        <activity
-            android:name=".ui.activity.errors.AppErrorsRecordActivity"
-            android:exported="true"
-            android:label="@string/errors_record"
-            android:launchMode="singleTask"
-            android:screenOrientation="behind"
-            android:taskAffinity=":history" />
 
         <service
             android:name=".service.QuickStartTileService"
