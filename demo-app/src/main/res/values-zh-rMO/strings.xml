@@ -8,4 +8,6 @@
     <string name="throw_nullpointer">抛出 NullPointerException</string>
     <string name="throw_exception">抛出 Exception</string>
     <string name="throw_native_error">拋出原生層異常</string>
+    <string name="throw_multi_process_error">拋出多進程異常</string>
+    <string name="suicide_in_progress">自殺中</string>
 </resources>

@@ -21,5 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.MainActivity$MultiProcessActivity"
+            android:exported="false"
+            android:process=":multi_process"
+            android:screenOrientation="behind" />
     </application>
 </manifest>
