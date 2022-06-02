@@ -387,7 +387,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/view_ignored_errors_apps_button"
+                    android:id="@+id/view_muted_errors_apps_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13dp"
@@ -397,7 +397,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:text="@string/view_ignored_errors_apps"
+                    android:text="@string/view_muted_errors_apps"
                     android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
@@ -409,7 +409,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="@string/view_ignored_errors_apps_tip"
+                    android:text="@string/view_muted_errors_apps_tip"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -453,7 +453,7 @@
                     android:id="@+id/hide_icon_in_launcher_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/hide_app_icon_on_desktop"
+                    android:text="@string/hide_app_icon_on_launcher"
                     android:textAllCaps="false"
                     android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
@@ -464,7 +464,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="@string/hide_app_icon_on_desktop_tip"
+                    android:text="@string/hide_app_icon_on_launcher_tip"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
@@ -474,7 +474,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="@string/hide_app_icon_on_desktop_notice"
+                    android:text="@string/hide_app_icon_on_launcher_notice"
                     android:textColor="#FF5722"
                     android:textSize="12sp" />
             </LinearLayout>

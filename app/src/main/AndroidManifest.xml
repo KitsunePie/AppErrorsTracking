@@ -60,6 +60,11 @@
             android:screenOrientation="behind" />
 
         <activity
+            android:name=".ui.activity.errors.AppErrorsMutedActivity"
+            android:exported="false"
+            android:screenOrientation="behind" />
+
+        <activity
             android:name=".ui.activity.errors.AppErrorsDisplayActivity"
             android:excludeFromRecents="true"
             android:exported="true"

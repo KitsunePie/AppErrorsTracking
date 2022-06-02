@@ -144,28 +144,28 @@ object LocaleString {
     fun errorDetail(vararg objArrs: Any) = R.string.error_detail.bind(*objArrs)
 
     /** @string Automatic generated */
-    val ignoreIfUnlock get() = ignoreIfUnlock()
+    val muteIfUnlock get() = muteIfUnlock()
 
     /** @string Automatic generated */
-    fun ignoreIfUnlock(vararg objArrs: Any) = R.string.ignore_if_unlock.bind(*objArrs)
+    fun muteIfUnlock(vararg objArrs: Any) = R.string.mute_if_unlock.bind(*objArrs)
 
     /** @string Automatic generated */
-    val ignoreIfRestart get() = ignoreIfRestart()
+    val muteIfRestart get() = muteIfRestart()
 
     /** @string Automatic generated */
-    fun ignoreIfRestart(vararg objArrs: Any) = R.string.ignore_if_restart.bind(*objArrs)
+    fun muteIfRestart(vararg objArrs: Any) = R.string.mute_if_restart.bind(*objArrs)
 
     /** @string Automatic generated */
-    val ignoreIfUnlockTip get() = ignoreIfUnlockTip()
+    val muteIfUnlockTip get() = muteIfUnlockTip()
 
     /** @string Automatic generated */
-    fun ignoreIfUnlockTip(vararg objArrs: Any) = R.string.ignore_if_unlock_tip.bind(*objArrs)
+    fun muteIfUnlockTip(vararg objArrs: Any) = R.string.mute_if_unlock_tip.bind(*objArrs)
 
     /** @string Automatic generated */
-    val ignoreIfRestartTip get() = ignoreIfRestartTip()
+    val muteIfRestartTip get() = muteIfRestartTip()
 
     /** @string Automatic generated */
-    fun ignoreIfRestartTip(vararg objArrs: Any) = R.string.ignore_if_restart_tip.bind(*objArrs)
+    fun muteIfRestartTip(vararg objArrs: Any) = R.string.mute_if_restart_tip.bind(*objArrs)
 
     /** @string Automatic generated */
     val confirm get() = confirm()
@@ -340,4 +340,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun shareErrorStack(vararg objArrs: Any) = R.string.share_error_stack.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val areYouSureUnmuteAll get() = areYouSureUnmuteAll()
+
+    /** @string Automatic generated */
+    fun areYouSureUnmuteAll(vararg objArrs: Any) = R.string.are_you_sure_unmute_all.bind(*objArrs)
 }

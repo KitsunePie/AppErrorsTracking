@@ -125,7 +125,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ignore_if_unlock"
+            android:text="@string/mute_if_unlock"
             android:textColor="@color/colorTextGray"
             android:textSize="15sp" />
     </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
@@ -147,7 +147,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ignore_if_restart"
+            android:text="@string/mute_if_restart"
             android:textColor="@color/colorTextGray"
             android:textSize="15sp" />
     </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
