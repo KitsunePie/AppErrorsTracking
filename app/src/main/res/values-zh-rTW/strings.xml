@@ -5,13 +5,13 @@
     <string name="app_info">程式情報</string>
     <string name="reopen_app">重新開啟</string>
     <string name="error_detail">異常詳解</string>
-    <string name="ignore_if_unlock">忽略（直到設備重新開屏）</string>
-    <string name="ignore_if_restart">忽略（直到設備重新開機）</string>
+    <string name="mute_if_unlock">忽略（直到設備重新開屏）</string>
+    <string name="mute_if_restart">忽略（直到設備重新開機）</string>
     <string name="close_app">結束程式</string>
     <string name="aerr_title">%1$s 已停止運作</string>
     <string name="aerr_repeated_title">%1$s 屢次停止運作</string>
-    <string name="ignore_if_unlock_tip">忽略“%1$s”的錯誤直到設備重新開屏</string>
-    <string name="ignore_if_restart_tip">忽略“%1$s”的錯誤直到設備重新開機</string>
+    <string name="mute_if_unlock_tip">忽略“%1$s”的錯誤直到設備重新開屏</string>
+    <string name="mute_if_restart_tip">忽略“%1$s”的錯誤直到設備重新開機</string>
     <string name="back">回退</string>
     <string name="copy_error_stack">複製異常堆棧</string>
     <string name="export_to_file">導出到副案</string>
@@ -31,7 +31,7 @@
     <string name="export_all">導出全部</string>
     <string name="clear_all">清空全部</string>
     <string name="errors_record">異常歷史記錄</string>
-    <string name="no_errors_data">暫時沒有異常數據紀錄</string>
+    <string name="no_list_data">暫時沒有紀錄</string>
     <string name="confirm">確認</string>
     <string name="cancel">取消</string>
     <string name="more">更多</string>
@@ -54,9 +54,9 @@
     <string name="module_is_activated">模組已激活</string>
     <string name="after_some_settings_need_restart">部分設置修改後可能需要點擊右上角重啟系統才能生效。</string>
     <string name="display_settings">顯示設置</string>
-    <string name="hide_app_icon_on_desktop">在桌面隱藏模組圖標</string>
-    <string name="hide_app_icon_on_desktop_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面顯示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
-    <string name="hide_app_icon_on_desktop_notice">注意：請務必在 LSPosed 中關閉“強制顯示桌面圖標”功能</string>
+    <string name="hide_app_icon_on_launcher">在桌面隱藏模組圖標</string>
+    <string name="hide_app_icon_on_launcher_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面顯示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
+    <string name="hide_app_icon_on_launcher_notice">注意：請務必在 LSPosed 中關閉“強制顯示桌面圖標”功能</string>
     <string name="about_module">此模組使用 YukiHookAPI 構建。 \n了解更多 https://github.com/fankes/YukiHookAPI</string>
     <string name="module_not_fully_activated">模組未完全激活，請重新開機</string>
     <string name="are_your_sure_restart_system">你確定要重新開機嗎？</string>
@@ -78,10 +78,14 @@
     <string name="enable_apps_config_template">啟用程式配置模板</string>
     <string name="mgr_apps_config_template">管理程式配置模板</string>
     <string name="view_errors_record">查看異常歷史記錄</string>
-    <string name="view_ignored_errors_apps">查看已忽略異常的程式</string>
+    <string name="view_muted_errors_apps">查看已忽略異常的程式</string>
     <string name="only_show_errors_in_front_tip">啟用後，只有發生異常的程式處於前台（正在使用中）時才會展示錯誤對話框，發生異常的後台程式雖然不會展示錯誤對話框，但是它們都會被記錄到異常歷史記錄中。</string>
     <string name="only_show_errors_in_main_process_tip">啟用後，只有程式發生的異常位於主進程（第一個 Application 實例對象）時才會展示錯誤對話框。</string>
     <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框。</string>
     <string name="view_errors_record_tip">在這裡，你可以找到從系統開機以來到現在為止的全部程式異常記錄，異常歷史記錄在重新啟動後會自動清空，你可以對記錄進行查看、導出和分享以及清空。</string>
-    <string name="view_ignored_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
+    <string name="view_muted_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
+    <string name="muted_errors_apps">已忽略異常的程式</string>
+    <string name="unmute">取消忽略</string>
+    <string name="unmute_all">取消全部忽略</string>
+    <string name="are_you_sure_unmute_all">你確認要取消全部已忽略異常的程式嗎？</string>
 </resources>

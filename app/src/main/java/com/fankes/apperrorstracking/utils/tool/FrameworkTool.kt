@@ -25,6 +25,7 @@ package com.fankes.apperrorstracking.utils.tool
 
 import android.content.Context
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.execShell
 import com.fankes.apperrorstracking.utils.factory.isRootAccess
@@ -43,17 +44,23 @@ object FrameworkTool {
     private const val SYSTEM_FRAMEWORK_NAME = "android"
 
     private const val CALL_APP_ERRORS_DATA_GET = "call_app_errors_data_get"
-    private const val CALL_APP_ERRORS_DATA_REMOVE_RESULT = "call_app_errors_data_remove_result"
+    private const val CALL_MUTED_ERRORS_APP_DATA_GET = "call_muted_app_errors_data_get"
     private const val CALL_APP_ERRORS_DATA_CLEAR = "call_app_errors_data_clear"
+    private const val CALL_UNMUTE_ALL_ERRORS_APPS_DATA = "call_unmute_all_errors_apps_data"
+    private const val CALL_APP_ERRORS_DATA_REMOVE_RESULT = "call_app_errors_data_remove_result"
     private const val CALL_APP_ERRORS_DATA_CLEAR_RESULT = "call_app_errors_data_clear_result"
-    private const val CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT = "call_ignored_errors_if_unlock_result"
-    private const val CALL_IGNORED_ERRORS_IF_RESTART_RESULT = "call_ignored_errors_if_restart_result"
+    private const val CALL_MUTED_ERRORS_IF_UNLOCK_RESULT = "call_muted_errors_if_unlock_result"
+    private const val CALL_MUTED_ERRORS_IF_RESTART_RESULT = "call_muted_errors_if_restart_result"
+    private const val CALL_UNMUTE_ERRORS_APP_DATA_RESULT = "call_unmute_errors_app_data_result"
+    private const val CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT = "call_unmute_all_errors_apps_data_result"
 
     private val CALL_OPEN_SPECIFY_APP = ChannelData<String>("call_open_specify_app")
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
     private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
-    private val CALL_IGNORED_ERRORS_IF_UNLOCK = ChannelData<String>("call_ignored_errors_if_unlock")
-    private val CALL_IGNORED_ERRORS_IF_RESTART = ChannelData<String>("call_ignored_errors_if_restart")
+    private val CALL_MUTED_ERRORS_APP_DATA_GET_RESULT = ChannelData<ArrayList<MutedErrorsAppBean>>("call_muted_app_errors_data_get_result")
+    private val CALL_UNMUTE_ERRORS_APP_DATA = ChannelData<MutedErrorsAppBean>("call_unmute_errors_app_data")
+    private val CALL_MUTED_ERRORS_IF_UNLOCK = ChannelData<String>("call_muted_errors_if_unlock")
+    private val CALL_MUTED_ERRORS_IF_RESTART = ChannelData<String>("call_muted_errors_if_restart")
 
     /**
      * 宿主注册监听
@@ -115,11 +122,11 @@ object FrameworkTool {
          * 监听忽略 APP 的错误直到设备重新解锁
          * @param result 回调包名
          */
-        fun onIgnoredErrorsIfUnlock(result: (String) -> Unit) {
+        fun onMutedErrorsIfUnlock(result: (String) -> Unit) {
             instance?.dataChannel?.with {
-                wait(CALL_IGNORED_ERRORS_IF_UNLOCK) {
+                wait(CALL_MUTED_ERRORS_IF_UNLOCK) {
                     result(it)
-                    put(CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT)
+                    put(CALL_MUTED_ERRORS_IF_UNLOCK_RESULT)
                 }
             }
         }
@@ -128,11 +135,45 @@ object FrameworkTool {
          * 监听忽略 APP 的错误直到设备重新启动
          * @param result 回调包名
          */
-        fun onIgnoredErrorsIfRestart(result: (String) -> Unit) {
+        fun onMutedErrorsIfRestart(result: (String) -> Unit) {
             instance?.dataChannel?.with {
-                wait(CALL_IGNORED_ERRORS_IF_RESTART) {
+                wait(CALL_MUTED_ERRORS_IF_RESTART) {
                     result(it)
-                    put(CALL_IGNORED_ERRORS_IF_RESTART_RESULT)
+                    put(CALL_MUTED_ERRORS_IF_RESTART_RESULT)
+                }
+            }
+        }
+
+        /**
+         * 监听发送已忽略异常的 APP 信息数组
+         * @param result 回调数据
+         */
+        fun onPushMutedErrorsAppsData(result: () -> ArrayList<MutedErrorsAppBean>) {
+            instance?.dataChannel?.with { wait(CALL_MUTED_ERRORS_APP_DATA_GET) { put(CALL_MUTED_ERRORS_APP_DATA_GET_RESULT, result()) } }
+        }
+
+        /**
+         * 监听取消指定已忽略异常的 APP
+         * @param result 回调数据
+         */
+        fun onUnmuteErrorsApp(result: (MutedErrorsAppBean) -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_UNMUTE_ERRORS_APP_DATA) {
+                    result(it)
+                    put(CALL_UNMUTE_ERRORS_APP_DATA_RESULT)
+                }
+            }
+        }
+
+        /**
+         * 监听取消全部已忽略异常的 APP
+         * @param callback 回调
+         */
+        fun onUnmuteAllErrorsApps(callback: () -> Unit) {
+            instance?.dataChannel?.with {
+                wait(CALL_UNMUTE_ALL_ERRORS_APPS_DATA) {
+                    callback()
+                    put(CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT)
                 }
             }
         }
@@ -217,10 +258,10 @@ object FrameworkTool {
      * @param packageName APP 包名
      * @param callback 成功后回调
      */
-    fun ignoredErrorsIfUnlock(context: Context, packageName: String, callback: () -> Unit) {
+    fun mutedErrorsIfUnlock(context: Context, packageName: String, callback: () -> Unit) {
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
-            wait(CALL_IGNORED_ERRORS_IF_UNLOCK_RESULT) { callback() }
-            put(CALL_IGNORED_ERRORS_IF_UNLOCK, packageName)
+            wait(CALL_MUTED_ERRORS_IF_UNLOCK_RESULT) { callback() }
+            put(CALL_MUTED_ERRORS_IF_UNLOCK, packageName)
         }
     }
 
@@ -230,10 +271,47 @@ object FrameworkTool {
      * @param packageName APP 包名
      * @param callback 成功后回调
      */
-    fun ignoredErrorsIfRestart(context: Context, packageName: String, callback: () -> Unit) {
+    fun mutedErrorsIfRestart(context: Context, packageName: String, callback: () -> Unit) {
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
-            wait(CALL_IGNORED_ERRORS_IF_RESTART_RESULT) { callback() }
-            put(CALL_IGNORED_ERRORS_IF_RESTART, packageName)
+            wait(CALL_MUTED_ERRORS_IF_RESTART_RESULT) { callback() }
+            put(CALL_MUTED_ERRORS_IF_RESTART, packageName)
+        }
+    }
+
+    /**
+     * 获取已忽略异常的 APP 信息数组
+     * @param context 实例
+     * @param result 回调数据
+     */
+    fun fetchMutedErrorsAppsData(context: Context, result: (ArrayList<MutedErrorsAppBean>) -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_MUTED_ERRORS_APP_DATA_GET_RESULT) { result(it) }
+            put(CALL_MUTED_ERRORS_APP_DATA_GET)
+        }
+    }
+
+    /**
+     * 取消指定已忽略异常的 APP
+     * @param context 实例
+     * @param mutedErrorsApp 指定已忽略异常的 APP 信息
+     * @param callback 成功后回调
+     */
+    fun unmuteErrorsApp(context: Context, mutedErrorsApp: MutedErrorsAppBean, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_UNMUTE_ERRORS_APP_DATA_RESULT) { callback() }
+            put(CALL_UNMUTE_ERRORS_APP_DATA, mutedErrorsApp)
+        }
+    }
+
+    /**
+     * 取消全部已忽略异常的 APP
+     * @param context 实例
+     * @param callback 成功后回调
+     */
+    fun unmuteAllErrorsApps(context: Context, callback: () -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT) { callback() }
+            put(CALL_UNMUTE_ALL_ERRORS_APPS_DATA)
         }
     }
 }

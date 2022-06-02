@@ -5,13 +5,13 @@
     <string name="app_info">应用信息</string>
     <string name="reopen_app">重新打开</string>
     <string name="error_detail">错误详情</string>
-    <string name="ignore_if_unlock">忽略（直到设备重新解锁）</string>
-    <string name="ignore_if_restart">忽略（直到设备重新启动）</string>
+    <string name="mute_if_unlock">忽略（直到设备重新解锁）</string>
+    <string name="mute_if_restart">忽略（直到设备重新启动）</string>
     <string name="close_app">关闭应用</string>
     <string name="aerr_title">%1$s 已停止运行</string>
     <string name="aerr_repeated_title">%1$s 屡次停止运行</string>
-    <string name="ignore_if_unlock_tip">忽略“%1$s”的错误直到设备重新解锁</string>
-    <string name="ignore_if_restart_tip">忽略“%1$s”的错误直到设备重新启动</string>
+    <string name="mute_if_unlock_tip">忽略“%1$s”的错误直到设备重新解锁</string>
+    <string name="mute_if_restart_tip">忽略“%1$s”的错误直到设备重新启动</string>
     <string name="back">返回</string>
     <string name="copy_error_stack">复制异常堆栈</string>
     <string name="export_to_file">导出到文件</string>
@@ -31,7 +31,7 @@
     <string name="export_all">导出全部</string>
     <string name="clear_all">清空全部</string>
     <string name="errors_record">异常历史记录</string>
-    <string name="no_errors_data">暂时没有异常数据记录</string>
+    <string name="no_list_data">暂时没有记录</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="more">更多</string>
@@ -54,9 +54,9 @@
     <string name="module_is_activated">模块已激活</string>
     <string name="after_some_settings_need_restart">部分设置修改后可能需要点击右上角重启系统才能生效。</string>
     <string name="display_settings">显示设置</string>
-    <string name="hide_app_icon_on_desktop">在桌面隐藏模块图标</string>
-    <string name="hide_app_icon_on_desktop_tip">隐藏模块图标后界面可能会被关闭，将不会再在桌面显示，你可以在 EdXposed、LSPosed 中找到模块设置并打开。</string>
-    <string name="hide_app_icon_on_desktop_notice">注意：请务必在 LSPosed 中关闭“强制显示桌面图标”功能</string>
+    <string name="hide_app_icon_on_launcher">在桌面隐藏模块图标</string>
+    <string name="hide_app_icon_on_launcher_tip">隐藏模块图标后界面可能会被关闭，将不会再在桌面显示，你可以在 EdXposed、LSPosed 中找到模块设置并打开。</string>
+    <string name="hide_app_icon_on_launcher_notice">注意：请务必在 LSPosed 中关闭“强制显示桌面图标”功能</string>
     <string name="about_module">此模块使用 YukiHookAPI 构建。\n了解更多 https://github.com/fankes/YukiHookAPI</string>
     <string name="module_not_fully_activated">模块未完全激活，请重启系统</string>
     <string name="are_your_sure_restart_system">你确定要重启系统吗？</string>
@@ -78,10 +78,14 @@
     <string name="enable_apps_config_template">启用应用配置模板</string>
     <string name="mgr_apps_config_template">管理应用配置模板</string>
     <string name="view_errors_record">查看异常历史记录</string>
-    <string name="view_ignored_errors_apps">查看已忽略异常的应用</string>
+    <string name="view_muted_errors_apps">查看已忽略异常的应用</string>
     <string name="only_show_errors_in_front_tip">启用后，只有发生异常的应用处于前台（正在使用中）时才会展示错误对话框，发生异常的后台应用虽然不会展示错误对话框，但是它们都会被记录到异常历史记录中。</string>
     <string name="only_show_errors_in_main_process_tip">启用后，只有应用发生的异常位于主进程（第一个 Application 实例对象）时才会展示错误对话框。</string>
     <string name="apps_config_template_tip">你可以在这里对每个应用发生异常时，单独配置其在发生异常时是否展示错误对话框。</string>
     <string name="view_errors_record_tip">在这里，你可以找到从系统开机以来到现在为止的全部应用异常记录，异常历史记录在重新启动后会自动清空，你可以对记录进行查看、导出和分享以及清空。</string>
-    <string name="view_ignored_errors_apps_tip">在这里，你可以找到已被你以不同形式手动忽略异常的应用，这个列表将会在重新启动后自动清空，你可以对这些已忽略的应用进行管理以及从忽略列表中移除它们。</string>
+    <string name="view_muted_errors_apps_tip">在这里，你可以找到已被你以不同形式手动忽略异常的应用，这个列表将会在重新启动后自动清空，你可以对这些已忽略的应用进行管理以及从忽略列表中移除它们。</string>
+    <string name="muted_errors_apps">已忽略异常的应用</string>
+    <string name="unmute">取消忽略</string>
+    <string name="unmute_all">取消全部忽略</string>
+    <string name="are_you_sure_unmute_all">你确定要取消全部已忽略异常的应用吗？</string>
 </resources>

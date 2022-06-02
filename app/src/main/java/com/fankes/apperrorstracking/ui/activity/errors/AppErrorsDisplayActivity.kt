@@ -87,14 +87,14 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
                     }
                 }
                 ignoreIfUnlockItem.setOnClickListener {
-                    FrameworkTool.ignoredErrorsIfUnlock(context, appErrorsDisplay.packageName) {
-                        toast(LocaleString.ignoreIfUnlockTip(appErrorsDisplay.appName))
+                    FrameworkTool.mutedErrorsIfUnlock(context, appErrorsDisplay.packageName) {
+                        toast(LocaleString.muteIfUnlockTip(appErrorsDisplay.appName))
                         cancel()
                     }
                 }
                 ignoreIfRestartItem.setOnClickListener {
-                    FrameworkTool.ignoredErrorsIfRestart(context, appErrorsDisplay.packageName) {
-                        toast(LocaleString.ignoreIfRestartTip(appErrorsDisplay.appName))
+                    FrameworkTool.mutedErrorsIfRestart(context, appErrorsDisplay.packageName) {
+                        toast(LocaleString.muteIfRestartTip(appErrorsDisplay.appName))
                         cancel()
                     }
                 }

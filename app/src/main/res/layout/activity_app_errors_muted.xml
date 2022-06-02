@@ -35,29 +35,19 @@
             android:layout_marginEnd="2.5dp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="@string/errors_record"
+            android:text="@string/muted_errors_apps"
             android:textColor="@color/colorTextGray"
             android:textSize="19sp"
             android:textStyle="bold" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/clear_all_icon"
+            android:id="@+id/unmute_all_icon"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_clear"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/clear_all"
-            android:visibility="gone" />
-
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/export_all_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_export"
-            android:tint="@color/colorTextGray"
-            android:tooltipText="@string/export_all"
+            android:tooltipText="@string/unmute_all"
             android:visibility="gone" />
     </LinearLayout>
 

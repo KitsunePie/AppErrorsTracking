@@ -33,6 +33,7 @@ import com.fankes.apperrorstracking.data.DataConst
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openBrowser
@@ -72,13 +73,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         binding.enableAppsConfigsTemplateSwitch.setOnCheckedChangeListener { btn, b ->
             if (b) btn.isChecked = false
-            toastComingSooon()
+            toastComingSoon()
         }
         /** 管理应用配置模板按钮点击事件 */
-        binding.mgrAppsConfigsTemplateButton.setOnClickListener { toastComingSooon() }
+        binding.mgrAppsConfigsTemplateButton.setOnClickListener { toastComingSoon() }
         /** 功能管理按钮点击事件 */
         binding.viewErrorsRecordButton.setOnClickListener { navigate<AppErrorsRecordActivity>() }
-        binding.viewIgnoredErrorsAppsButton.setOnClickListener { toastComingSooon() }
+        binding.viewMutedErrorsAppsButton.setOnClickListener { navigate<AppErrorsMutedActivity>() }
         /** 重启按钮点击事件 */
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */
@@ -111,7 +112,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     /** 敬请期待 */
-    private fun toastComingSooon() = toast(msg = "Coming soon")
+    private fun toastComingSoon() = toast(msg = "Coming soon")
 
     override fun onResume() {
         super.onResume()

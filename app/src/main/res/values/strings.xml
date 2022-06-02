@@ -2,16 +2,16 @@
     <string name="app_name">AppErrorsTracking</string>
     <string name="xposed_desc">Added more features to app\'s crash dialog, fixed custom rom deleted dialog, the best experience to Android developer.</string>
     <string name="empty_lable" translatable="false" />
-    <string name="app_info">App\'s Info</string>
+    <string name="app_info">App Info</string>
     <string name="reopen_app">Reopen App</string>
     <string name="error_detail">Error Detail</string>
-    <string name="ignore_if_unlock">Mute until device unlocks</string>
-    <string name="ignore_if_restart">Mute until device restarts</string>
+    <string name="mute_if_unlock">Mute until device unlocks</string>
+    <string name="mute_if_restart">Mute until device restarts</string>
     <string name="close_app">Close App</string>
     <string name="aerr_title">%1$s has stopped</string>
     <string name="aerr_repeated_title">%1$s keeps stopping</string>
-    <string name="ignore_if_unlock_tip">Ignore errors for \'%1$s\' until device is re-unlocked</string>
-    <string name="ignore_if_restart_tip">Ignore errors for \'%1$s\' until device reboots</string>
+    <string name="mute_if_unlock_tip">Muted errors for \'%1$s\' until device is re-unlocked</string>
+    <string name="mute_if_restart_tip">Muted errors for \'%1$s\' until device reboots</string>
     <string name="back">Back</string>
     <string name="copy_error_stack">Copy error stack</string>
     <string name="export_to_file">Export to file</string>
@@ -30,8 +30,8 @@
     <string name="output_stack_fail">Failed to export exception stack</string>
     <string name="export_all">Export all</string>
     <string name="clear_all">Clear all</string>
-    <string name="errors_record">AppErrorsRecord</string>
-    <string name="no_errors_data">No errors data for now</string>
+    <string name="errors_record">App Errors Record</string>
+    <string name="no_list_data">No data for now</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="more">More</string>
@@ -54,9 +54,9 @@
     <string name="module_is_activated">Module is activated</string>
     <string name="after_some_settings_need_restart">After some settings are modified, you may need to click the upper right corner to restart the system to take effect.</string>
     <string name="display_settings">Display settings</string>
-    <string name="hide_app_icon_on_desktop">Hide app icons on desktop</string>
-    <string name="hide_app_icon_on_desktop_tip">After hiding the app icon, the interface may be closed and will no longer be displayed on the desktop. You can find and open the module settings in EdXposed or LSPosed.</string>
-    <string name="hide_app_icon_on_desktop_notice">Note: Be sure to turn off the \"Force apps to show launcher icons\" feature in LSPosed</string>
+    <string name="hide_app_icon_on_launcher">Hide app icons on launcher</string>
+    <string name="hide_app_icon_on_launcher_tip">After hiding the app icon, the interface may be closed and will no longer be displayed on the launcher. You can find and open the module settings in EdXposed or LSPosed.</string>
+    <string name="hide_app_icon_on_launcher_notice">Note: Be sure to turn off the \"Force apps to show launcher icons\" feature in LSPosed</string>
     <string name="about_module">This module is made by YukiHookAPI. \nLearn more https://github.com/fankes/YukiHookAPI</string>
     <string name="module_not_fully_activated">Module not fully activated</string>
     <string name="are_your_sure_restart_system">Are you sure you want to restart system?</string>
@@ -77,11 +77,15 @@
     <string name="only_show_errors_in_main_process">Show error dialogs only for main process apps</string>
     <string name="enable_apps_config_template">Enable apps config template</string>
     <string name="mgr_apps_config_template">Management apps config template</string>
-    <string name="view_errors_record">View apps errors record</string>
-    <string name="view_ignored_errors_apps">View ignored errors apps</string>
+    <string name="view_errors_record">View app errors record</string>
+    <string name="view_muted_errors_apps">View muted errors apps</string>
     <string name="only_show_errors_in_front_tip">After enabling, the error dialog will only be displayed when the abnormal apps is in the foreground (in use). Although the abnormal background application will not display the error dialog, they will be recorded in the errors history.</string>
     <string name="only_show_errors_in_main_process_tip">After enabling, the error dialog will only be displayed if the exception occurred in the application is in the main process (the first Application instance object).</string>
     <string name="apps_config_template_tip">Here you can individually configure whether to display an error dialog when an exception occurs for each apps.</string>
-    <string name="view_errors_record_tip">Here you can find all apps exception records since the system was turned on until now. The exception history will be automatically cleared after restarting. You can view, export, share and clear the records.</string>
-    <string name="view_ignored_errors_apps_tip">Here you can find apps that you have manually ignored exceptions in different forms. This list will be automatically cleared after restarting. You can manage these ignored applications and remove them from the ignore list.</string>
+    <string name="view_errors_record_tip">Here you can find all apps errors records since the system was turned on until now. The exception history will be automatically cleared after restarting. You can view, export, share and clear the records.</string>
+    <string name="view_muted_errors_apps_tip">Here you can find apps that you have manually muted errors in different forms. This list will be automatically cleared after restarting. You can manage these ignored applications and remove them from the mute list.</string>
+    <string name="muted_errors_apps">Muted Errors Apps</string>
+    <string name="unmute">Unmute</string>
+    <string name="unmute_all">Unmute all</string>
+    <string name="are_you_sure_unmute_all">Are you sure you want to unmute all apps?</string>
 </resources>

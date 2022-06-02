@@ -30,6 +30,7 @@ import android.os.Message
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.data.DataConst
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
@@ -65,10 +66,10 @@ object FrameworkHooker : YukiBaseHooker() {
     )
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
-    private var ignoredErrorsIfUnlockApps = HashSet<String>()
+    private var mutedErrorsIfUnlockApps = HashSet<String>()
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
-    private var ignoredErrorsIfRestartApps = HashSet<String>()
+    private var mutedErrorsIfRestartApps = HashSet<String>()
 
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
     private val appErrorsRecords = ArrayList<AppErrorsInfoBean>()
@@ -77,7 +78,7 @@ object FrameworkHooker : YukiBaseHooker() {
     private fun register() {
         onAppLifecycle {
             /** 解锁后清空已记录的忽略错误 APP */
-            registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> ignoredErrorsIfUnlockApps.clear() }
+            registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> mutedErrorsIfUnlockApps.clear() }
             /** 刷新模块 Resources 缓存 */
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
         }
@@ -86,8 +87,26 @@ object FrameworkHooker : YukiBaseHooker() {
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData { appErrorsRecords.remove(it) }
             onClearAppErrorsInfoData { appErrorsRecords.clear() }
-            onIgnoredErrorsIfUnlock { ignoredErrorsIfUnlockApps.add(it) }
-            onIgnoredErrorsIfRestart { ignoredErrorsIfRestartApps.add(it) }
+            onMutedErrorsIfUnlock { mutedErrorsIfUnlockApps.add(it) }
+            onMutedErrorsIfRestart { mutedErrorsIfRestartApps.add(it) }
+            onPushMutedErrorsAppsData {
+                arrayListOf<MutedErrorsAppBean>().apply {
+                    mutedErrorsIfUnlockApps.takeIf { it.isNotEmpty() }
+                        ?.forEach { add(MutedErrorsAppBean(MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS, it)) }
+                    mutedErrorsIfRestartApps.takeIf { it.isNotEmpty() }
+                        ?.forEach { add(MutedErrorsAppBean(MutedErrorsAppBean.MuteType.UNTIL_REBOOTS, it)) }
+                }
+            }
+            onUnmuteErrorsApp {
+                when (it.type) {
+                    MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> mutedErrorsIfUnlockApps.remove(it.packageName)
+                    MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> mutedErrorsIfRestartApps.remove(it.packageName)
+                }
+            }
+            onUnmuteAllErrorsApps {
+                mutedErrorsIfUnlockApps.clear()
+                mutedErrorsIfRestartApps.clear()
+            }
         }
     }
 
@@ -179,7 +198,7 @@ object FrameworkHooker : YukiBaseHooker() {
                         return@afterHook
                     }
                     /** 判断是否为已忽略的 APP */
-                    if (ignoredErrorsIfUnlockApps.contains(packageName) || ignoredErrorsIfRestartApps.contains(packageName)) return@afterHook
+                    if (mutedErrorsIfUnlockApps.contains(packageName) || mutedErrorsIfRestartApps.contains(packageName)) return@afterHook
                     /** 判断是否为后台进程 */
                     if ((isBackgroundProcess || context.isAppCanOpened(packageName).not())
                         && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
