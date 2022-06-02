@@ -25,9 +25,10 @@ package com.fankes.apperrorstracking.ui.activity.errors
 
 import android.app.Activity
 import android.content.Intent
-import android.view.*
+import android.view.ContextMenu
+import android.view.MenuItem
+import android.view.View
 import android.widget.AdapterView.AdapterContextMenuInfo
-import android.widget.BaseAdapter
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
@@ -83,33 +84,19 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         }
         /** 设置列表元素和 Adapter */
         binding.listView.apply {
-            adapter = object : BaseAdapter() {
-
-                override fun getCount() = listData.size
-
-                override fun getItem(position: Int) = listData[position]
-
-                override fun getItemId(position: Int) = position.toLong()
-
-                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                    var cView = convertView
-                    val holder: AdapterAppErrorsRecordBinding
-                    if (convertView == null) {
-                        holder = AdapterAppErrorsRecordBinding.inflate(LayoutInflater.from(context))
-                        cView = holder.root
-                        cView.tag = holder
-                    } else holder = convertView.tag as AdapterAppErrorsRecordBinding
-                    getItem(position).also {
-                        holder.appIcon.setImageDrawable(appIcon(it.packageName))
-                        holder.appNameText.text = appName(it.packageName)
-                        holder.errorsTimeText.text = it.crossTime
-                        holder.errorTypeIcon.setImageResource(if (it.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
-                        holder.errorTypeText.text = if (it.isNativeCrash) "Native crash" else it.exceptionClassName.let { text ->
+            bindAdapter {
+                onBindDatas { listData }
+                onBindViews<AdapterAppErrorsRecordBinding> { binding, position ->
+                    listData[position].also { bean ->
+                        binding.appIcon.setImageDrawable(appIcon(bean.packageName))
+                        binding.appNameText.text = appName(bean.packageName)
+                        binding.errorsTimeText.text = bean.crossTime
+                        binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
+                        binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.let { text ->
                             if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text
                         }
-                        holder.errorMsgText.text = it.exceptionMessage
+                        binding.errorMsgText.text = bean.exceptionMessage
                     }
-                    return cView!!
                 }
             }.apply { onChanged = { notifyDataSetChanged() } }
             registerForContextMenu(this)
