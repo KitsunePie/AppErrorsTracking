@@ -129,4 +129,19 @@
         android:text="@string/throw_native_error"
         android:textColor="@color/colorTextGray"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/throw_multi_process_error_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_round"
+        android:gravity="center"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="@string/throw_multi_process_error"
+        android:textColor="@color/colorTextGray"
+        android:textSize="15sp" />
 </LinearLayout>

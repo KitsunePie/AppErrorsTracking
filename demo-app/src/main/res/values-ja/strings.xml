@@ -8,4 +8,6 @@
     <string name="throw_nullpointer">NullPointerException をスロー</string>
     <string name="throw_illegalstate">IllegalStateException をスロー</string>
     <string name="throw_runtime">RuntimeException をスロー</string>
+    <string name="throw_multi_process_error">マルチプロセスエラーをスロー</string>
+    <string name="suicide_in_progress">自殺中</string>
 </resources>

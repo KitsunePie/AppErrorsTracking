@@ -7,4 +7,6 @@
     <string name="throw_nullpointer">throw NullPointerException</string>
     <string name="throw_exception">throw Exception</string>
     <string name="throw_native_error">throw Native Error</string>
+    <string name="throw_multi_process_error">throw Multi-Process Exception</string>
+    <string name="suicide_in_progress">Suicide in progress</string>
 </resources>

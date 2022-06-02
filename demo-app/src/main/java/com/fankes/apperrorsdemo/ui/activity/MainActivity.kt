@@ -21,7 +21,10 @@
  */
 package com.fankes.apperrorsdemo.ui.activity
 
+import android.content.Intent
+import android.os.SystemClock
 import com.fankes.apperrorsdemo.databinding.ActivityMainBinding
+import com.fankes.apperrorsdemo.databinding.ActivityMultiProcessBinding
 import com.fankes.apperrorsdemo.native.Channel
 import com.fankes.apperrorsdemo.ui.activity.base.BaseActivity
 
@@ -34,5 +37,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.throwNullPointerButton.setOnClickListener { Channel.throwNullPointerException() }
         binding.throwExceptionButton.setOnClickListener { Channel.throwException() }
         binding.throwNativeErrorButton.setOnClickListener { Channel.throwNativeException() }
+        binding.throwMultiProcessErrorButton.setOnClickListener { startActivity(Intent(this, MultiProcessActivity::class.java)) }
+    }
+
+    class MultiProcessActivity : BaseActivity<ActivityMultiProcessBinding>() {
+
+        override fun onCreate() {
+            Thread {
+                SystemClock.sleep(600)
+                error("Throw in multi-process")
+            }.start()
+        }
     }
 }
