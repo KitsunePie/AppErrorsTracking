@@ -45,26 +45,45 @@ import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
 /**
+ * 构造 [VB] 自定义 View 对话框
+ * @param initiate 对话框方法体
+ */
+@JvmName(name = "showDialog-VB")
+inline fun <reified VB : ViewBinding> Context.showDialog(initiate: DialogBuilder<VB>.() -> Unit) =
+    DialogBuilder<VB>(context = this, VB::class.java).apply(initiate).show()
+
+/**
  * 构造对话框
  * @param initiate 对话框方法体
  */
-fun Context.showDialog(initiate: DialogBuilder.() -> Unit) = DialogBuilder(context = this).apply(initiate).show()
+inline fun Context.showDialog(initiate: DialogBuilder<*>.() -> Unit) = DialogBuilder<ViewBinding>(context = this).apply(initiate).show()
 
 /**
  * 对话框构造器
  * @param context 实例
+ * @param bindingClass [ViewBinding] 的 [Class] 实例 or null
  */
-class DialogBuilder(val context: Context) {
+class DialogBuilder<VB : ViewBinding>(val context: Context, private val bindingClass: Class<*>? = null) {
 
     private var instanceAndroidX: androidx.appcompat.app.AlertDialog.Builder? = null // 实例对象
     private var instanceAndroid: android.app.AlertDialog.Builder? = null // 实例对象
 
     private var onCancel: (() -> Unit)? = null // 对话框取消监听
-
     private var dialogInstance: Dialog? = null // 对话框实例
+    private var customLayoutView: View? = null // 自定义布局
 
-    @CauseProblemsApi
-    var customLayoutView: View? = null // 自定义布局
+    /**
+     * 获取 [DialogBuilder] 绑定布局对象
+     * @return [VB]
+     */
+    val binding by lazy {
+        bindingClass?.method {
+            name = "inflate"
+            param(LayoutInflaterClass)
+        }?.get()?.invoke<VB>(LayoutInflater.from(context))?.apply {
+            customLayoutView = root
+        } ?: error("This dialog maybe not a custom view dialog")
+    }
 
     /**
      * 是否需要使用 AndroidX 风格对话框
@@ -130,18 +149,6 @@ class DialogBuilder(val context: Context) {
         }
 
     /**
-     * 设置对话框自定义布局
-     * @return [ViewBinding]
-     */
-    inline fun <reified T : ViewBinding> bind() =
-        T::class.java.method {
-            name = "inflate"
-            param(LayoutInflaterClass)
-        }.get().invoke<T>(LayoutInflater.from(context))?.apply {
-            customLayoutView = root
-        } ?: error("binding failed")
-
-    /**
      * 设置对话框确定按钮
      * @param text 按钮文本内容
      * @param callback 点击事件
@@ -186,7 +193,10 @@ class DialogBuilder(val context: Context) {
     fun cancel() = dialogInstance?.cancel()
 
     /** 显示对话框 */
-    internal fun show() {
+    @CauseProblemsApi
+    fun show() {
+        /** 若当前自定义 View 的对话框没有调用 [binding] 将会对其手动调用一次以确保显示布局 */
+        if (bindingClass != null) binding
         if (isUsingAndroidX) runCatching {
             instanceAndroidX?.create()?.apply {
                 customLayoutView?.let { setView(it) }

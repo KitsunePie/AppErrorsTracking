@@ -59,44 +59,42 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
         val appErrorsDisplay = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_DISPLAY) as? AppErrorsDisplayBean }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsDisplay")
         /** 显示对话框 */
-        showDialog {
+        showDialog<DiaAppErrorsDisplayBinding> {
             title = appErrorsDisplay.title
-            bind<DiaAppErrorsDisplayBinding>().apply {
-                processNameText.isVisible = appErrorsDisplay.packageName != appErrorsDisplay.processName
-                appInfoItem.isVisible = appErrorsDisplay.isShowAppInfoButton
-                closeAppItem.isVisible = appErrorsDisplay.isShowReopenButton.not() && appErrorsDisplay.isShowCloseAppButton
-                reopenAppItem.isVisible = appErrorsDisplay.isShowReopenButton
-                processNameText.text = LocaleString.crashProcess(appErrorsDisplay.processName)
-                appInfoItem.setOnClickListener {
+            binding.processNameText.isVisible = appErrorsDisplay.packageName != appErrorsDisplay.processName
+            binding.appInfoItem.isVisible = appErrorsDisplay.isShowAppInfoButton
+            binding.closeAppItem.isVisible = appErrorsDisplay.isShowReopenButton.not() && appErrorsDisplay.isShowCloseAppButton
+            binding.reopenAppItem.isVisible = appErrorsDisplay.isShowReopenButton
+            binding.processNameText.text = LocaleString.crashProcess(appErrorsDisplay.processName)
+            binding.appInfoItem.setOnClickListener {
+                cancel()
+                openSelfSetting(appErrorsDisplay.packageName)
+            }
+            binding.closeAppItem.setOnClickListener { cancel() }
+            binding.reopenAppItem.setOnClickListener {
+                FrameworkTool.openAppUsedFramework(context, appErrorsDisplay.packageName)
+                cancel()
+            }
+            binding.errorDetailItem.setOnClickListener {
+                FrameworkTool.fetchAppErrorsInfoData(context) { appErrorsInfos ->
+                    appErrorsInfos.takeIf { it.isNotEmpty() }
+                        ?.filter { it.packageName == appErrorsDisplay.packageName }
+                        ?.takeIf { it.isNotEmpty() }?.get(0)?.let {
+                            AppErrorsDetailActivity.start(context, it)
+                            cancel()
+                        } ?: toast(msg = "No errors founded")
+                }
+            }
+            binding.ignoreIfUnlockItem.setOnClickListener {
+                FrameworkTool.mutedErrorsIfUnlock(context, appErrorsDisplay.packageName) {
+                    toast(LocaleString.muteIfUnlockTip(appErrorsDisplay.appName))
                     cancel()
-                    openSelfSetting(appErrorsDisplay.packageName)
                 }
-                closeAppItem.setOnClickListener { cancel() }
-                reopenAppItem.setOnClickListener {
-                    FrameworkTool.openAppUsedFramework(context, appErrorsDisplay.packageName)
+            }
+            binding.ignoreIfRestartItem.setOnClickListener {
+                FrameworkTool.mutedErrorsIfRestart(context, appErrorsDisplay.packageName) {
+                    toast(LocaleString.muteIfRestartTip(appErrorsDisplay.appName))
                     cancel()
-                }
-                errorDetailItem.setOnClickListener {
-                    FrameworkTool.fetchAppErrorsInfoData(context) { appErrorsInfos ->
-                        appErrorsInfos.takeIf { it.isNotEmpty() }
-                            ?.filter { it.packageName == appErrorsDisplay.packageName }
-                            ?.takeIf { it.isNotEmpty() }?.get(0)?.let {
-                                AppErrorsDetailActivity.start(context, it)
-                                cancel()
-                            } ?: toast(msg = "No errors founded")
-                    }
-                }
-                ignoreIfUnlockItem.setOnClickListener {
-                    FrameworkTool.mutedErrorsIfUnlock(context, appErrorsDisplay.packageName) {
-                        toast(LocaleString.muteIfUnlockTip(appErrorsDisplay.appName))
-                        cancel()
-                    }
-                }
-                ignoreIfRestartItem.setOnClickListener {
-                    FrameworkTool.mutedErrorsIfRestart(context, appErrorsDisplay.packageName) {
-                        toast(LocaleString.muteIfRestartTip(appErrorsDisplay.appName))
-                        cancel()
-                    }
                 }
             }
             onCancel { finish() }
