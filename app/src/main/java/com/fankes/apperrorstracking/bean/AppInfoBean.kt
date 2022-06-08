@@ -17,16 +17,17 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/5/14.
+ * This file is Created by fankes on 2022/6/8.
  */
-package com.fankes.apperrorstracking.data
+package com.fankes.apperrorstracking.bean
 
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+import android.graphics.drawable.Drawable
+import java.io.Serializable
 
-object DataConst {
-
-    val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
-    val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PrefsData("_enable_only_show_errors_in_front", false)
-    val ENABLE_ONLY_SHOW_ERRORS_IN_MAIN = PrefsData("_enable_only_show_errors_in_main", false)
-    val ENABLE_APP_CONFIG_TEMPLATE = PrefsData("_enable_app_config_template", false)
-}
+/**
+ * 应用信息 bean
+ * @param icon 图标
+ * @param name APP 名称
+ * @param packageName APP 包名
+ */
+data class AppInfoBean(var icon: Drawable? = null, var name: String, var packageName: String) : Serializable

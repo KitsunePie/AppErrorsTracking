@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorThemeBackground"
+    android:orientation="vertical"
+    tools:context=".ui.activity.main.ConfigureActivity"
+    tools:ignore="ContentDescription,UseCompoundDrawables">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:gravity="center|start"
+        android:paddingLeft="15dp"
+        android:paddingTop="13dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/title_back_icon"
+            style="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:src="@mipmap/ic_back"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2.5dp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:singleLine="true"
+                android:text="@string/apps_config_template"
+                android:textColor="@color/colorTextGray"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/title_count_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/loading"
+                android:textColor="@color/colorTextDark"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/filter_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_filter"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/filter_by_condition"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:animateLayoutChanges="true">
+
+        <ProgressBar
+            android:id="@+id/list_progress_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/list_no_data_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:text="@string/no_list_result"
+            android:textColor="@color/colorTextDark"
+            android:textSize="17sp"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/trans"
+            android:dividerHeight="15dp"
+            android:fadingEdgeLength="10dp"
+            android:listSelector="@color/trans"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

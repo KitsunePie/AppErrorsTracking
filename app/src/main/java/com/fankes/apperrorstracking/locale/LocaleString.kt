@@ -346,4 +346,46 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun areYouSureUnmuteAll(vararg objArrs: Any) = R.string.are_you_sure_unmute_all.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val filterByCondition get() = filterByCondition()
+
+    /** @string Automatic generated */
+    fun filterByCondition(vararg objArrs: Any) = R.string.filter_by_condition.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val clearFilters get() = clearFilters()
+
+    /** @string Automatic generated */
+    fun clearFilters(vararg objArrs: Any) = R.string.clear_filters.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val resultCount get() = resultCount()
+
+    /** @string Automatic generated */
+    fun resultCount(vararg objArrs: Any) = R.string.result_count.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val loading get() = loading()
+
+    /** @string Automatic generated */
+    fun loading(vararg objArrs: Any) = R.string.loading.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val showErrorsDialog get() = showErrorsDialog()
+
+    /** @string Automatic generated */
+    fun showErrorsDialog(vararg objArrs: Any) = R.string.show_errors_dialog.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val showErrorsToast get() = showErrorsToast()
+
+    /** @string Automatic generated */
+    fun showErrorsToast(vararg objArrs: Any) = R.string.show_errors_toast.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val showNothing get() = showNothing()
+
+    /** @string Automatic generated */
+    fun showNothing(vararg objArrs: Any) = R.string.show_nothing.bind(*objArrs)
 }

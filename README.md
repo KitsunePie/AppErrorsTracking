@@ -52,11 +52,9 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 ## Future
 
-此项目依然在开发中，现在未解决的问题和包含的问题如下
+此项目依然在开发中，正在开发的功能如下
 
-- 应用配置模板功能
-
-- 更多功能 (计划内)
+- 应用异常统计信息功能
 
 ## License
 
