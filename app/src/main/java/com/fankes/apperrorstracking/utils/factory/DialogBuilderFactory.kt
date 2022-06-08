@@ -38,6 +38,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.highcapable.yukihookapi.annotation.CauseProblemsApi
@@ -93,8 +94,9 @@ class DialogBuilder<VB : ViewBinding>(val context: Context, private val bindingC
 
     init {
         if (isUsingAndroidX) runCatching {
-            instanceAndroidX = MaterialAlertDialogBuilder(context).apply {
-                background = (background as MaterialShapeDrawable).apply { setCornerSize(15.dpFloat(context)) }
+            instanceAndroidX = MaterialAlertDialogBuilder(context).also { builder ->
+                if (context is AppErrorsDisplayActivity)
+                    builder.background = (builder.background as MaterialShapeDrawable).apply { setCornerSize(15.dpFloat(context)) }
             }
         } else runCatching {
             instanceAndroid = android.app.AlertDialog.Builder(
