@@ -25,6 +25,8 @@ package com.fankes.apperrorstracking.utils.tool
 
 import android.content.Context
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.bean.AppFiltersBean
+import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.execShell
@@ -55,7 +57,9 @@ object FrameworkTool {
     private const val CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT = "call_unmute_all_errors_apps_data_result"
 
     private val CALL_OPEN_SPECIFY_APP = ChannelData<String>("call_open_specify_app")
+    private val CALL_APP_LIST_DATA_GET = ChannelData<AppFiltersBean>("call_app_info_list_data_get")
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
+    private val CALL_APP_LIST_DATA_GET_RESULT = ChannelData<ArrayList<AppInfoBean>>("call_app_info_list_data_get_result")
     private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
     private val CALL_MUTED_ERRORS_APP_DATA_GET_RESULT = ChannelData<ArrayList<MutedErrorsAppBean>>("call_muted_app_errors_data_get_result")
     private val CALL_UNMUTE_ERRORS_APP_DATA = ChannelData<MutedErrorsAppBean>("call_unmute_errors_app_data")
@@ -176,6 +180,14 @@ object FrameworkTool {
                     put(CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT)
                 }
             }
+        }
+
+        /**
+         * 监听发送已安装 APP 列表数组
+         * @param result 回调数据
+         */
+        fun onPushAppListData(result: (AppFiltersBean) -> ArrayList<AppInfoBean>) {
+            instance?.dataChannel?.with { wait(CALL_APP_LIST_DATA_GET) { put(CALL_APP_LIST_DATA_GET_RESULT, result(it)) } }
         }
     }
 
@@ -312,6 +324,19 @@ object FrameworkTool {
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
             wait(CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT) { callback() }
             put(CALL_UNMUTE_ALL_ERRORS_APPS_DATA)
+        }
+    }
+
+    /**
+     * 获取已安装 APP 列表数组
+     * @param context 实例
+     * @param appFilters 过滤条件
+     * @param result 回调数据
+     */
+    fun fetchAppListData(context: Context, appFilters: AppFiltersBean, result: (ArrayList<AppInfoBean>) -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_APP_LIST_DATA_GET_RESULT) { result(it) }
+            put(CALL_APP_LIST_DATA_GET, appFilters)
         }
     }
 }

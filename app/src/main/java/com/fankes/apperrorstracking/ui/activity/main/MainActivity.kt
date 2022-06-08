@@ -53,7 +53,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
         binding.onlyShowErrorsInFrontSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
+        binding.enableAppsConfigsTemplateSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
         binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
+        binding.mgrAppsConfigsTemplateButton.isVisible = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_HIDE_ICON, b)
@@ -72,14 +74,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN, b)
         }
         binding.enableAppsConfigsTemplateSwitch.setOnCheckedChangeListener { btn, b ->
-            if (b) btn.isChecked = false
-            toastComingSoon()
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            binding.mgrAppsConfigsTemplateButton.isVisible = b
+            modulePrefs.put(DataConst.ENABLE_APP_CONFIG_TEMPLATE, b)
         }
         /** 管理应用配置模板按钮点击事件 */
-        binding.mgrAppsConfigsTemplateButton.setOnClickListener { toastComingSoon() }
+        binding.mgrAppsConfigsTemplateButton.setOnClickListener { whenActivated { navigate<ConfigureActivity>() } }
         /** 功能管理按钮点击事件 */
-        binding.viewErrorsRecordButton.setOnClickListener { navigate<AppErrorsRecordActivity>() }
-        binding.viewMutedErrorsAppsButton.setOnClickListener { navigate<AppErrorsMutedActivity>() }
+        binding.viewErrorsRecordButton.setOnClickListener { whenActivated { navigate<AppErrorsRecordActivity>() } }
+        binding.viewMutedErrorsAppsButton.setOnClickListener { whenActivated { navigate<AppErrorsMutedActivity>() } }
         /** 重启按钮点击事件 */
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */
@@ -111,8 +114,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
     }
 
-    /** 敬请期待 */
-    private fun toastComingSoon() = toast(msg = "Coming soon")
+    /**
+     * 当模块激活后才能执行相应功能
+     * @param callback 激活后回调
+     */
+    private inline fun whenActivated(callback: () -> Unit) {
+        if (YukiHookAPI.Status.isXposedModuleActive) callback() else toast(LocaleString.moduleNotActivated)
+    }
 
     override fun onResume() {
         super.onResume()

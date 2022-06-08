@@ -52,7 +52,6 @@
     <string name="module_version">Module version: %1$s</string>
     <string name="system_version">System version: %1$s</string>
     <string name="module_is_activated">Module is activated</string>
-    <string name="after_some_settings_need_restart">After some settings are modified, you may need to click the upper right corner to restart the system to take effect.</string>
     <string name="display_settings">Display settings</string>
     <string name="hide_app_icon_on_launcher">Hide app icons on launcher</string>
     <string name="hide_app_icon_on_launcher_tip">After hiding the app icon, the interface may be closed and will no longer be displayed on the launcher. You can find and open the module settings in EdXposed or LSPosed.</string>
@@ -88,4 +87,16 @@
     <string name="unmute">Unmute</string>
     <string name="unmute_all">Unmute all</string>
     <string name="are_you_sure_unmute_all">Are you sure you want to unmute all apps?</string>
+    <string name="apps_config_template">Apps Config Template</string>
+    <string name="filter_by_condition">Filter by condition</string>
+    <string name="no_list_result">No result to display</string>
+    <string name="typo_app_name_pkg_name">Typo apps name or package name</string>
+    <string name="result_contains_system_apps">Result contains system apps</string>
+    <string name="clear_filters">Clear filters</string>
+    <string name="result_count">%1$s results found</string>
+    <string name="loading">Loading</string>
+    <string name="when_errors_how_to_show_tip">You can configure how the system will show you errors when the current app crashes.</string>
+    <string name="show_errors_dialog">Show errors dialog</string>
+    <string name="show_errors_toast">Show errors Toast</string>
+    <string name="show_nothing">Don\'t show anything</string>
 </resources>

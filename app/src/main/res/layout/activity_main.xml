@@ -155,6 +155,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:fadingEdgeLength="10dp"
         android:fillViewport="true"
@@ -170,37 +171,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/bg_permotion_round"
-                android:elevation="0dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="10dp"
-                    android:alpha="0.85"
-                    android:src="@mipmap/ic_about"
-                    android:tint="@color/colorTextDark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.6"
-                    android:lineSpacingExtra="5dp"
-                    android:text="@string/after_some_settings_need_restart"
-                    android:textColor="@color/colorTextGray"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
                 android:animateLayoutChanges="true"
                 android:background="@drawable/bg_permotion_round"

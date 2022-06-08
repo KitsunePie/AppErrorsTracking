@@ -26,12 +26,16 @@ package com.fankes.apperrorstracking.hook.entity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Message
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.data.DataConst
+import com.fankes.apperrorstracking.hook.factory.isAppShowErrorsToast
+import com.fankes.apperrorstracking.hook.factory.isAppShowNothing
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.utils.factory.appName
@@ -106,6 +110,21 @@ object FrameworkHooker : YukiBaseHooker() {
             onUnmuteAllErrorsApps {
                 mutedErrorsIfUnlockApps.clear()
                 mutedErrorsIfRestartApps.clear()
+            }
+            onPushAppListData { filters ->
+                arrayListOf<AppInfoBean>().apply {
+                    appContext.packageManager.getInstalledPackages(PackageManager.GET_CONFIGURATIONS).also { info ->
+                        (if (filters.name.isNotBlank())
+                            info.filter { it.packageName.contains(filters.name) || appContext.appName(it.packageName).contains(filters.name) }
+                        else info).let { result ->
+                            if (filters.isContainsSystem.not()) result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
+                            else result
+                        }.sortedByDescending { it.lastUpdateTime }
+                            .forEach { add(AppInfoBean(name = appContext.appName(it.packageName), packageName = it.packageName)) }
+                        /** 移除模块自身 */
+                        removeIf { it.packageName == BuildConfig.APPLICATION_ID }
+                    }
+                }
             }
         }
     }
@@ -187,6 +206,9 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 是否短时内重复错误 */
                     val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
+
+                    /** 崩溃标题 */
+                    val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
@@ -205,13 +227,21 @@ object FrameworkHooker : YukiBaseHooker() {
                     ) return@afterHook
                     /** 判断是否为主进程 */
                     if (isMainProcess.not() && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)) return@afterHook
+                    /** 判断配置模块启用状态 */
+                    if (prefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)) {
+                        if (isAppShowNothing(packageName)) return@afterHook
+                        if (isAppShowErrorsToast(packageName)) {
+                            context.toast(errorTitle)
+                            return@afterHook
+                        }
+                    }
                     /** 启动错误对话框显示窗口 */
                     AppErrorsDisplayActivity.start(
                         context, AppErrorsDisplayBean(
                             packageName = packageName,
                             processName = processName,
                             appName = appName,
-                            title = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName),
+                            title = errorTitle,
                             isShowAppInfoButton = isApp,
                             isShowReopenButton = isApp && isRepeating.not() && context.isAppCanOpened(packageName) && isMainProcess,
                             isShowCloseAppButton = isApp

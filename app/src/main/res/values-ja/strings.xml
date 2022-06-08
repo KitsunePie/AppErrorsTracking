@@ -52,7 +52,6 @@
     <string name="module_version">モジュールバージョン: %1$s</string>
     <string name="system_version">システムバージョン: %1$s</string>
     <string name="module_is_activated">モジュールが有効化でした</string>
-    <string name="after_some_settings_need_restart">一部の設定を変更した後、リスタートシステムして有効にするには、右上隅をクリックする必要がある場合があります。</string>
     <string name="display_settings">表示設定</string>
     <string name="hide_app_icon_on_launcher">デスクトップ上のアプリアイコンを非表示</string>
     <string name="hide_app_icon_on_launcher_tip">モジュールアイコンを非表示にすると、インターフェイスが閉じてデスクトップに表示されなくなります。モジュール設定は、EdXposedまたはLSPosedで検索して開くことができます。</string>
@@ -88,4 +87,16 @@
     <string name="unmute">無視を解除</string>
     <string name="unmute_all">無視を全部解除</string>
     <string name="are_you_sure_unmute_all">エラーを無視したすべてのアプリを解除してもよろしいですか</string>
+    <string name="apps_config_template">アプリ設定テンプレート</string>
+    <string name="filter_by_condition">条件でフィルタリング</string>
+    <string name="no_list_result">表示結果はありません</string>
+    <string name="typo_app_name_pkg_name">アプリ名とパッケージ名を入力できます</string>
+    <string name="result_contains_system_apps">結果にはシステムアプリが含まれます</string>
+    <string name="clear_filters">条件をクリア</string>
+    <string name="result_count">%1$s の合計結果</string>
+    <string name="loading">ロード中</string>
+    <string name="when_errors_how_to_show_tip">エラーが現在適用されているときにシステムがエラーを表示する方法を構成できます。</string>
+    <string name="show_errors_dialog">エラーダイアログを表示</string>
+    <string name="show_errors_toast">エラー Toast を表示</string>
+    <string name="show_nothing">何も表示されません</string>
 </resources>
