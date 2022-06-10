@@ -388,4 +388,28 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun showNothing(vararg objArrs: Any) = R.string.show_nothing.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val appErrorsStatistics get() = appErrorsStatistics()
+
+    /** @string Automatic generated */
+    fun appErrorsStatistics(vararg objArrs: Any) = R.string.app_errors_statistics.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val totalErrorsUnit get() = totalErrorsUnit()
+
+    /** @string Automatic generated */
+    fun totalErrorsUnit(vararg objArrs: Any) = R.string.total_errors_unit.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val totalAppsUnit get() = totalAppsUnit()
+
+    /** @string Automatic generated */
+    fun totalAppsUnit(vararg objArrs: Any) = R.string.total_apps_unit.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val generatingStatistics get() = generatingStatistics()
+
+    /** @string Automatic generated */
+    fun generatingStatistics(vararg objArrs: Any) = R.string.generating_statistics.bind(*objArrs)
 }

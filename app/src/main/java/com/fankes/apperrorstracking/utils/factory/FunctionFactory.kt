@@ -41,6 +41,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
 import com.topjohnwu.superuser.Shell
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 /**
  * 系统深色模式是否开启
@@ -138,6 +140,27 @@ fun Long.difference(now: String, second: String, minute: String, hour: String, d
             else -> "${diff / 31104000} $year"
         }
     }
+
+/**
+ * 保留小数
+ * @param count 要保留的位数 - 默认 2 位 - 最多 7 位
+ * @return [String] 得到的字符串数字 - 格式化失败返回原始数字的字符串
+ */
+fun Number.decimal(count: Int = 2) = runCatching {
+    DecimalFormat(
+        when (count) {
+            0 -> "0"
+            1 -> "0.0"
+            2 -> "0.00"
+            3 -> "0.000"
+            4 -> "0.0000"
+            5 -> "0.00000"
+            6 -> "0.000000"
+            7 -> "0.0000000"
+            else -> "0.0"
+        }
+    ).apply { roundingMode = RoundingMode.HALF_UP }.format(this) ?: toString()
+}.getOrNull() ?: this
 
 /**
  * 弹出 [Toast]

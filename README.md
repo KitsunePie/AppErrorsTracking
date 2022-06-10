@@ -46,6 +46,8 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 - 异常历史记录功能，可通过通知栏磁贴“异常历史记录”进入和模块主界面进入
 
+- 应用异常统计功能
+
 - 多进程 APP 的异常将会显示异常的进程名
 
 - 支持 Android 10 及以上系统的深色模式
@@ -54,7 +56,7 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 此项目依然在开发中，正在开发的功能如下
 
-- 应用异常统计信息功能
+- 是否始终允许错误对话框显示“重新打开”按钮 (计划中)
 
 ## License
 

@@ -99,4 +99,13 @@
     <string name="show_errors_dialog">顯示錯誤對話框</string>
     <string name="show_errors_toast">顯示錯誤 Toast 提示</string>
     <string name="show_nothing">不顯示任何提示</string>
+    <string name="app_errors_statistics">程式異常統計</string>
+    <string name="total_errors">異常總數</string>
+    <string name="total_apps">程式總數</string>
+    <string name="most_errors_app">最多異常的程式</string>
+    <string name="most_errors_type">最多異常的類型</string>
+    <string name="total_proportion_of_errors">異常總佔比</string>
+    <string name="total_errors_unit">%1$s 條</string>
+    <string name="total_apps_unit">%1$s 個 (含系統程式)</string>
+    <string name="generating_statistics">統計數據生成中</string>
 </resources>

@@ -99,4 +99,13 @@
     <string name="show_errors_dialog">エラーダイアログを表示</string>
     <string name="show_errors_toast">エラー Toast を表示</string>
     <string name="show_nothing">何も表示されません</string>
+    <string name="app_errors_statistics">アプリのエラー統計</string>
+    <string name="total_errors">エラーの総数</string>
+    <string name="total_apps">アプリの総数</string>
+    <string name="most_errors_app">エラーが最も多いアプリ</string>
+    <string name="most_errors_type">エラーが最も多いタイプ</string>
+    <string name="total_proportion_of_errors">エラーの合計割合</string>
+    <string name="total_errors_unit">%1$s 個</string>
+    <string name="total_apps_unit">%1$s 個  (システムアプリを含む)</string>
+    <string name="generating_statistics">統計が生成されています</string>
 </resources>

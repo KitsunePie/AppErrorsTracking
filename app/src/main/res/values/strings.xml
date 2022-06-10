@@ -99,4 +99,13 @@
     <string name="show_errors_dialog">Show errors dialog</string>
     <string name="show_errors_toast">Show errors Toast</string>
     <string name="show_nothing">Don\'t show anything</string>
+    <string name="app_errors_statistics">App errors statistics</string>
+    <string name="total_errors">Total errors</string>
+    <string name="total_apps">Total apps</string>
+    <string name="most_errors_app">The most errors app</string>
+    <string name="most_errors_type">The most errors type</string>
+    <string name="total_proportion_of_errors">Total proportion of errors</string>
+    <string name="total_errors_unit">%1$s</string>
+    <string name="total_apps_unit">%1$s (including system apps)</string>
+    <string name="generating_statistics">Generating statistics</string>
 </resources>
