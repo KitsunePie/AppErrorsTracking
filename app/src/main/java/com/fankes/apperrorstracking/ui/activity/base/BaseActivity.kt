@@ -27,7 +27,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.utils.factory.isNotSystemInDarkMode
@@ -55,7 +55,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
         /** 初始化沉浸状态栏 */
-        ViewCompat.getWindowInsetsController(window.decorView)?.apply {
+        WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = isNotSystemInDarkMode
             isAppearanceLightNavigationBars = isNotSystemInDarkMode
         }
