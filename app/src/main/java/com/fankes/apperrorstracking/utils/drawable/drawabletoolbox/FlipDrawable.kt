@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/5/7.
  */
-@file:Suppress("DEPRECATION", "CanvasSize")
+@file:Suppress("DEPRECATION", "CanvasSize", "OVERRIDE_DEPRECATION")
 
 package com.fankes.apperrorstracking.utils.drawable.drawabletoolbox
 
