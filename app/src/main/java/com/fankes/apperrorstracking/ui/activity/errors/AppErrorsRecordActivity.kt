@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/5/11.
  */
-@file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+@file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION", "SetTextI18n")
 
 package com.fankes.apperrorstracking.ui.activity.errors
 
@@ -32,8 +32,10 @@ import android.widget.AdapterView.AdapterContextMenuInfo
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
+import com.fankes.apperrorstracking.databinding.DiaAppErrorsStatisticsBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
@@ -61,6 +63,40 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
+        binding.appErrorSisIcon.setOnClickListener {
+            showDialog {
+                title = LocaleString.notice
+                progressContent = LocaleString.generatingStatistics
+                noCancelable()
+                FrameworkTool.fetchAppListData(context, AppFiltersBean(isContainsSystem = true)) {
+                    Thread {
+                        val errorsApps = listData.groupBy { it.packageName }
+                            .map { it.key to it.value.size }
+                            .sortedByDescending { it.second }
+                            .takeIf { it.isNotEmpty() }
+                        val mostAppPackageName = errorsApps?.get(0)?.first ?: ""
+                        val mostErrorsType = listData.groupBy { it.exceptionClassName }
+                            .map { it.key to it.value.size }
+                            .sortedByDescending { it.second }
+                            .takeIf { it.isNotEmpty() }?.get(0)?.first?.simpleThwName() ?: ""
+                        val pptCount = (((errorsApps?.size?.toFloat() ?: 0f) * 100f) / it.size.toFloat()).decimal()
+                        runOnUiThread {
+                            cancel()
+                            showDialog<DiaAppErrorsStatisticsBinding> {
+                                title = LocaleString.appErrorsStatistics
+                                binding.totalErrorsUnitText.text = LocaleString.totalErrorsUnit(listData.size)
+                                binding.totalAppsUnitText.text = LocaleString.totalAppsUnit(it.size)
+                                binding.mostErrorsAppIcon.setImageDrawable(appIcon(mostAppPackageName))
+                                binding.mostErrorsAppText.text = appName(mostAppPackageName)
+                                binding.mostErrorsTypeText.text = mostErrorsType
+                                binding.totalPptOfErrorsText.text = "$pptCount%"
+                                confirmButton(LocaleString.gotIt)
+                            }
+                        }
+                    }.start()
+                }
+            }
+        }
         binding.clearAllIcon.setOnClickListener {
             showDialog {
                 title = LocaleString.notice
@@ -92,9 +128,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                         binding.appNameText.text = appName(bean.packageName)
                         binding.errorsTimeText.text = bean.crossTime
                         binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
-                        binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.let { text ->
-                            if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text
-                        }
+                        binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.simpleThwName()
                         binding.errorMsgText.text = bean.exceptionMessage
                     }
                 }
@@ -110,6 +144,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             listData.clear()
             it.takeIf { e -> e.isNotEmpty() }?.forEach { e -> listData.add(e) }
             onChanged?.invoke()
+            binding.appErrorSisIcon.isVisible = listData.isNotEmpty()
             binding.clearAllIcon.isVisible = listData.isNotEmpty()
             binding.exportAllIcon.isVisible = listData.isNotEmpty()
             binding.listView.isVisible = listData.isNotEmpty()
@@ -142,6 +177,13 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         cacheDir.deleteRecursively()
         cacheDir.mkdirs()
     }
+
+    /**
+     * 获取异常的精简名称
+     * @return [String]
+     */
+    private fun String.simpleThwName() =
+        let { text -> if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menuInflater.inflate(R.menu.menu_list_detail_action, menu)

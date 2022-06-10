@@ -41,6 +41,16 @@
             android:textStyle="bold" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/app_error_sis_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_statistics"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/app_errors_statistics"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/clear_all_icon"
             android:layout_width="26dp"
             android:layout_height="26dp"
