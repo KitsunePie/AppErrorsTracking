@@ -6,6 +6,7 @@ plugins {
 android {
     namespace 'com.fankes.apperrorsdemo'
     compileSdk 32
+    ndkVersion '24.0.8215888'
 
     signingConfigs {
         debug {
