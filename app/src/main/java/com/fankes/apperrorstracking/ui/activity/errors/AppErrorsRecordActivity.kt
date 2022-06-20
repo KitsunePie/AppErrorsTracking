@@ -144,7 +144,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             listData.clear()
             it.takeIf { e -> e.isNotEmpty() }?.forEach { e -> listData.add(e) }
             onChanged?.invoke()
-            binding.appErrorSisIcon.isVisible = listData.isNotEmpty()
+            binding.appErrorSisIcon.isVisible = listData.size >= 5
             binding.clearAllIcon.isVisible = listData.isNotEmpty()
             binding.exportAllIcon.isVisible = listData.isNotEmpty()
             binding.listView.isVisible = listData.isNotEmpty()
