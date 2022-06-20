@@ -109,7 +109,7 @@
     </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
     <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/ignore_if_unlock_item"
+        android:id="@+id/muted_if_unlock_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
@@ -131,7 +131,7 @@
     </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
     <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/ignore_if_restart_item"
+        android:id="@+id/muted_if_restart_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"

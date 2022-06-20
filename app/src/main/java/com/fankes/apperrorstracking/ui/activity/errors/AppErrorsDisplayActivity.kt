@@ -85,13 +85,13 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
                         } ?: toast(msg = "No errors founded")
                 }
             }
-            binding.ignoreIfUnlockItem.setOnClickListener {
+            binding.mutedIfUnlockItem.setOnClickListener {
                 FrameworkTool.mutedErrorsIfUnlock(context, appErrorsDisplay.packageName) {
                     toast(LocaleString.muteIfUnlockTip(appErrorsDisplay.appName))
                     cancel()
                 }
             }
-            binding.ignoreIfRestartItem.setOnClickListener {
+            binding.mutedIfRestartItem.setOnClickListener {
                 FrameworkTool.mutedErrorsIfRestart(context, appErrorsDisplay.packageName) {
                     toast(LocaleString.muteIfRestartTip(appErrorsDisplay.appName))
                     cancel()
