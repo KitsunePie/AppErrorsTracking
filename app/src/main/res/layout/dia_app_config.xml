@@ -23,10 +23,17 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/config_radio_1"
+            android:id="@+id/config_radio_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/show_errors_dialog"
+            app:buttonTint="@color/colorPrimaryAccent" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/config_radio_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_errors_notify"
             app:buttonTint="@color/colorPrimaryAccent" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton

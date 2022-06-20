@@ -28,20 +28,22 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Message
+import androidx.core.graphics.drawable.IconCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.fankes.apperrorstracking.BuildConfig
+import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.data.DataConst
+import com.fankes.apperrorstracking.hook.factory.isAppShowErrorsNotify
 import com.fankes.apperrorstracking.hook.factory.isAppShowErrorsToast
 import com.fankes.apperrorstracking.hook.factory.isAppShowNothing
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
-import com.fankes.apperrorstracking.utils.factory.appName
-import com.fankes.apperrorstracking.utils.factory.isAppCanOpened
-import com.fankes.apperrorstracking.utils.factory.openApp
-import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
+import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
@@ -221,20 +223,32 @@ object FrameworkHooker : YukiBaseHooker() {
                     }
                     /** 判断是否为已忽略的 APP */
                     if (mutedErrorsIfUnlockApps.contains(packageName) || mutedErrorsIfRestartApps.contains(packageName)) return@afterHook
+                    /** 判断配置模块启用状态 */
+                    if (prefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)) {
+                        if (isAppShowNothing(packageName)) return@afterHook
+                        if (isAppShowErrorsNotify(packageName)) {
+                            context.pushNotify(
+                                channelId = "APPS_ERRORS",
+                                channelName = LocaleString.appName,
+                                title = errorTitle,
+                                content = LocaleString.appErrorsTip,
+                                icon = IconCompat.createWithBitmap(R.mipmap.ic_notify.drawableOf(moduleAppResources).toBitmap()),
+                                color = 0xFFFF6200.toInt(),
+                                intent = AppErrorsRecordActivity.intent()
+                            )
+                            return@afterHook
+                        }
+                        if (isAppShowErrorsToast(packageName)) {
+                            context.toast(errorTitle)
+                            return@afterHook
+                        }
+                    }
                     /** 判断是否为后台进程 */
                     if ((isBackgroundProcess || context.isAppCanOpened(packageName).not())
                         && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
                     ) return@afterHook
                     /** 判断是否为主进程 */
                     if (isMainProcess.not() && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)) return@afterHook
-                    /** 判断配置模块启用状态 */
-                    if (prefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)) {
-                        if (isAppShowNothing(packageName)) return@afterHook
-                        if (isAppShowErrorsToast(packageName)) {
-                            context.toast(errorTitle)
-                            return@afterHook
-                        }
-                    }
                     /** 启动错误对话框显示窗口 */
                     AppErrorsDisplayActivity.start(
                         context, AppErrorsDisplayBean(

@@ -24,12 +24,14 @@
 package com.fankes.apperrorstracking.ui.activity.errors
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView.AdapterContextMenuInfo
 import androidx.core.view.isVisible
+import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppFiltersBean
@@ -50,6 +52,12 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
 
         /** 请求保存文件回调标识 */
         private const val WRITE_REQUEST_CODE = 0
+
+        /**
+         * 获取 [Intent]
+         * @return [Intent]
+         */
+        fun intent() = Intent().apply { component = ComponentName(BuildConfig.APPLICATION_ID, AppErrorsRecordActivity::class.java.name) }
     }
 
     /** 当前导出文件的路径 */

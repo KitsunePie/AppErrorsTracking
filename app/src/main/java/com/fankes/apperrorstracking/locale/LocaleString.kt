@@ -418,4 +418,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun moduleNotFullyActivatedTip(vararg objArrs: Any) = R.string.module_not_fully_activated_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val showErrorsNotify get() = showErrorsNotify()
+
+    /** @string Automatic generated */
+    fun showErrorsNotify(vararg objArrs: Any) = R.string.show_errors_notify.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val appErrorsTip get() = appErrorsTip()
+
+    /** @string Automatic generated */
+    fun appErrorsTip(vararg objArrs: Any) = R.string.app_errors_tip.bind(*objArrs)
 }
