@@ -95,10 +95,10 @@
     <string name="clear_filters">清除條件</string>
     <string name="result_count">共 %1$s 個結果</string>
     <string name="loading">加載中</string>
-    <string name="when_errors_how_to_show_tip">你可以配置當前程式崩潰時系統將如何向你展示錯誤提醒副案。</string>
+    <string name="when_errors_how_to_show_tip">你可以配置當程式崩潰時系統將如何向你展示錯誤提醒副案。</string>
     <string name="show_errors_dialog">顯示錯誤對話框</string>
-    <string name="show_errors_toast">顯示錯誤 Toast 提示</string>
-    <string name="show_nothing">不顯示任何提示</string>
+    <string name="show_errors_toast">顯示錯誤 Toast</string>
+    <string name="show_nothing">什麼也不顯示</string>
     <string name="app_errors_statistics">程式異常統計</string>
     <string name="total_errors">異常總數</string>
     <string name="total_apps">程式總數</string>
@@ -109,6 +109,8 @@
     <string name="total_apps_unit">%1$s 個 (含系統程式)</string>
     <string name="generating_statistics">統計數據生成中</string>
     <string name="module_not_fully_activated_tip">模組未完全激活，可能無法加載當前設定項，建議重新開機後重試。</string>
-    <string name="show_errors_notify">顯示錯誤通知推送</string>
+    <string name="show_errors_notify">推送錯誤通知</string>
     <string name="app_errors_tip">程式發生了未處理的異常而崩潰，點擊查看詳情或反饋給程式開發者。</string>
+    <string name="batch_operations">批量操作</string>
+    <string name="are_you_sure_apply_site_apps">你確認要一次性應用設置給 %1$s 個程式嗎？</string>
 </resources>

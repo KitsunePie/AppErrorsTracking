@@ -16,7 +16,7 @@
         android:layout_marginBottom="10dp"
         android:lineSpacingExtra="6dp"
         android:text="@string/when_errors_how_to_show_tip"
-        android:textSize="14sp" />
+        android:textSize="13sp" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -26,6 +26,7 @@
             android:id="@+id/config_radio_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/show_errors_dialog"
             app:buttonTint="@color/colorPrimaryAccent" />
 

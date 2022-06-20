@@ -95,7 +95,7 @@
     <string name="clear_filters">Clear filters</string>
     <string name="result_count">%1$s results found</string>
     <string name="loading">Loading</string>
-    <string name="when_errors_how_to_show_tip">You can configure how the system will show you errors when the current app crashes.</string>
+    <string name="when_errors_how_to_show_tip">You can configure how the system will show you errors when the apps crashes.</string>
     <string name="show_errors_dialog">Show errors dialog</string>
     <string name="show_errors_toast">Show errors Toast</string>
     <string name="show_nothing">Don\'t show anything</string>
@@ -111,4 +111,6 @@
     <string name="module_not_fully_activated_tip">The module is not fully activated and may not be able to load the current settings item. It is recommended to re -start the system and try it out.</string>
     <string name="show_errors_notify">Show errors notification</string>
     <string name="app_errors_tip">App collapses an unprocessed abnormality. Click to view details or feedback to the App developer.</string>
+    <string name="batch_operations">Batch operations</string>
+    <string name="are_you_sure_apply_site_apps">Are you sure you want to apply settings to %1$s apps at once?</string>
 </resources>

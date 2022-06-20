@@ -95,10 +95,10 @@
     <string name="clear_filters">清除条件</string>
     <string name="result_count">共 %1$s 个结果</string>
     <string name="loading">加载中</string>
-    <string name="when_errors_how_to_show_tip">你可以配置当前应用崩溃时系统将如何向你显示错误提示信息。</string>
+    <string name="when_errors_how_to_show_tip">你可以配置当应用崩溃时系统将如何向你显示错误提示信息。</string>
     <string name="show_errors_dialog">显示错误对话框</string>
-    <string name="show_errors_toast">显示错误 Toast 提示</string>
-    <string name="show_nothing">不显示任何提示</string>
+    <string name="show_errors_toast">显示错误 Toast</string>
+    <string name="show_nothing">什么也不显示</string>
     <string name="app_errors_statistics">应用异常统计</string>
     <string name="total_errors">异常总数</string>
     <string name="total_apps">应用总数</string>
@@ -109,6 +109,8 @@
     <string name="total_apps_unit">%1$s 个 (含系统应用)</string>
     <string name="generating_statistics">正在生成统计数据</string>
     <string name="module_not_fully_activated_tip">模块未完全激活，可能无法加载当前设置项，建议重新启动系统后重试。</string>
-    <string name="show_errors_notify">显示错误通知推送</string>
+    <string name="show_errors_notify">推送错误通知</string>
     <string name="app_errors_tip">应用发生了未处理的异常而崩溃，点击查看详情或反馈给应用开发者。</string>
+    <string name="batch_operations">批量操作</string>
+    <string name="are_you_sure_apply_site_apps">你确定要一次性应用设置给 %1$s 个应用吗？</string>
 </resources>
