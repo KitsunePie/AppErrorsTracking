@@ -80,7 +80,7 @@
     <string name="view_muted_errors_apps">エラーを無視したアプリを表示する</string>
     <string name="only_show_errors_in_front_tip">有効にすると、エラーが発生したアプリがフォアグラウンド（使用中）の場合にのみエラーダイアログが表示されます。エラーが発生したバックグラウンドアプリではエラーダイアログは表示されませんが、すべてがに記録されます。エラー履歴。</string>
     <string name="only_show_errors_in_main_process_tip">有効にすると、エラーダイアログは、アプリで発生したエラーがメインプロセス（最初のアプリケーションインスタンスオブジェクト）にある場合にのみ表示されます。</string>
-    <string name="apps_config_template_tip">ここでは、アプリごとに個別にエラーが発生したときにエラーダイアログを表示するかどうかを設定できます。</string>
+    <string name="apps_config_template_tip">ここでは、アプリごとに個別にエラーが発生したときにエラーダイアログおよびその他のエラーメッセージを表示するかどうかを設定できます。</string>
     <string name="view_errors_record_tip">ここでは、システムの電源を入れてから現在までのすべてのアプリエラーレコードを確認できます。エラー履歴はリスタート後に自動的にクリアされます。レコードの表示、エクスポート、共有、およびクリアが可能です。</string>
     <string name="view_muted_errors_apps_tip">ここでは、さまざまな形式のエラーを手動で無視したアプリを見つけることができます。このリストは、リスタート後に自動的にクリアされます。これらの無視されたアプリを管理し、無視リストから削除できます。</string>
     <string name="muted_errors_apps">エラーを無視したアプリ</string>
@@ -109,4 +109,6 @@
     <string name="total_apps_unit">%1$s 個  (システムアプリを含む)</string>
     <string name="generating_statistics">統計が生成されています</string>
     <string name="module_not_fully_activated_tip">モジュールは完全にアクティブ化されておらず、現在の設定アイテムをロードできない場合があります。システムをリスタートして試してみることをお勧めします。</string>
+    <string name="show_errors_notify">エラー通知プッシュを表示</string>
+    <string name="app_errors_tip">アプリは未処理のエラーで崩壊しました。クリックして、アプリ開発者への詳細またはフィードバックを表示します。</string>
 </resources>

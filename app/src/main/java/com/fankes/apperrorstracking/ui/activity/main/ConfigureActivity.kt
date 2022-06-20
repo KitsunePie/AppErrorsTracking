@@ -84,6 +84,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                         binding.appNameText.text = bean.name
                         binding.configTypeText.text = when {
                             isAppShowErrorsDialog(bean.packageName) -> LocaleString.showErrorsDialog
+                            isAppShowErrorsNotify(bean.packageName) -> LocaleString.showErrorsNotify
                             isAppShowErrorsToast(bean.packageName) -> LocaleString.showErrorsToast
                             isAppShowNothing(bean.packageName) -> LocaleString.showNothing
                             else -> "Unknown type"
@@ -95,11 +96,13 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                 listData[p].also { bean ->
                     showDialog<DiaAppConfigBinding> {
                         title = bean.name
-                        binding.configRadio1.isChecked = isAppShowErrorsDialog(bean.packageName)
+                        binding.configRadio0.isChecked = isAppShowErrorsDialog(bean.packageName)
+                        binding.configRadio1.isChecked = isAppShowErrorsNotify(bean.packageName)
                         binding.configRadio2.isChecked = isAppShowErrorsToast(bean.packageName)
                         binding.configRadio3.isChecked = isAppShowNothing(bean.packageName)
                         confirmButton {
-                            putAppShowErrorsDialog(bean.packageName, binding.configRadio1.isChecked)
+                            putAppShowErrorsDialog(bean.packageName, binding.configRadio0.isChecked)
+                            putAppShowErrorsNotify(bean.packageName, binding.configRadio1.isChecked)
                             putAppShowErrorsToast(bean.packageName, binding.configRadio2.isChecked)
                             putAppShowNothing(bean.packageName, binding.configRadio3.isChecked)
                             onChanged?.invoke()

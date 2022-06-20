@@ -34,6 +34,12 @@ import com.highcapable.yukihookapi.hook.param.PackageParam
 fun PackageParam.isAppShowErrorsDialog(packageName: String) = prefs.getBoolean("${packageName}_show_errors_dialog", true)
 
 /**
+ * 获取此 APP 是否配置显示错误通知推送
+ * @param packageName APP 包名
+ */
+fun PackageParam.isAppShowErrorsNotify(packageName: String) = prefs.getBoolean("${packageName}_show_errors_notify", false)
+
+/**
  * 获取此 APP 是否配置显示错误 Toast 提示
  * @param packageName APP 包名
  */
@@ -50,6 +56,12 @@ fun PackageParam.isAppShowNothing(packageName: String) = prefs.getBoolean("${pac
  * @param packageName APP 包名
  */
 fun Context.isAppShowErrorsDialog(packageName: String) = modulePrefs.getBoolean("${packageName}_show_errors_dialog", true)
+
+/**
+ * 获取此 APP 是否配置显示错误通知推送
+ * @param packageName APP 包名
+ */
+fun Context.isAppShowErrorsNotify(packageName: String) = modulePrefs.getBoolean("${packageName}_show_errors_notify", false)
 
 /**
  * 获取此 APP 是否配置显示错误 Toast 提示
@@ -69,6 +81,13 @@ fun Context.isAppShowNothing(packageName: String) = modulePrefs.getBoolean("${pa
  * @param isApply 是否设置
  */
 fun Context.putAppShowErrorsDialog(packageName: String, isApply: Boolean) = modulePrefs.putBoolean("${packageName}_show_errors_dialog", isApply)
+
+/**
+ * 设置此 APP 是否配置显示错误通知推送
+ * @param packageName APP 包名
+ * @param isApply 是否设置
+ */
+fun Context.putAppShowErrorsNotify(packageName: String, isApply: Boolean) = modulePrefs.putBoolean("${packageName}_show_errors_notify", isApply)
 
 /**
  * 设置此 APP 是否配置显示错误 Toast 提示

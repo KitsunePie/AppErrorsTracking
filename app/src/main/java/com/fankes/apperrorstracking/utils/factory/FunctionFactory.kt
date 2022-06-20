@@ -23,17 +23,20 @@
 
 package com.fankes.apperrorstracking.utils.factory
 
-import android.app.Activity
-import android.app.Service
+import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.content.getSystemService
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.locale.LocaleString
@@ -69,6 +72,13 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
  * @return [Float]
  */
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
+
+/**
+ * 从 [Int] resId 获取 [Drawable]
+ * @param resources 使用的 [Resources]
+ * @return [Drawable]
+ */
+fun Int.drawableOf(resources: Resources) = ResourcesCompat.getDrawable(resources, this, null) ?: error("Invalid resources")
 
 /**
  * 获取 APP 名称
@@ -111,7 +121,7 @@ fun Context.appIcon(packageName: String) =
     runCatching {
         packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
             .applicationInfo.loadIcon(packageManager)
-    }.getOrNull() ?: ResourcesCompat.getDrawable(resources, R.drawable.ic_android, null)
+    }.getOrNull() ?: R.drawable.ic_android.drawableOf(resources)
 
 /**
  * 计算与当前时间戳相差的友好时间
@@ -180,6 +190,31 @@ fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {
         setActionTextColor(if (isSystemInDarkMode) Color.BLACK else Color.WHITE)
         setAction(actionText) { callback() }
     }.show()
+
+/**
+ * 推送通知
+ * @param channelId 渠道 Id
+ * @param channelName 渠道名称
+ * @param title 标题
+ * @param content 内容
+ * @param icon 图标
+ * @param color 颜色
+ * @param intent [Intent]
+ */
+fun Context.pushNotify(channelId: String, channelName: String, title: String, content: String, icon: IconCompat, color: Int, intent: Intent) {
+    getSystemService<NotificationManager>()?.apply {
+        createNotificationChannel(NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH))
+        notify((0..999).random(), NotificationCompat.Builder(this@pushNotify, channelId).apply {
+            this.color = color
+            setAutoCancel(true)
+            setContentTitle(title)
+            setContentText(content)
+            setSmallIcon(icon)
+            setContentIntent(PendingIntent.getActivity(this@pushNotify, (0..999).random(), intent, PendingIntent.FLAG_IMMUTABLE))
+            setDefaults(NotificationCompat.DEFAULT_ALL)
+        }.build())
+    }
+}
 
 /**
  * 跳转到指定页面
