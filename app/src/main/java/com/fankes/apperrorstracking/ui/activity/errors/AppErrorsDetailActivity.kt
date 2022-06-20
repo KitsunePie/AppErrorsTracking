@@ -66,7 +66,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             loggerE(msg = appErrorsInfo.stackTrace)
             toast(LocaleString.printToLogcatSuccess)
         }
-        binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackTrace) }
+        binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackOutputShareContent) }
         binding.exportIcon.setOnClickListener {
             stackTrace = appErrorsInfo.stackOutputFileContent
             runCatching {
