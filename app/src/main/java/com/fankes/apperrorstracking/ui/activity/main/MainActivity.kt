@@ -37,6 +37,7 @@ import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openBrowser
+import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.YukiHookAPI
@@ -95,6 +96,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/KitsunePie/AppErrorsTracking") }
+        /** 显示开发者提示 */
+        if (modulePrefs.get(DataConst.SHOW_DEVELOPER_NOTICE))
+            showDialog {
+                title = LocaleString.developerNotice
+                msg = LocaleString.developerNoticeTip
+                confirmButton(LocaleString.gotIt) { modulePrefs.put(DataConst.SHOW_DEVELOPER_NOTICE, value = false) }
+                noCancelable()
+            }
     }
 
     /** 刷新模块状态 */
