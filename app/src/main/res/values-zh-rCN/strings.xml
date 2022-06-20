@@ -113,4 +113,6 @@
     <string name="app_errors_tip">应用发生了未处理的异常而崩溃，点击查看详情或反馈给应用开发者。</string>
     <string name="batch_operations">批量操作</string>
     <string name="are_you_sure_apply_site_apps">你确定要一次性应用设置给 %1$s 个应用吗？</string>
+    <string name="errors_dialog_always_show_reopen">错误对话框始终显示“重新打开”选项</string>
+    <string name="errors_dialog_always_show_reopen_tip">启用后，在应用非首次异常时也将显示“重新打开”选项，若当前异常非主进程或应用无法打开则依然不会显示此选项。</string>
 </resources>
