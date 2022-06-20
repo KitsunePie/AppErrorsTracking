@@ -108,4 +108,5 @@
     <string name="total_errors_unit">%1$s 個</string>
     <string name="total_apps_unit">%1$s 個  (システムアプリを含む)</string>
     <string name="generating_statistics">統計が生成されています</string>
+    <string name="module_not_fully_activated_tip">モジュールは完全にアクティブ化されておらず、現在の設定アイテムをロードできない場合があります。システムをリスタートして試してみることをお勧めします。</string>
 </resources>

@@ -108,4 +108,5 @@
     <string name="total_errors_unit">%1$s 條</string>
     <string name="total_apps_unit">%1$s 個 (含系統程式)</string>
     <string name="generating_statistics">統計數據生成中</string>
+    <string name="module_not_fully_activated_tip">模組未完全激活，可能無法加載當前設定項，建議重新開機後重試。</string>
 </resources>

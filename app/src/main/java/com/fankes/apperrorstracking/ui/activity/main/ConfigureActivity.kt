@@ -109,6 +109,15 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                 }
             }
         }
+        /** 模块未完全激活将显示警告 */
+        if (MainActivity.isModuleValied.not())
+            showDialog {
+                title = LocaleString.notice
+                msg = LocaleString.moduleNotFullyActivatedTip
+                confirmButton { FrameworkTool.restartSystem(context) }
+                cancelButton()
+                noCancelable()
+            }
         /** 开始刷新数据 */
         refreshData()
     }
