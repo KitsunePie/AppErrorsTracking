@@ -113,4 +113,6 @@
     <string name="app_errors_tip">アプリは未処理のエラーで崩壊しました。クリックして、アプリ開発者への詳細またはフィードバックを表示します。</string>
     <string name="batch_operations">一括操作</string>
     <string name="are_you_sure_apply_site_apps">一度に %1$s 個のアプリに設定を適用してもよろしいですか</string>
+    <string name="errors_dialog_always_show_reopen">エラーダイアログには常にリスタートが表示</string>
+    <string name="errors_dialog_always_show_reopen_tip">有効にした後、アプリが最初のエラーでない場合にも「アプリをリスタート」オプションが表示されます。現在のエラーがメインプロセスでない場合、またはアプリを開くことができない場合でも、このオプションは表示されません。</string>
 </resources>

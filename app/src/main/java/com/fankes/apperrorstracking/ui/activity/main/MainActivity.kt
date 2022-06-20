@@ -56,6 +56,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
         binding.onlyShowErrorsInFrontSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
+        binding.alwaysShowsReopenAppOptionsSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
         binding.enableAppsConfigsTemplateSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
         binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
         binding.mgrAppsConfigsTemplateButton.isVisible = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
@@ -75,6 +76,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.onlyShowErrorsInMainProcessSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN, b)
+        }
+        binding.alwaysShowsReopenAppOptionsSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS, b)
         }
         binding.enableAppsConfigsTemplateSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener

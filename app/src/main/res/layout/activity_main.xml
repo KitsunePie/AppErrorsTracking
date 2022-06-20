@@ -252,6 +252,30 @@
                     android:textSize="12sp" />
 
                 <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                    android:id="@+id/always_shows_reopen_app_options_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/errors_dialog_always_show_reopen"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="@string/errors_dialog_always_show_reopen_tip"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
                     android:id="@+id/enable_apps_configs_template_switch"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

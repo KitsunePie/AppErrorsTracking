@@ -113,4 +113,6 @@
     <string name="app_errors_tip">程式發生了未處理的異常而崩潰，點擊查看詳情或反饋給程式開發者。</string>
     <string name="batch_operations">批量操作</string>
     <string name="are_you_sure_apply_site_apps">你確認要一次性應用設置給 %1$s 個程式嗎？</string>
+    <string name="errors_dialog_always_show_reopen">錯誤對話框始終顯示“重新開啟”選項</string>
+    <string name="errors_dialog_always_show_reopen_tip">啟用後，在程式非首次異常時也將顯示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會顯示此選項。</string>
 </resources>

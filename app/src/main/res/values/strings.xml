@@ -72,8 +72,8 @@
     <string name="share_error_stack">Share error stack</string>
     <string name="preference_settings">Preference Settings</string>
     <string name="function_mgr">Function Management</string>
-    <string name="only_show_errors_in_front">Show error dialogs only for foreground apps</string>
-    <string name="only_show_errors_in_main_process">Show error dialogs only for main process apps</string>
+    <string name="only_show_errors_in_front">Show error dialogs only foreground apps</string>
+    <string name="only_show_errors_in_main_process">Show error dialogs only main process apps</string>
     <string name="enable_apps_config_template">Enable apps config template</string>
     <string name="mgr_apps_config_template">Management apps config template</string>
     <string name="view_errors_record">View app errors record</string>
@@ -113,4 +113,6 @@
     <string name="app_errors_tip">App collapses an unprocessed abnormality. Click to view details or feedback to the App developer.</string>
     <string name="batch_operations">Batch operations</string>
     <string name="are_you_sure_apply_site_apps">Are you sure you want to apply settings to %1$s apps at once?</string>
+    <string name="errors_dialog_always_show_reopen">Error dialog always shows \"Reopen App\"</string>
+    <string name="errors_dialog_always_show_reopen_tip">After enabling, the \"Reopen App\" option will also be shows when the app is not errors for the first time. If the current errors is not the main process or the app cannot be opened, this option will still not be showing.</string>
 </resources>

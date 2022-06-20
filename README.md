@@ -56,8 +56,6 @@ Added more features to app's crash dialog, fixed custom rom deleted dialog, the 
 
 此项目依然在开发中，正在开发的功能如下
 
-- 是否始终允许错误对话框显示“重新打开”按钮 (计划中)
-
 ## License
 
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)

@@ -211,6 +211,9 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
+
+                    /** 是否始终显示重新打开按钮 */
+                    val isAlwaysShowsReopenApp = prefs.get(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
@@ -257,7 +260,8 @@ object FrameworkHooker : YukiBaseHooker() {
                             appName = appName,
                             title = errorTitle,
                             isShowAppInfoButton = isApp,
-                            isShowReopenButton = isApp && isRepeating.not() && context.isAppCanOpened(packageName) && isMainProcess,
+                            isShowReopenButton = isApp && (isRepeating.not() || isAlwaysShowsReopenApp)
+                                    && context.isAppCanOpened(packageName) && isMainProcess,
                             isShowCloseAppButton = isApp
                         )
                     )

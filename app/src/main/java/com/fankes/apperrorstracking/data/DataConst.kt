@@ -28,5 +28,6 @@ object DataConst {
     val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
     val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PrefsData("_enable_only_show_errors_in_front", false)
     val ENABLE_ONLY_SHOW_ERRORS_IN_MAIN = PrefsData("_enable_only_show_errors_in_main", false)
+    val ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS = PrefsData("_enable_always_shows_reopen_app_options", false)
     val ENABLE_APP_CONFIG_TEMPLATE = PrefsData("_enable_app_config_template", false)
 }
