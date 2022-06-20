@@ -442,4 +442,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun areYouSureApplySiteApps(vararg objArrs: Any) = R.string.are_you_sure_apply_site_apps.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val developerNoticeTip get() = developerNoticeTip()
+
+    /** @string Automatic generated */
+    fun developerNoticeTip(vararg objArrs: Any) = R.string.developer_notice_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val developerNotice get() = developerNotice()
+
+    /** @string Automatic generated */
+    fun developerNotice(vararg objArrs: Any) = R.string.developer_notice.bind(*objArrs)
 }

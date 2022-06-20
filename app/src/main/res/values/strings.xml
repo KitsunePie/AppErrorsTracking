@@ -115,4 +115,6 @@
     <string name="are_you_sure_apply_site_apps">Are you sure you want to apply settings to %1$s apps at once?</string>
     <string name="errors_dialog_always_show_reopen">Error dialog always shows \"Reopen App\"</string>
     <string name="errors_dialog_always_show_reopen_tip">After enabling, the \"Reopen App\" option will also be shows when the app is not errors for the first time. If the current errors is not the main process or the app cannot be opened, this option will still not be showing.</string>
+    <string name="developer_notice_tip">This module is specially designed for Android developers. When it is possible that the computer cannot be connected and ADB cannot be performed, this module can be used to quickly capture any exception of any installed apps, so as to quickly locate the problem for the developer.</string>
+    <string name="developer_notice">Instructions</string>
 </resources>

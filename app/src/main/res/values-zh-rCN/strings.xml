@@ -115,4 +115,6 @@
     <string name="are_you_sure_apply_site_apps">你确定要一次性应用设置给 %1$s 个应用吗？</string>
     <string name="errors_dialog_always_show_reopen">错误对话框始终显示“重新打开”选项</string>
     <string name="errors_dialog_always_show_reopen_tip">启用后，在应用非首次异常时也将显示“重新打开”选项，若当前异常非主进程或应用无法打开则依然不会显示此选项。</string>
+    <string name="developer_notice_tip">此模块专为 Android 开发者而打造，在可能的无法连接电脑，不能进行 ADB 调试的时候，可通过此模块来快速捕获任意已安装应用的任意异常，以便给开发者快速定位问题。</string>
+    <string name="developer_notice">使用说明</string>
 </resources>
