@@ -108,4 +108,5 @@
     <string name="total_errors_unit">%1$s 条</string>
     <string name="total_apps_unit">%1$s 个 (含系统应用)</string>
     <string name="generating_statistics">正在生成统计数据</string>
+    <string name="module_not_fully_activated_tip">模块未完全激活，可能无法加载当前设置项，建议重新启动系统后重试。</string>
 </resources>

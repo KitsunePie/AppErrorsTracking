@@ -44,8 +44,11 @@ import com.highcapable.yukihookapi.hook.factory.modulePrefs
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    /** 模块是否有效 */
-    private var isModuleValied = false
+    companion object {
+
+        /** 模块是否有效 */
+        var isModuleValied = false
+    }
 
     override fun onCreate() {
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)

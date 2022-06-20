@@ -108,4 +108,5 @@
     <string name="total_errors_unit">%1$s</string>
     <string name="total_apps_unit">%1$s (including system apps)</string>
     <string name="generating_statistics">Generating statistics</string>
+    <string name="module_not_fully_activated_tip">The module is not fully activated and may not be able to load the current settings item. It is recommended to re -start the system and try it out.</string>
 </resources>

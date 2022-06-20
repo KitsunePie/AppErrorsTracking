@@ -412,4 +412,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun generatingStatistics(vararg objArrs: Any) = R.string.generating_statistics.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val moduleNotFullyActivatedTip get() = moduleNotFullyActivatedTip()
+
+    /** @string Automatic generated */
+    fun moduleNotFullyActivatedTip(vararg objArrs: Any) = R.string.module_not_fully_activated_tip.bind(*objArrs)
 }
