@@ -49,6 +49,32 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
+        binding.batchIcon.setOnClickListener {
+            showDialog<DiaAppConfigBinding> {
+                title = LocaleString.batchOperations
+                confirmButton {
+                    val config0 = binding.configRadio0.isChecked
+                    val config1 = binding.configRadio1.isChecked
+                    val config2 = binding.configRadio2.isChecked
+                    val config3 = binding.configRadio3.isChecked
+                    showDialog {
+                        title = LocaleString.notice
+                        msg = LocaleString.areYouSureApplySiteApps(listData.size)
+                        confirmButton {
+                            listData.takeIf { it.isNotEmpty() }?.forEach {
+                                putAppShowErrorsDialog(it.packageName, config0)
+                                putAppShowErrorsNotify(it.packageName, config1)
+                                putAppShowErrorsToast(it.packageName, config2)
+                                putAppShowNothing(it.packageName, config3)
+                            }
+                            onChanged?.invoke()
+                        }
+                        cancelButton()
+                    }
+                }
+                cancelButton()
+            }
+        }
         binding.filterIcon.setOnClickListener {
             showDialog<DiaAppsFilterBinding> {
                 title = LocaleString.filterByCondition
@@ -128,6 +154,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
     /** 刷新列表数据 */
     private fun refreshData() {
         binding.listProgressView.isVisible = true
+        binding.batchIcon.isVisible = false
         binding.filterIcon.isVisible = false
         binding.listView.isVisible = false
         binding.listNoDataView.isVisible = false
@@ -143,6 +170,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                     onChanged?.invoke()
                     binding.listView.post { binding.listView.setSelection(0) }
                     binding.listProgressView.isVisible = false
+                    binding.batchIcon.isVisible = listData.isNotEmpty()
                     binding.filterIcon.isVisible = true
                     binding.listView.isVisible = listData.isNotEmpty()
                     binding.listNoDataView.isVisible = listData.isEmpty()

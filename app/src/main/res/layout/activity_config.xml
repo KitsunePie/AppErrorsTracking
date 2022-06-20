@@ -58,6 +58,16 @@
         </LinearLayout>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/batch_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_batch"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/batch_operations"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/filter_icon"
             android:layout_width="22dp"
             android:layout_height="22dp"

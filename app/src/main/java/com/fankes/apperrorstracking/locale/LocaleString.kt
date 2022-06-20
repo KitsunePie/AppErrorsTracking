@@ -430,4 +430,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun appErrorsTip(vararg objArrs: Any) = R.string.app_errors_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val batchOperations get() = batchOperations()
+
+    /** @string Automatic generated */
+    fun batchOperations(vararg objArrs: Any) = R.string.batch_operations.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val areYouSureApplySiteApps get() = areYouSureApplySiteApps()
+
+    /** @string Automatic generated */
+    fun areYouSureApplySiteApps(vararg objArrs: Any) = R.string.are_you_sure_apply_site_apps.bind(*objArrs)
 }

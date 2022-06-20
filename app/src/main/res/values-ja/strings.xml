@@ -95,7 +95,7 @@
     <string name="clear_filters">条件をクリア</string>
     <string name="result_count">%1$s の合計結果</string>
     <string name="loading">ロード中</string>
-    <string name="when_errors_how_to_show_tip">エラーが現在適用されているときにシステムがエラーを表示する方法を構成できます。</string>
+    <string name="when_errors_how_to_show_tip">エラーが適用されているときにシステムがエラーを表示する方法を構成できます。</string>
     <string name="show_errors_dialog">エラーダイアログを表示</string>
     <string name="show_errors_toast">エラー Toast を表示</string>
     <string name="show_nothing">何も表示されません</string>
@@ -111,4 +111,6 @@
     <string name="module_not_fully_activated_tip">モジュールは完全にアクティブ化されておらず、現在の設定アイテムをロードできない場合があります。システムをリスタートして試してみることをお勧めします。</string>
     <string name="show_errors_notify">エラー通知プッシュを表示</string>
     <string name="app_errors_tip">アプリは未処理のエラーで崩壊しました。クリックして、アプリ開発者への詳細またはフィードバックを表示します。</string>
+    <string name="batch_operations">一括操作</string>
+    <string name="are_you_sure_apply_site_apps">一度に %1$s 個のアプリに設定を適用してもよろしいですか</string>
 </resources>
