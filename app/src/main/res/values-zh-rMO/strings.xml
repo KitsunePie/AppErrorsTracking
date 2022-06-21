@@ -116,5 +116,5 @@
     <string name="errors_dialog_always_show_reopen">錯誤對話框始終顯示“重新開啟”選項</string>
     <string name="errors_dialog_always_show_reopen_tip">啟用後，在程式非首次異常時也將顯示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會顯示此選項。</string>
     <string name="developer_notice">使用說明</string>
-    <string name="developer_notice_tip">此模組專為 Android 開發者而打造，在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便給開發者快速定位問題。</string>
+    <string name="developer_notice_tip">此模組專為 Android 開發者而打造。 \n\n在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便快速定位問題。 \n\n程式發生崩潰的錯誤日誌對開發者來說是無價的財富，若你不是開發者，你依然可以安裝此模組，以便給開發者提供更多異常信息快速解決問題。</string>
 </resources>
