@@ -38,3 +38,5 @@
     public static *** throwUninitializedProperty(...);
     public static *** throwUninitializedPropertyAccessException(...);
 }
+
+-keep class com.fankes.apperrorstracking.databinding**{*;}
