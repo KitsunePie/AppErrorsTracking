@@ -2,7 +2,7 @@
 
 [![Blank](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/KitsunePie/AppErrorsTracking)
 [![Blank](https://img.shields.io/badge/license-AGPL3.0-blue)](https://github.com/KitsunePie/AppErrorsTracking/blob/master/LICENSE)
-[![Blank](https://img.shields.io/badge/version-v1.0-green)](https://github.com/KitsunePie/AppErrorsTracking/releases)
+[![Blank](https://img.shields.io/badge/version-v1.0.1-green)](https://github.com/KitsunePie/AppErrorsTracking/releases)
 [![Blank](https://img.shields.io/github/downloads/KitsunePie/AppErrorsTracking/total?label=Release)](https://github.com/KitsunePie/AppErrorsTracking/releases)
 [![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.apperrorstracking/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
 <br/><br/>
