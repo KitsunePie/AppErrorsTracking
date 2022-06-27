@@ -23,10 +23,12 @@
 
 package com.fankes.apperrorstracking.hook.entity
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Message
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -51,6 +53,7 @@ import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
 object FrameworkHooker : YukiBaseHooker() {
@@ -58,8 +61,10 @@ object FrameworkHooker : YukiBaseHooker() {
     private const val ActivityManagerServiceClass = "com.android.server.am.ActivityManagerService"
     private const val UserControllerClass = "com.android.server.am.UserController"
     private const val AppErrorsClass = "com.android.server.am.AppErrors"
+    private const val AppErrorDialogClass = "com.android.server.am.AppErrorDialog"
     private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
     private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
+    private const val ActivityTaskManagerService_LocalServiceClass = "com.android.server.wm.ActivityTaskManagerService\$LocalService"
 
     private val PackageListClass = VariousClass(
         "com.android.server.am.ProcessRecord\$PackageList",
@@ -149,6 +154,26 @@ object FrameworkHooker : YukiBaseHooker() {
                     paramCount = 1
                 }
                 intercept()
+            }
+        }.ignoredHookClassNotFoundFailure()
+        /** 干掉原生错误对话框 - API 30 以下 */
+        ActivityTaskManagerService_LocalServiceClass.hook {
+            injectMember {
+                method {
+                    name = "canShowErrorDialogs"
+                    emptyParam()
+                }
+                replaceToFalse()
+            }
+        }.by { Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q }
+        /** 干掉原生错误对话框 - 如果上述方法全部失效则直接结束对话框 */
+        AppErrorDialogClass.hook {
+            injectMember {
+                method {
+                    name = "onCreate"
+                    param(BundleClass)
+                }
+                afterHook { instance<Dialog>().cancel() }
             }
         }
         /** 注入自定义错误对话框 */
