@@ -66,20 +66,20 @@ data class AppErrorsInfoBean(
         fun clone(packageName: String?, crashInfo: ApplicationErrorReport.CrashInfo?) =
             (crashInfo?.exceptionClassName?.lowercase() == "native crash").let { isNativeCrash ->
                 AppErrorsInfoBean(
-                    packageName = packageName ?: "null",
+                    packageName = packageName ?: "unknown",
                     isNativeCrash = isNativeCrash,
-                    exceptionClassName = crashInfo?.exceptionClassName ?: "null",
+                    exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
                     exceptionMessage = if (isNativeCrash) crashInfo?.stackTrace.let {
                         if (it?.contains(other = "Abort message: '") == true)
                             runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
-                                ?: crashInfo?.exceptionMessage ?: "null"
-                        else crashInfo?.exceptionMessage ?: "null"
-                    } else crashInfo?.exceptionMessage ?: "null",
-                    throwFileName = crashInfo?.throwFileName ?: "null",
-                    throwClassName = crashInfo?.throwClassName ?: "null",
-                    throwMethodName = crashInfo?.throwMethodName ?: "null",
+                                ?: crashInfo?.exceptionMessage ?: "unknown"
+                        else crashInfo?.exceptionMessage ?: "unknown"
+                    } else crashInfo?.exceptionMessage ?: "unknown",
+                    throwFileName = crashInfo?.throwFileName ?: "unknown",
+                    throwClassName = crashInfo?.throwClassName ?: "unknown",
+                    throwMethodName = crashInfo?.throwMethodName ?: "unknown",
                     throwLineNumber = crashInfo?.throwLineNumber ?: -1,
-                    stackTrace = crashInfo?.stackTrace?.trim() ?: "null",
+                    stackTrace = crashInfo?.stackTrace?.trim() ?: "unknown",
                     timestamp = System.currentTimeMillis()
                 )
             }
