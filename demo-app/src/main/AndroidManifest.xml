@@ -12,8 +12,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:exported="true"
-            android:screenOrientation="behind">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,6 @@
         <activity
             android:name=".ui.activity.MainActivity$MultiProcessActivity"
             android:exported="false"
-            android:process=":multi_process"
-            android:screenOrientation="behind" />
+            android:process=":multi_process" />
     </application>
 </manifest>

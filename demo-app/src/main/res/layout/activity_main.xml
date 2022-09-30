@@ -55,93 +55,108 @@
         android:textColor="@color/colorTextDark"
         android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/throw_runtime_button"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_runtime"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+        android:fadingEdgeLength="10dp"
+        android:fillViewport="true"
+        android:paddingBottom="10dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none">
 
-    <TextView
-        android:id="@+id/throw_illegal_state_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_illegalstate"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/throw_null_pointer_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_nullpointer"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/throw_runtime_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_runtime"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/throw_exception_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_exception"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/throw_illegal_state_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_illegalstate"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/throw_native_error_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_native_error"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/throw_null_pointer_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_nullpointer"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/throw_multi_process_error_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_button_round"
-        android:gravity="center"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:text="@string/throw_multi_process_error"
-        android:textColor="@color/colorTextGray"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/throw_exception_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_exception"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/throw_native_error_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_native_error"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/throw_multi_process_error_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_button_round"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/throw_multi_process_error"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
