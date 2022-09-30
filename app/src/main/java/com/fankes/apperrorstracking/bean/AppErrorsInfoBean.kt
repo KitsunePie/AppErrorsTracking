@@ -119,6 +119,7 @@ data class AppErrorsInfoBean(
                 "[Display]: ${Build.DISPLAY}\n" +
                 "[Android Version]: ${Build.VERSION.RELEASE}\n" +
                 "[API Version]: ${Build.VERSION.SDK_INT}\n" +
+                "[System Locale]: ${Locale.getDefault()}\n" +
                 "[Package Name]: $packageName\n" +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
@@ -139,6 +140,7 @@ data class AppErrorsInfoBean(
                 "[Display]: ${Build.DISPLAY}\n" +
                 "[Android Version]: ${Build.VERSION.RELEASE}\n" +
                 "[API Version]: ${Build.VERSION.SDK_INT}\n" +
+                "[System Locale]: ${Locale.getDefault()}\n" +
                 "[Package Name]: $packageName\n" +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
