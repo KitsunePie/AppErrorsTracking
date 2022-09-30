@@ -29,8 +29,8 @@ import com.fankes.apperrorstracking.databinding.ActivityAppErrorsMutedBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsMutedBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
-import com.fankes.apperrorstracking.utils.factory.appIcon
-import com.fankes.apperrorstracking.utils.factory.appName
+import com.fankes.apperrorstracking.utils.factory.appIconOf
+import com.fankes.apperrorstracking.utils.factory.appNameOf
 import com.fankes.apperrorstracking.utils.factory.bindAdapter
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
@@ -58,8 +58,8 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
             onBindDatas { listData }
             onBindViews<AdapterAppErrorsMutedBinding> { binding, position ->
                 listData[position].also { bean ->
-                    binding.appIcon.setImageDrawable(appIcon(bean.packageName))
-                    binding.appNameText.text = appName(bean.packageName)
+                    binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
+                    binding.appNameText.text = appNameOf(bean.packageName)
                     binding.muteTypeText.text = when (bean.type) {
                         MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> LocaleString.muteIfUnlock
                         MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> LocaleString.muteIfRestart

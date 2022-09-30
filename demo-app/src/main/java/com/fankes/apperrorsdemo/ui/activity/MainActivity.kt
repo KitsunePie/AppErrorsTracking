@@ -31,7 +31,7 @@ import com.fankes.apperrorsdemo.ui.activity.base.BaseActivity
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate() {
-        binding.titleBackIcon.setOnClickListener { onBackPressed() }
+        binding.titleBackIcon.setOnClickListener { finish() }
         binding.throwRuntimeButton.setOnClickListener { Channel.throwRuntimeException() }
         binding.throwIllegalStateButton.setOnClickListener { Channel.throwIllegalStateException() }
         binding.throwNullPointerButton.setOnClickListener { Channel.throwNullPointerException() }

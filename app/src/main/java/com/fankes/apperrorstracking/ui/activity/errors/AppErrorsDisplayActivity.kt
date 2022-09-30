@@ -28,10 +28,7 @@ import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDisplayBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsDisplayBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
-import com.fankes.apperrorstracking.utils.factory.navigate
-import com.fankes.apperrorstracking.utils.factory.openSelfSetting
-import com.fankes.apperrorstracking.utils.factory.showDialog
-import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 
 class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>() {
@@ -56,7 +53,7 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
     override fun onCreate() {
         instance?.finish()
         instance = this
-        val appErrorsDisplay = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_DISPLAY) as? AppErrorsDisplayBean }.getOrNull()
+        val appErrorsDisplay = runCatching { intent?.getSerializableExtraCompat<AppErrorsDisplayBean>(EXTRA_APP_ERRORS_DISPLAY) }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsDisplay")
         /** 显示对话框 */
         showDialog<DiaAppErrorsDisplayBinding> {

@@ -19,22 +19,27 @@
  *
  * This file is Created by fankes on 2022/5/7.
  */
-@file:Suppress("DEPRECATION", "PrivateApi", "unused", "ObsoleteSdkInt")
+@file:Suppress("unused")
 
 package com.fankes.apperrorstracking.utils.factory
 
 import android.app.*
 import android.content.*
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.fankes.apperrorstracking.BuildConfig
@@ -44,6 +49,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
 import com.topjohnwu.superuser.Shell
+import java.io.Serializable
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -74,54 +80,86 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
 
 /**
- * 从 [Int] resId 获取 [Drawable]
- * @param resources 使用的 [Resources]
+ * 获取 [Drawable]
+ * @param resId 属性资源 ID
  * @return [Drawable]
  */
-fun Int.drawableOf(resources: Resources) = ResourcesCompat.getDrawable(resources, this, null) ?: error("Invalid resources")
+fun Resources.drawableOf(@DrawableRes resId: Int) = ResourcesCompat.getDrawable(this, resId, null) ?: error("Invalid resources")
 
 /**
- * 获取 APP 名称
- * @param packageName 包名
- * @return [String]
+ * 得到 APP 安装包信息 (兼容)
+ * @param packageName APP 包名
+ * @param flag [PackageInfoFlags]
+ * @return [PackageInfo] or null
  */
-fun Context.appName(packageName: String) =
-    runCatching {
-        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
-            .applicationInfo.loadLabel(packageManager).toString()
-    }.getOrNull() ?: packageName
+private fun Context.getPackageInfoCompat(packageName: String, flag: Number = 0) = runCatching {
+    @Suppress("DEPRECATION")
+    if (Build.VERSION.SDK_INT >= 33)
+        packageManager?.getPackageInfo(packageName, PackageInfoFlags.of(flag.toLong()))
+    else packageManager?.getPackageInfo(packageName, flag.toInt())
+}.getOrNull()
 
 /**
- * 获取 APP 完整版本
- * @param packageName 包名
+ * 得到 APP 版本号 (兼容 [PackageInfo.getLongVersionCode])
+ * @return [Int]
+ */
+private val PackageInfo.versionCodeCompat get() = PackageInfoCompat.getLongVersionCode(this)
+
+/**
+ * 获取系统中全部已安装应用列表
+ * @return [List]<[PackageInfo]>
+ */
+fun Context.listOfPackages() = runCatching {
+    @Suppress("DEPRECATION")
+    if (Build.VERSION.SDK_INT >= 33)
+        packageManager?.getInstalledPackages(PackageInfoFlags.of(PackageManager.GET_CONFIGURATIONS.toLong()))
+    else packageManager?.getInstalledPackages(PackageManager.GET_CONFIGURATIONS)
+}.getOrNull() ?: emptyList()
+
+/**
+ * 得到 APP 名称
+ * @param packageName APP 包名 - 默认为当前 APP
  * @return [String]
  */
-fun Context.appVersion(packageName: String) =
-    runCatching {
-        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.let { "${it.versionName} (${it.versionCode})" }
-    }.getOrNull() ?: "<unknown>"
+fun Context.appNameOf(packageName: String = getPackageName()) =
+    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
+
+/**
+ * 得到 APP 版本信息与版本号
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [String] 无法获取时返回 "unknown"
+ */
+fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
+    getPackageInfoCompat(packageName)?.let { "${it.versionName}(${it.versionCodeCompat})" } ?: "unknown"
 
 /**
  * 获取 APP CPU ABI 名称
- * @param packageName 包名
+ * @param packageName APP 包名 - 默认为当前 APP
  * @return [String]
  */
-fun Context.appCpuAbi(packageName: String) =
-    runCatching {
-        ApplicationInfoClass.field { name = "primaryCpuAbi" }
-            .get(packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)?.applicationInfo).string()
-    }.getOrNull() ?: ""
+fun Context.appCpuAbiOf(packageName: String = getPackageName()) = runCatching {
+    ApplicationInfoClass.field { name = "primaryCpuAbi" }.get(getPackageInfoCompat(packageName)?.applicationInfo).string()
+}.getOrNull() ?: ""
 
 /**
- * 获取 APP 图标
- * @param packageName 包名
- * @return [Drawable]
+ * 得到 APP 图标
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [Drawable] 无发获取时返回 [R.drawable.ic_android]
  */
-fun Context.appIcon(packageName: String) =
-    runCatching {
-        packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
-            .applicationInfo.loadIcon(packageManager)
-    }.getOrNull() ?: R.drawable.ic_android.drawableOf(resources)
+fun Context.appIconOf(packageName: String = getPackageName()) =
+    getPackageInfoCompat(packageName)?.applicationInfo?.loadIcon(packageManager) ?: resources.drawableOf(R.drawable.ic_android)
+
+/**
+ * 获取 [Serializable] (兼容)
+ * @param key 键值名称
+ * @return [T] or null
+ */
+inline fun <reified T : Serializable> Intent.getSerializableExtraCompat(key: String): T? {
+    @Suppress("DEPRECATION")
+    return if (Build.VERSION.SDK_INT >= 33)
+        getSerializableExtra(key, T::class.java)
+    else getSerializableExtra(key) as? T?
+}
 
 /**
  * 计算与当前时间戳相差的友好时间
@@ -309,3 +347,26 @@ fun execShell(cmd: String, isSu: Boolean = true) = runCatching {
         if (it.isNotEmpty()) it[0].trim() else ""
     }
 }.getOrNull() ?: ""
+
+/**
+ * 隐藏或显示启动器图标
+ *
+ * - 你可能需要 LSPosed 的最新版本以开启高版本系统中隐藏 APP 桌面图标功能
+ * @param isShow 是否显示
+ */
+fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
+    packageManager?.setComponentEnabledSetting(
+        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home"),
+        if (isShow) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+        PackageManager.DONT_KILL_APP
+    )
+}
+
+/**
+ * 获取启动器图标状态
+ * @return [Boolean] 是否显示
+ */
+val Context.isLauncherIconShowing
+    get() = packageManager?.getComponentEnabledSetting(
+        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home")
+    ) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED

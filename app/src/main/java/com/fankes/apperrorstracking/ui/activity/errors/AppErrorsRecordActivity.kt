@@ -94,8 +94,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                                 title = LocaleString.appErrorsStatistics
                                 binding.totalErrorsUnitText.text = LocaleString.totalErrorsUnit(listData.size)
                                 binding.totalAppsUnitText.text = LocaleString.totalAppsUnit(it.size)
-                                binding.mostErrorsAppIcon.setImageDrawable(appIcon(mostAppPackageName))
-                                binding.mostErrorsAppText.text = appName(mostAppPackageName)
+                                binding.mostErrorsAppIcon.setImageDrawable(appIconOf(mostAppPackageName))
+                                binding.mostErrorsAppText.text = appNameOf(mostAppPackageName)
                                 binding.mostErrorsTypeText.text = mostErrorsType
                                 binding.totalPptOfErrorsText.text = "$pptCount%"
                                 confirmButton(LocaleString.gotIt)
@@ -132,8 +132,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 onBindDatas { listData }
                 onBindViews<AdapterAppErrorsRecordBinding> { binding, position ->
                     listData[position].also { bean ->
-                        binding.appIcon.setImageDrawable(appIcon(bean.packageName))
-                        binding.appNameText.text = appName(bean.packageName)
+                        binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
+                        binding.appNameText.text = appNameOf(bean.packageName)
                         binding.errorsTimeText.text = bean.crossTime
                         binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.simpleThwName()
