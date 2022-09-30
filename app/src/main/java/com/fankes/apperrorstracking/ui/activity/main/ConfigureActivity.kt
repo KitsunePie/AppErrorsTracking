@@ -31,7 +31,7 @@ import com.fankes.apperrorstracking.databinding.DiaAppsFilterBinding
 import com.fankes.apperrorstracking.hook.factory.*
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
-import com.fankes.apperrorstracking.utils.factory.appIcon
+import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.bindAdapter
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
@@ -48,7 +48,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
     private val listData = ArrayList<AppInfoBean>()
 
     override fun onCreate() {
-        binding.titleBackIcon.setOnClickListener { onBackPressed() }
+        binding.titleBackIcon.setOnClickListener { finish() }
         binding.batchIcon.setOnClickListener {
             showDialog<DiaAppConfigBinding> {
                 title = LocaleString.batchOperations
@@ -164,7 +164,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
             Thread {
                 it.takeIf { e -> e.isNotEmpty() }?.forEach { e ->
                     listData.add(e)
-                    e.icon = appIcon(e.packageName)
+                    e.icon = appIconOf(e.packageName)
                 }
                 runOnUiThread {
                     onChanged?.invoke()

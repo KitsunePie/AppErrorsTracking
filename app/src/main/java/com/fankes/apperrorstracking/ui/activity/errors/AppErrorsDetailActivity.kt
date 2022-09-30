@@ -58,7 +58,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
-        val appErrorsInfo = runCatching { intent?.getSerializableExtra(EXTRA_APP_ERRORS_INFO) as? AppErrorsInfoBean }.getOrNull()
+        val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsInfo")
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
@@ -83,10 +83,10 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent)
             }, LocaleString.shareErrorStack))
         }
-        binding.appIcon.setImageDrawable(appIcon(appErrorsInfo.packageName))
-        binding.appNameText.text = appName(appErrorsInfo.packageName)
-        binding.appVersionText.text = appVersion(appErrorsInfo.packageName)
-        binding.appAbiText.text = appCpuAbi(appErrorsInfo.packageName).ifBlank { LocaleString.noCpuAbi }
+        binding.appIcon.setImageDrawable(appIconOf(appErrorsInfo.packageName))
+        binding.appNameText.text = appNameOf(appErrorsInfo.packageName)
+        binding.appVersionText.text = appVersionBrandOf(appErrorsInfo.packageName)
+        binding.appAbiText.text = appCpuAbiOf(appErrorsInfo.packageName).ifBlank { LocaleString.noCpuAbi }
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage
@@ -98,7 +98,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorRecordTimeText.text = appErrorsInfo.dateTime
         binding.errorStackText.text = appErrorsInfo.stackTrace
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
-            binding.detailTitleText.text = if (y >= 30.dp(context = this)) appName(appErrorsInfo.packageName) else LocaleString.appName
+            binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
         }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
     }

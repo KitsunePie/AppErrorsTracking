@@ -27,7 +27,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Message
 import androidx.core.graphics.drawable.IconCompat
@@ -94,7 +93,7 @@ object FrameworkHooker : YukiBaseHooker() {
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
         }
         FrameworkTool.Host.with(instance = this) {
-            onOpenAppUsedFramework { appContext.openApp(it) }
+            onOpenAppUsedFramework { appContext?.openApp(it) }
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData { appErrorsRecords.remove(it) }
             onClearAppErrorsInfoData { appErrorsRecords.clear() }
@@ -119,19 +118,22 @@ object FrameworkHooker : YukiBaseHooker() {
                 mutedErrorsIfRestartApps.clear()
             }
             onPushAppListData { filters ->
-                arrayListOf<AppInfoBean>().apply {
-                    appContext.packageManager.getInstalledPackages(PackageManager.GET_CONFIGURATIONS).also { info ->
-                        (if (filters.name.isNotBlank())
-                            info.filter { it.packageName.contains(filters.name) || appContext.appName(it.packageName).contains(filters.name) }
-                        else info).let { result ->
-                            if (filters.isContainsSystem.not()) result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
-                            else result
-                        }.sortedByDescending { it.lastUpdateTime }
-                            .forEach { add(AppInfoBean(name = appContext.appName(it.packageName), packageName = it.packageName)) }
-                        /** 移除模块自身 */
-                        removeIf { it.packageName == BuildConfig.APPLICATION_ID }
+                appContext?.let { context ->
+                    arrayListOf<AppInfoBean>().apply {
+                        context.listOfPackages().also { info ->
+                            (if (filters.name.isNotBlank())
+                                info.filter { it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name) }
+                            else info).let { result ->
+                                if (filters.isContainsSystem.not())
+                                    result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
+                                else result
+                            }.sortedByDescending { it.lastUpdateTime }
+                                .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
+                            /** 移除模块自身 */
+                            removeIf { it.packageName == BuildConfig.APPLICATION_ID }
+                        }
                     }
-                }
+                } ?: arrayListOf()
             }
         }
     }
@@ -191,48 +193,48 @@ object FrameworkHooker : YukiBaseHooker() {
                     val errData = args().first().cast<Message>()?.obj
 
                     /** 当前进程信息 */
-                    val proc = AppErrorDialog_DataClass.clazz.field { name = "proc" }.get(errData).any()
+                    val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(errData).any()
 
                     /** 当前 UserId 信息 */
-                    val userId = ProcessRecordClass.clazz.field { name = "userId" }.get(proc).int()
+                    val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
 
                     /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(proc).cast<ApplicationInfo>()
+                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
 
                     /** 当前进程名称 */
-                    val processName = ProcessRecordClass.clazz.field { name = "processName" }.get(proc).string()
+                    val processName = ProcessRecordClass.toClass().field { name = "processName" }.get(proc).string()
 
                     /** 当前 APP、进程 包名 */
                     val packageName = appInfo?.packageName ?: processName
 
                     /** 当前 APP 名称 */
-                    val appName = appInfo?.let { context.appName(it.packageName) } ?: packageName
+                    val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
 
                     /** 是否为 APP */
-                    val isApp = (PackageListClass.clazz.method {
+                    val isApp = (PackageListClass.toClass().method {
                         name = "size"
                         emptyParam()
-                    }.get(if (ProcessRecordClass.clazz.hasMethod {
+                    }.get(if (ProcessRecordClass.toClass().hasMethod {
                             name = "getPkgList"
                             emptyParam()
-                        }) ProcessRecordClass.clazz.method {
+                        }) ProcessRecordClass.toClass().method {
                         name = "getPkgList"
                         emptyParam()
-                    }.get(proc).call() else ProcessRecordClass.clazz.field {
+                    }.get(proc).call() else ProcessRecordClass.toClass().field {
                         name = "pkgList"
-                    }.get(proc).self).int() == 1 && appInfo != null)
+                    }.get(proc).any()).int() == 1 && appInfo != null)
 
                     /** 是否为主进程 */
                     val isMainProcess = packageName == processName
 
                     /** 是否为后台进程 */
-                    val isBackgroundProcess = UserControllerClass.clazz.method { name = "getCurrentProfileIds" }
-                        .get(ActivityManagerServiceClass.clazz.field { name = "mUserController" }
+                    val isBackgroundProcess = UserControllerClass.toClass().method { name = "getCurrentProfileIds" }
+                        .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
                             .get(field { name = "mService" }.get(instance).any()).any())
                         .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
 
                     /** 是否短时内重复错误 */
-                    val isRepeating = AppErrorDialog_DataClass.clazz.field { name = "repeating" }.get(errData).boolean()
+                    val isRepeating = AppErrorDialog_DataClass.toClass().field { name = "repeating" }.get(errData).boolean()
 
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
@@ -260,7 +262,7 @@ object FrameworkHooker : YukiBaseHooker() {
                                 channelName = LocaleString.appName,
                                 title = errorTitle,
                                 content = LocaleString.appErrorsTip,
-                                icon = IconCompat.createWithBitmap(R.mipmap.ic_notify.drawableOf(moduleAppResources).toBitmap()),
+                                icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.mipmap.ic_notify).toBitmap()),
                                 color = 0xFFFF6200.toInt(),
                                 intent = AppErrorsRecordActivity.intent()
                             )
@@ -299,7 +301,7 @@ object FrameworkHooker : YukiBaseHooker() {
                 }
                 afterHook {
                     /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.clazz.field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
+                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
                     /** 添加当前异常信息到第一位 */
                     appErrorsRecords.add(0, AppErrorsInfoBean.clone(appInfo?.packageName, args().last().cast()))
                 }

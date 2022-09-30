@@ -23,8 +23,6 @@
 
 package com.fankes.apperrorstracking.ui.activity.main
 
-import android.content.ComponentName
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.BuildConfig
@@ -35,10 +33,7 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
-import com.fankes.apperrorstracking.utils.factory.navigate
-import com.fankes.apperrorstracking.utils.factory.openBrowser
-import com.fankes.apperrorstracking.utils.factory.showDialog
-import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
@@ -59,17 +54,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.onlyShowErrorsInMainProcessSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.alwaysShowsReopenAppOptionsSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
         binding.enableAppsConfigsTemplateSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
-        binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
         binding.mgrAppsConfigsTemplateButton.isVisible = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
-        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_HIDE_ICON, b)
-            packageManager.setComponentEnabledSetting(
-                ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home"),
-                if (b) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-            )
-        }
         binding.onlyShowErrorsInFrontSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT, b)
@@ -86,6 +71,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             binding.mgrAppsConfigsTemplateButton.isVisible = b
             modulePrefs.put(DataConst.ENABLE_APP_CONFIG_TEMPLATE, b)
+        }
+        /** 设置桌面图标显示隐藏 */
+        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
+        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            hideOrShowLauncherIcon(b)
         }
         /** 管理应用配置模板按钮点击事件 */
         binding.mgrAppsConfigsTemplateButton.setOnClickListener { whenActivated { navigate<ConfigureActivity>() } }
