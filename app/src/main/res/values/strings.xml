@@ -117,4 +117,6 @@
     <string name="errors_dialog_always_show_reopen_tip">After enabling, the \"Reopen App\" option will also be shows when the app is not errors for the first time. If the current errors is not the main process or the app cannot be opened, this option will still not be showing.</string>
     <string name="developer_notice_tip">This module is specially designed for Android developers.\n\nWhen it is possible that the computer cannot be connected and ADB cannot be performed, this module can be used to quickly capture any exception of any installed apps, so as to quickly locate the problem.\n\nThe error log of apps crashing is an invaluable asset for developers. If you are not a developer, you can still install this module to provide developers with more exception information to quickly solve problems.</string>
     <string name="developer_notice">Instructions</string>
+    <string name="warning">Warning</string>
+    <string name="fast_restart_problem">Some custom systems may experience errors after using fast restart.\\nDo you want to continue?</string>
 </resources>

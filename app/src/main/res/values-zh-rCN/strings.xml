@@ -36,6 +36,7 @@
     <string name="cancel">取消</string>
     <string name="more">更多</string>
     <string name="notice">提示</string>
+    <string name="warning">警告</string>
     <string name="are_you_sure_clear_errors">你确定要清空全部异常记录吗？</string>
     <string name="all_errors_clear_success">全部异常记录已清空</string>
     <string name="are_you_sure_export_all_errors">你确定要导出全部日志文件吗？打包过程可能会花费一点时间。</string>
@@ -117,4 +118,5 @@
     <string name="errors_dialog_always_show_reopen_tip">启用后，在应用非首次异常时也将显示“重新打开”选项，若当前异常非主进程或应用无法打开则依然不会显示此选项。</string>
     <string name="developer_notice_tip">此模块专为 Android 开发者而打造。\n\n在可能的无法连接电脑，不能进行 ADB 调试的时候，可通过此模块来快速捕获任意已安装应用的任意异常，以便快速定位问题。\n\n应用发生崩溃的错误日志对开发者来说是无价的财富，若你不是开发者，你依然可以安装此模块，以便给开发者提供更多异常信息快速解决问题。</string>
     <string name="developer_notice">使用说明</string>
+    <string name="fast_restart_problem">部分定制系统使用快速重启后可能会发生错误，仍然要继续吗？</string>
 </resources>
