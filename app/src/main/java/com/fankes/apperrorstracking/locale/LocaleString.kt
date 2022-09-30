@@ -192,6 +192,12 @@ object LocaleString {
     fun notice(vararg objArrs: Any) = R.string.notice.bind(*objArrs)
 
     /** @string Automatic generated */
+    val warning get() = warning()
+
+    /** @string Automatic generated */
+    fun warning(vararg objArrs: Any) = R.string.warning.bind(*objArrs)
+
+    /** @string Automatic generated */
     val areYouSureClearErrors get() = areYouSureClearErrors()
 
     /** @string Automatic generated */
@@ -454,4 +460,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun developerNotice(vararg objArrs: Any) = R.string.developer_notice.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val fastRestartProblem get() = fastRestartProblem()
+
+    /** @string Automatic generated */
+    fun fastRestartProblem(vararg objArrs: Any) = R.string.fast_restart_problem.bind(*objArrs)
 }

@@ -117,4 +117,6 @@
     <string name="errors_dialog_always_show_reopen_tip">有効にした後、アプリが最初のエラーでない場合にも「アプリをリスタート」オプションが表示されます。現在のエラーがメインプロセスでない場合、またはアプリを開くことができない場合でも、このオプションは表示されません。</string>
     <string name="developer_notice_tip">このモジュールは、Android開発者向けに作成されています。\n\nコンピューターに接続できず、ADBデバッグを実行できない可能性がある場合、このモジュールを使用して、インストールされているアプリのエラーをすばやくキャプチャし、問題をすばやく特定できます。\n\nアプリのクラッシュのエラーログは開発者にとって非常に貴重です。開発者でない場合でも、このモジュールをインストールして、問題をすばやく解決するためのより多くの例外情報を開発者に提供できます。</string>
     <string name="developer_notice">使用説明書</string>
+    <string name="warning">警告</string>
+    <string name="fast_restart_problem">一部のカスタム システムでは、高速リスタートを使用した後にエラーが発生する場合があります。\\n続行しますか?</string>
 </resources>
