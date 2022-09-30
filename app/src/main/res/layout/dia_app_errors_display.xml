@@ -19,136 +19,151 @@
         android:textSize="12sp"
         android:visibility="gone" />
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/app_info_item"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="10dp"
+        android:fillViewport="true"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:padding="1dp"
-            android:src="@drawable/ic_baseline_info"
-            app:tint="@color/colorTextGray" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_info"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+            android:orientation="vertical">
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/close_app_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/app_info_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_baseline_close"
-            app:tint="@color/colorTextGray" />
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:padding="1dp"
+                    android:src="@drawable/ic_baseline_info"
+                    app:tint="@color/colorTextGray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/close_app"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_info"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/reopen_app_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/close_app_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_baseline_refresh"
-            app:tint="@color/colorTextGray" />
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_close"
+                    app:tint="@color/colorTextGray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reopen_app"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/close_app"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/error_detail_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/reopen_app_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_baseline_bug_report"
-            app:tint="@color/colorTextGray" />
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_refresh"
+                    app:tint="@color/colorTextGray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/error_detail"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reopen_app"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/muted_if_unlock_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/error_detail_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_baseline_eject"
-            app:tint="@color/colorTextGray" />
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_bug_report"
+                    app:tint="@color/colorTextGray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mute_if_unlock"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_detail"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
 
-    <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
-        android:id="@+id/muted_if_restart_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp">
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/muted_if_unlock_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_baseline_eject"
-            app:tint="@color/colorTextGray" />
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_eject"
+                    app:tint="@color/colorTextGray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mute_if_restart"
-            android:textColor="@color/colorTextGray"
-            android:textSize="15sp" />
-    </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_if_unlock"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+
+            <com.fankes.apperrorstracking.ui.view.ItemLinearLayout
+                android:id="@+id/muted_if_restart_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_eject"
+                    app:tint="@color/colorTextGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mute_if_restart"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+            </com.fankes.apperrorstracking.ui.view.ItemLinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
