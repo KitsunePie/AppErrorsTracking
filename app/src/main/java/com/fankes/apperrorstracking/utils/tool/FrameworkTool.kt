@@ -205,9 +205,16 @@ object FrameworkTool {
                 else context.snake(LocaleString.accessRootFail)
             }
             neutralButton(LocaleString.fastRestart) {
-                if (isRootAccess)
-                    execShell(cmd = "killall zygote")
-                else context.snake(LocaleString.accessRootFail)
+                context.showDialog {
+                    title = LocaleString.warning
+                    msg = LocaleString.fastRestartProblem
+                    confirmButton {
+                        if (isRootAccess)
+                            execShell(cmd = "killall zygote")
+                        else context.snake(LocaleString.accessRootFail)
+                    }
+                    cancelButton()
+                }
             }
             cancelButton()
         }
