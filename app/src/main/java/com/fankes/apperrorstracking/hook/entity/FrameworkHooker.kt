@@ -84,8 +84,8 @@ object FrameworkHooker : YukiBaseHooker() {
     /** 已记录的 APP 异常信息数组 - 直到重新启动 */
     private val appErrorsRecords = ArrayList<AppErrorsInfoBean>()
 
-    /** 注册 */
-    private fun register() {
+    /** 注册生命周期 */
+    private fun registerLifecycle() {
         onAppLifecycle {
             /** 解锁后清空已记录的忽略错误 APP */
             registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> mutedErrorsIfUnlockApps.clear() }
@@ -139,8 +139,8 @@ object FrameworkHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
-        /** 注册 */
-        register()
+        /** 注册生命周期 */
+        registerLifecycle()
         /** 干掉原生错误对话框 - 如果有 */
         ErrorDialogControllerClass.hook {
             injectMember {
@@ -228,7 +228,8 @@ object FrameworkHooker : YukiBaseHooker() {
                     val isMainProcess = packageName == processName
 
                     /** 是否为后台进程 */
-                    val isBackgroundProcess = UserControllerClass.toClass().method { name = "getCurrentProfileIds" }
+                    val isBackgroundProcess = UserControllerClass.toClass()
+                        .method { name = "getCurrentProfileIds" }
                         .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
                             .get(field { name = "mService" }.get(instance).any()).any())
                         .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
