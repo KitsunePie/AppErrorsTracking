@@ -123,8 +123,7 @@ data class AppErrorsInfoBean(
                 "[Package Name]: $packageName\n" +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
-                "[Stack Trace]:\n" +
-                stackTrace
+                "[Stack Trace]:\n" + stackTrace
 
     /**
      * 获取异常堆栈文件模板
@@ -144,6 +143,5 @@ data class AppErrorsInfoBean(
                 "[Package Name]: $packageName\n" +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
-                "[Stack Trace]:\n" +
-                stackTrace
+                "[Stack Trace]:\n" + stackTrace
 }
