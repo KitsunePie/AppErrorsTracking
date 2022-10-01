@@ -24,11 +24,11 @@ package com.fankes.apperrorstracking.ui.activity.main
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
+import com.fankes.apperrorstracking.data.factory.*
 import com.fankes.apperrorstracking.databinding.ActivityConfigBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppInfoBinding
 import com.fankes.apperrorstracking.databinding.DiaAppConfigBinding
 import com.fankes.apperrorstracking.databinding.DiaAppsFilterBinding
-import com.fankes.apperrorstracking.hook.factory.*
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIconOf

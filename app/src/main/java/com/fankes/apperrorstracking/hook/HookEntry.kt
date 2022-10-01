@@ -21,6 +21,7 @@
  */
 package com.fankes.apperrorstracking.hook
 
+import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
@@ -40,6 +41,7 @@ class HookEntry : IYukiHookXposedInit {
     override fun onHook() = encase {
         loadSystem {
             LocaleString.bind(instance = this)
+            ConfigData.init(instance = this)
             loadHooker(FrameworkHooker)
         }
     }
