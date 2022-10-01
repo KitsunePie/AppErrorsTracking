@@ -52,6 +52,8 @@ import com.topjohnwu.superuser.Shell
 import java.io.Serializable
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 系统深色模式是否开启
@@ -209,6 +211,12 @@ fun Number.decimal(count: Int = 2) = runCatching {
         }
     ).apply { roundingMode = RoundingMode.HALF_UP }.format(this) ?: toString()
 }.getOrNull() ?: this
+
+/**
+ * [Long] 转换为 UTC 时间
+ * @return [String]
+ */
+fun Long.toUtcTime() = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ROOT).format(Date(this)) ?: ""
 
 /**
  * 弹出 [Toast]
