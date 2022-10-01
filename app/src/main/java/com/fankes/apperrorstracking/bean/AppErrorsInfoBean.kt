@@ -25,8 +25,8 @@ import android.app.ApplicationErrorReport
 import android.os.Build
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.difference
+import com.fankes.apperrorstracking.utils.factory.toUtcTime
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -101,10 +101,10 @@ data class AppErrorsInfoBean(
         )
 
     /**
-     * 获取异常本地化量化时间
+     * 获取异常本地化 UTC 时间
      * @return [String]
      */
-    val dateTime get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp)) ?: "DateTime not found"
+    val dateTime get() = timestamp.toUtcTime()
 
     /**
      * 获取异常堆栈分享模板

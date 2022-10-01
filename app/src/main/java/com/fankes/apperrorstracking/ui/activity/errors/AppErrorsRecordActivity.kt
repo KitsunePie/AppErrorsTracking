@@ -166,7 +166,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         ("${cacheDir.absolutePath}/temp").also { path ->
             File(path).mkdirs()
             listData.takeIf { it.isNotEmpty() }?.forEach {
-                File("$path/${it.packageName}_${it.timestamp}.log").writeText(it.stackOutputFileContent)
+                File("$path/${it.packageName}_${it.timestamp.toUtcTime()}.log").writeText(it.stackOutputFileContent)
             }
             outPutFilePath = "${cacheDir.absolutePath}/temp_${System.currentTimeMillis()}.zip"
             ZipFileTool.zipMultiFile(path, outPutFilePath)
@@ -174,7 +174,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "*/application"
-                    putExtra(Intent.EXTRA_TITLE, "app_errors_info_${System.currentTimeMillis()}.zip")
+                    putExtra(Intent.EXTRA_TITLE, "app_errors_info_${System.currentTimeMillis().toUtcTime()}.zip")
                 }, WRITE_REQUEST_CODE)
             }.onFailure { toast(msg = "Start Android SAF failed") }
         }
