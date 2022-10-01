@@ -21,7 +21,7 @@
  */
 @file:Suppress("unused")
 
-package com.fankes.apperrorstracking.hook.factory
+package com.fankes.apperrorstracking.data.factory
 
 import android.content.Context
 import com.highcapable.yukihookapi.hook.factory.modulePrefs

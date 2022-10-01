@@ -37,10 +37,10 @@ import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
-import com.fankes.apperrorstracking.data.DataConst
-import com.fankes.apperrorstracking.hook.factory.isAppShowErrorsNotify
-import com.fankes.apperrorstracking.hook.factory.isAppShowErrorsToast
-import com.fankes.apperrorstracking.hook.factory.isAppShowNothing
+import com.fankes.apperrorstracking.data.ConfigData
+import com.fankes.apperrorstracking.data.factory.isAppShowErrorsNotify
+import com.fankes.apperrorstracking.data.factory.isAppShowErrorsToast
+import com.fankes.apperrorstracking.data.factory.isAppShowNothing
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
@@ -238,9 +238,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
-
-                    /** 是否始终显示重新打开按钮 */
-                    val isAlwaysShowsReopenApp = prefs.get(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
@@ -254,7 +251,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 判断是否为已忽略的 APP */
                     if (mutedErrorsIfUnlockApps.contains(packageName) || mutedErrorsIfRestartApps.contains(packageName)) return@afterHook
                     /** 判断配置模块启用状态 */
-                    if (prefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)) {
+                    if (ConfigData.isEnableAppConfigTemplate) {
                         if (isAppShowNothing(packageName)) return@afterHook
                         if (isAppShowErrorsNotify(packageName)) {
                             context.pushNotify(
@@ -274,11 +271,10 @@ object FrameworkHooker : YukiBaseHooker() {
                         }
                     }
                     /** 判断是否为后台进程 */
-                    if ((isBackgroundProcess || context.isAppCanOpened(packageName).not())
-                        && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
-                    ) return@afterHook
+                    if ((isBackgroundProcess || context.isAppCanOpened(packageName).not()) && ConfigData.isEnableOnlyShowErrorsInFront)
+                        return@afterHook
                     /** 判断是否为主进程 */
-                    if (isMainProcess.not() && prefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)) return@afterHook
+                    if (isMainProcess.not() && ConfigData.isEnableOnlyShowErrorsInMain) return@afterHook
                     /** 启动错误对话框显示窗口 */
                     AppErrorsDisplayActivity.start(
                         context, AppErrorsDisplayBean(
@@ -287,7 +283,7 @@ object FrameworkHooker : YukiBaseHooker() {
                             appName = appName,
                             title = errorTitle,
                             isShowAppInfoButton = isApp,
-                            isShowReopenButton = isApp && (isRepeating.not() || isAlwaysShowsReopenApp)
+                            isShowReopenButton = isApp && (isRepeating.not() || ConfigData.isEnableAlwaysShowsReopenAppOptions)
                                     && context.isAppCanOpened(packageName) && isMainProcess,
                             isShowCloseAppButton = isApp
                         )

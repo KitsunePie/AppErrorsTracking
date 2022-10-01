@@ -27,7 +27,8 @@ import android.os.Build
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
-import com.fankes.apperrorstracking.data.DataConst
+import com.fankes.apperrorstracking.data.ConfigData
+import com.fankes.apperrorstracking.data.ConfigData.bind
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
@@ -36,7 +37,6 @@ import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.factory.modulePrefs
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -50,27 +50,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text =
             LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
-        binding.onlyShowErrorsInFrontSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
-        binding.onlyShowErrorsInMainProcessSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
-        binding.alwaysShowsReopenAppOptionsSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
-        binding.enableAppsConfigsTemplateSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
-        binding.mgrAppsConfigsTemplateButton.isVisible = modulePrefs.get(DataConst.ENABLE_APP_CONFIG_TEMPLATE)
-        binding.onlyShowErrorsInFrontSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT, b)
-        }
-        binding.onlyShowErrorsInMainProcessSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN, b)
-        }
-        binding.alwaysShowsReopenAppOptionsSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS, b)
-        }
-        binding.enableAppsConfigsTemplateSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            binding.mgrAppsConfigsTemplateButton.isVisible = b
-            modulePrefs.put(DataConst.ENABLE_APP_CONFIG_TEMPLATE, b)
+        binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
+        binding.onlyShowErrorsInMainProcessSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
+        binding.alwaysShowsReopenAppOptionsSwitch.bind(ConfigData.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
+        binding.enableAppsConfigsTemplateSwitch.bind(ConfigData.ENABLE_APP_CONFIG_TEMPLATE) {
+            binding.mgrAppsConfigsTemplateButton.isVisible = it
         }
         /** 设置桌面图标显示隐藏 */
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
@@ -88,11 +72,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/KitsunePie/AppErrorsTracking") }
         /** 显示开发者提示 */
-        if (modulePrefs.get(DataConst.SHOW_DEVELOPER_NOTICE))
+        if (ConfigData.isShowDeveloperNotice)
             showDialog {
                 title = LocaleString.developerNotice
                 msg = LocaleString.developerNoticeTip
-                confirmButton(LocaleString.gotIt) { modulePrefs.put(DataConst.SHOW_DEVELOPER_NOTICE, value = false) }
+                confirmButton(LocaleString.gotIt) { ConfigData.isShowDeveloperNotice = false }
                 noCancelable()
             }
     }
