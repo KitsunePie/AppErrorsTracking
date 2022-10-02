@@ -84,13 +84,11 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
                 cancel()
             }
             binding.errorDetailItem.setOnClickListener {
-                FrameworkTool.fetchAppErrorsInfoData(context) { appErrorsInfos ->
-                    appErrorsInfos.takeIf { it.isNotEmpty() }
-                        ?.filter { it.packageName == appErrorsDisplay.packageName }
-                        ?.takeIf { it.isNotEmpty() }?.get(0)?.let {
-                            AppErrorsDetailActivity.start(context, it)
-                            cancel()
-                        } ?: toast(msg = "No errors founded")
+                FrameworkTool.fetchAppErrorInfoData(context, appErrorsDisplay.pid) { appErrorsInfo ->
+                    appErrorsInfo.takeIf { it.isEmpty.not() }?.also {
+                        AppErrorsDetailActivity.start(context, it)
+                        cancel()
+                    } ?: toast(LocaleString.unableGetAppErrorsRecordTip)
                 }
             }
             binding.mutedIfUnlockItem.setOnClickListener {

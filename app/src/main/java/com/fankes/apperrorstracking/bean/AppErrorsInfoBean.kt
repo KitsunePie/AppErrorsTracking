@@ -33,6 +33,7 @@ import java.util.*
 
 /**
  * 应用异常信息 bean
+ * @param pid 进程 ID
  * @param userId 用户 ID
  * @param packageName 包名
  * @param isNativeCrash 是否为原生层异常
@@ -46,31 +47,40 @@ import java.util.*
  * @param timestamp 记录时间戳
  */
 data class AppErrorsInfoBean(
-    @Keep var userId: Int,
-    @Keep var packageName: String,
-    @Keep var isNativeCrash: Boolean,
-    @Keep var exceptionClassName: String,
-    @Keep var exceptionMessage: String,
-    @Keep var throwFileName: String,
-    @Keep var throwClassName: String,
-    @Keep var throwMethodName: String,
-    @Keep var throwLineNumber: Int,
-    @Keep var stackTrace: String,
-    @Keep var timestamp: Long,
+    @Keep var pid: Int = -1,
+    @Keep var userId: Int = -1,
+    @Keep var packageName: String = "",
+    @Keep var isNativeCrash: Boolean = false,
+    @Keep var exceptionClassName: String = "",
+    @Keep var exceptionMessage: String = "",
+    @Keep var throwFileName: String = "",
+    @Keep var throwClassName: String = "",
+    @Keep var throwMethodName: String = "",
+    @Keep var throwLineNumber: Int = -1,
+    @Keep var stackTrace: String = "",
+    @Keep var timestamp: Long = -1L
 ) : Serializable {
 
     companion object {
 
         /**
+         * 创建一个空的 [AppErrorsInfoBean]
+         * @return [AppErrorsInfoBean]
+         */
+        fun createEmpty() = AppErrorsInfoBean().apply { isEmpty = true }
+
+        /**
          * 从 [ApplicationErrorReport.CrashInfo] 克隆
+         * @param pid APP 进程 ID
          * @param packageName APP 包名
          * @param userId APP 用户 ID
          * @param crashInfo [ApplicationErrorReport.CrashInfo]
          * @return [AppErrorsInfoBean]
          */
-        fun clone(packageName: String?, userId: Int?, crashInfo: ApplicationErrorReport.CrashInfo?) =
+        fun clone(pid: Int, packageName: String?, userId: Int?, crashInfo: ApplicationErrorReport.CrashInfo?) =
             (crashInfo?.exceptionClassName?.lowercase() == "native crash").let { isNativeCrash ->
                 AppErrorsInfoBean(
+                    pid = pid,
                     userId = userId ?: 0,
                     packageName = packageName ?: "unknown",
                     isNativeCrash = isNativeCrash,
@@ -90,6 +100,9 @@ data class AppErrorsInfoBean(
                 )
             }
     }
+
+    /** 标识当前内容是否为空 */
+    var isEmpty = false
 
     /**
      * 获取异常本地化 UTC 时间

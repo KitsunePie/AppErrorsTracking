@@ -76,7 +76,7 @@ object FrameworkHooker : YukiBaseHooker() {
     )
 
     /** 已记录的 APP 用户 ID */
-    private var appUserIdRecords = HashMap<String, Int>()
+    private var appUserIdRecords = HashMap<Int, Int>()
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
     private var mutedErrorsIfUnlockApps = HashSet<String>()
@@ -99,6 +99,7 @@ object FrameworkHooker : YukiBaseHooker() {
         }
         FrameworkTool.Host.with(instance = this) {
             onOpenAppUsedFramework { appContext?.openApp(it.first, it.second) }
+            onPushAppErrorInfoData { appErrorsRecords.firstOrNull { e -> e.pid == it } ?: AppErrorsInfoBean.createEmpty() }
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData {
                 appErrorsRecords.remove(it)
@@ -257,7 +258,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
                     /** 写入到用户 ID 记录 */
-                    appUserIdRecords[proc.toString()] = userId
+                    appUserIdRecords[pid] = userId
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
@@ -298,6 +299,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 启动错误对话框显示窗口 */
                     AppErrorsDisplayActivity.start(
                         context, AppErrorsDisplayBean(
+                            pid = pid,
                             userId = userId,
                             packageName = packageName,
                             processName = processName,
@@ -320,12 +322,20 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前进程信息 */
                     val proc = args().first().any()
 
+                    /** 当前 pid 信息 */
+                    val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
+
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
-                    /** 添加当前异常信息到第一位 */
-                    appErrorsRecords.add(
-                        0, AppErrorsInfoBean.clone(appInfo?.packageName, appUserIdRecords[proc.toString()], args().last().cast())
-                    )
+                    /** 启动新线程延迟防止方法执行顺序在前导致无法正确获取数据 */
+                    newThread {
+                        /** 延迟 50ms */
+                        Thread.sleep(50)
+                        /** 添加当前异常信息到第一位 */
+                        appErrorsRecords.add(
+                            0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args().last().cast())
+                        )
+                    }
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
                 }
