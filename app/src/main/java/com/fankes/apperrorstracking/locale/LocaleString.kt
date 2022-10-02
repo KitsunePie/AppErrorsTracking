@@ -472,4 +472,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun userId(vararg objArrs: Any) = R.string.user_id.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val unableGetAppErrorsRecordTip get() = unableGetAppErrorsRecordTip()
+
+    /** @string Automatic generated */
+    fun unableGetAppErrorsRecordTip(vararg objArrs: Any) = R.string.unable_get_app_errors_record_tip.bind(*objArrs)
 }
