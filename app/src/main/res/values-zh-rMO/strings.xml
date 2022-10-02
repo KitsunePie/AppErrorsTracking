@@ -81,7 +81,7 @@
     <string name="only_show_errors_in_front_tip">啟用後，只有發生異常的程式處於前台（正在使用中）時才會展示錯誤對話框，發生異常的後台程式雖然不會展示錯誤對話框，但是它們都會被記錄到異常歷史記錄中。</string>
     <string name="only_show_errors_in_main_process_tip">啟用後，只有程式發生的異常位於主進程（第一個 Application 實例對象）時才會展示錯誤對話框。</string>
     <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框以及其它錯誤提示。</string>
-    <string name="view_errors_record_tip">在這裡，你可以找到從系統開機以來到現在為止的全部程式異常記錄，異常歷史記錄在重新啟動後會自動清空，你可以對記錄進行查看、導出和分享以及清空。</string>
+    <string name="view_errors_record_tip">在這裡，你可以找到從模組開始記錄以來的全部程式異常記錄，異常歷史記錄會持續保留直到你手動清空或恢復出廠設置，你可以對記錄進行查看、導出和分享以及清空。</string>
     <string name="view_muted_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
     <string name="muted_errors_apps">已忽略異常的程式</string>
     <string name="unmute">取消忽略</string>
