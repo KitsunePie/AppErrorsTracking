@@ -56,10 +56,12 @@ object FrameworkTool {
     private const val CALL_UNMUTE_ERRORS_APP_DATA_RESULT = "call_unmute_errors_app_data_result"
     private const val CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT = "call_unmute_all_errors_apps_data_result"
 
+    private val CALL_APP_ERROR_DATA_GET = ChannelData<Int>("call_app_error_data_get")
     private val CALL_OPEN_SPECIFY_APP = ChannelData<Pair<String, Int>>("call_open_specify_app")
     private val CALL_APP_LIST_DATA_GET = ChannelData<AppFiltersBean>("call_app_info_list_data_get")
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
     private val CALL_APP_LIST_DATA_GET_RESULT = ChannelData<ArrayList<AppInfoBean>>("call_app_info_list_data_get_result")
+    private val CALL_APP_ERROR_DATA_GET_RESULT = ChannelData<AppErrorsInfoBean>("call_app_error_data_get_result")
     private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
     private val CALL_MUTED_ERRORS_APP_DATA_GET_RESULT = ChannelData<ArrayList<MutedErrorsAppBean>>("call_muted_app_errors_data_get_result")
     private val CALL_UNMUTE_ERRORS_APP_DATA = ChannelData<MutedErrorsAppBean>("call_unmute_errors_app_data")
@@ -87,6 +89,14 @@ object FrameworkTool {
          * @param result 回调包名和用户 ID
          */
         fun onOpenAppUsedFramework(result: (Pair<String, Int>) -> Unit) = instance?.dataChannel?.wait(CALL_OPEN_SPECIFY_APP) { result(it) }
+
+        /**
+         * 监听发送指定 APP 异常信息
+         * @param result 回调数据
+         */
+        fun onPushAppErrorInfoData(result: (Int) -> AppErrorsInfoBean) {
+            instance?.dataChannel?.with { wait(CALL_APP_ERROR_DATA_GET) { put(CALL_APP_ERROR_DATA_GET_RESULT, result(it)) } }
+        }
 
         /**
          * 监听发送 APP 异常信息数组
@@ -234,6 +244,19 @@ object FrameworkTool {
      */
     fun openAppUsedFramework(context: Context, packageName: String, userId: Int) =
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).put(CALL_OPEN_SPECIFY_APP, Pair(packageName, userId))
+
+    /**
+     * 获取指定 APP 异常信息
+     * @param context 实例
+     * @param pid 当前进程 ID
+     * @param result 回调数据
+     */
+    fun fetchAppErrorInfoData(context: Context, pid: Int, result: (AppErrorsInfoBean) -> Unit) {
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
+            wait(CALL_APP_ERROR_DATA_GET_RESULT) { result(it) }
+            put(CALL_APP_ERROR_DATA_GET, pid)
+        }
+    }
 
     /**
      * 获取 APP 异常信息数组
