@@ -35,7 +35,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.locale.LocaleString
-import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.highcapable.yukihookapi.YukiHookAPI
@@ -45,24 +44,32 @@ import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
 /**
  * 构造 [VB] 自定义 View 对话框
+ * @param isDisableMaterial3 是否禁用 Material 3 风格对话框 - 默认否
  * @param initiate 对话框方法体
  */
 @JvmName(name = "showDialog_Generics")
-inline fun <reified VB : ViewBinding> Context.showDialog(initiate: DialogBuilder<VB>.() -> Unit) =
-    DialogBuilder<VB>(context = this, VB::class.java).apply(initiate).show()
+inline fun <reified VB : ViewBinding> Context.showDialog(isDisableMaterial3: Boolean = false, initiate: DialogBuilder<VB>.() -> Unit) =
+    DialogBuilder<VB>(context = this, isDisableMaterial3, VB::class.java).apply(initiate).show()
 
 /**
  * 构造对话框
  * @param initiate 对话框方法体
+ * @param isDisableMaterial3 是否禁用 Material 3 风格对话框 - 默认否
  */
-inline fun Context.showDialog(initiate: DialogBuilder<*>.() -> Unit) = DialogBuilder<ViewBinding>(context = this).apply(initiate).show()
+inline fun Context.showDialog(isDisableMaterial3: Boolean = false, initiate: DialogBuilder<*>.() -> Unit) =
+    DialogBuilder<ViewBinding>(context = this, isDisableMaterial3).apply(initiate).show()
 
 /**
  * 对话框构造器
  * @param context 实例
+ * @param isDisableMaterial3 是否禁用 Material 3 风格对话框 - 默认否
  * @param bindingClass [ViewBinding] 的 [Class] 实例 or null
  */
-class DialogBuilder<VB : ViewBinding>(val context: Context, private val bindingClass: Class<*>? = null) {
+class DialogBuilder<VB : ViewBinding>(
+    val context: Context,
+    private val isDisableMaterial3: Boolean = false,
+    private val bindingClass: Class<*>? = null
+) {
 
     /** 实例对象 */
     private var instance: AlertDialog.Builder? = null
@@ -92,8 +99,8 @@ class DialogBuilder<VB : ViewBinding>(val context: Context, private val bindingC
     init {
         if (YukiHookAPI.Status.isXposedEnvironment) error("This dialog is not allowed to created in Xposed environment")
         instance = MaterialAlertDialogBuilder(context).also { builder ->
-            if (context is AppErrorsDisplayActivity)
-                builder.background = (builder.background as MaterialShapeDrawable).apply { setCornerSize(15.dpFloat(context)) }
+            if (isDisableMaterial3)
+                builder.background = (builder.background as? MaterialShapeDrawable)?.apply { setCornerSize(15.dpFloat(context)) }
         }
     }
 
