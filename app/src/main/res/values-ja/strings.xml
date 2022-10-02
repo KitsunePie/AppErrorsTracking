@@ -74,7 +74,7 @@
     <string name="function_mgr">機能管理</string>
     <string name="only_show_errors_in_front">フロントアプリのエラーダイアログを表示</string>
     <string name="only_show_errors_in_main_process">メインプロセスのエラーダイアログを表示</string>
-    <string name="enable_apps_config_template">アプリ設定テンプレートを有効にする</string>
+    <string name="enable_apps_config_template">アプリ設定テンプレートを有効</string>
     <string name="mgr_apps_config_template">アプリ設定テンプレートを管理する</string>
     <string name="view_errors_record">エラー履歴を表示する</string>
     <string name="view_muted_errors_apps">エラーを無視したアプリを表示する</string>
@@ -119,4 +119,7 @@
     <string name="warning">警告</string>
     <string name="fast_restart_problem">一部のカスタム システムでは、高速リスタートを使用した後にエラーが発生する場合があります。\\n続行しますか?</string>
     <string name="view_errors_record_tip">ここでは、モジュールが記録を開始してからのすべてのアプリ エラー レコードを見つけることができます。エラー履歴は、手動で消去するか工場出荷時の設定に戻すまで保持され続けます。記録を表示、エクスポート、共有、消去できます。</string>
+    <string name="theme_setting">テーマ設定</string>
+    <string name="enable_md3_app_errors_dialog">MD3 スタイルのエラーダイアログを有効</string>
+    <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲット バージョンが 12 以降の場合にデフォルトで有効になり、動的テーマ カラー機能は Android 12 以降でのみ有効になります。</string>
 </resources>

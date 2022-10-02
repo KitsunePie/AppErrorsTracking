@@ -119,4 +119,7 @@
     <string name="warning">Warning</string>
     <string name="fast_restart_problem">Some custom systems may experience errors after using fast restart.\\nDo you want to continue?</string>
     <string name="view_errors_record_tip">Here you can find all apps exception records since the module started recording. The exception history will continue to be retained until you manually clear it or do a factory reset. You can view, export, share and clear the records.</string>
+    <string name="theme_setting">Theme Setting</string>
+    <string name="enable_md3_app_errors_dialog">Enable Material 3 style errors dialog</string>
+    <string name="enable_md3_app_errors_dialog_tip">This feature is enabled by default when the Android target version is 12 and above, and the theme dynamic colors function will only take effect on Android 12 and above.</string>
 </resources>
