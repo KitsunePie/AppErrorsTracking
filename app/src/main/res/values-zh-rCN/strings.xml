@@ -122,4 +122,5 @@
     <string name="theme_setting">主题设置</string>
     <string name="enable_md3_app_errors_dialog">启用 Material 3 风格错误对话框</string>
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目标版本为 12 及以上时默认启用，动态主题色功能仅会在 Android 12 及以上版本生效。</string>
+    <string name="user_id">用户 %1$s</string>
 </resources>

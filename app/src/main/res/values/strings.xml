@@ -122,4 +122,5 @@
     <string name="theme_setting">Theme Setting</string>
     <string name="enable_md3_app_errors_dialog">Enable Material 3 style errors dialog</string>
     <string name="enable_md3_app_errors_dialog_tip">This feature is enabled by default when the Android target version is 12 and above, and the theme dynamic colors function will only take effect on Android 12 and above.</string>
+    <string name="user_id">User %1$s</string>
 </resources>
