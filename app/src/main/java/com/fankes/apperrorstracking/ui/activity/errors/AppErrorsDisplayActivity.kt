@@ -80,7 +80,7 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
             }
             binding.closeAppItem.setOnClickListener { cancel() }
             binding.reopenAppItem.setOnClickListener {
-                FrameworkTool.openAppUsedFramework(context, appErrorsDisplay.packageName)
+                FrameworkTool.openAppUsedFramework(context, appErrorsDisplay.packageName, appErrorsDisplay.userId)
                 cancel()
             }
             binding.errorDetailItem.setOnClickListener {

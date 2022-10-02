@@ -56,7 +56,7 @@ object FrameworkTool {
     private const val CALL_UNMUTE_ERRORS_APP_DATA_RESULT = "call_unmute_errors_app_data_result"
     private const val CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT = "call_unmute_all_errors_apps_data_result"
 
-    private val CALL_OPEN_SPECIFY_APP = ChannelData<String>("call_open_specify_app")
+    private val CALL_OPEN_SPECIFY_APP = ChannelData<Pair<String, Int>>("call_open_specify_app")
     private val CALL_APP_LIST_DATA_GET = ChannelData<AppFiltersBean>("call_app_info_list_data_get")
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
     private val CALL_APP_LIST_DATA_GET_RESULT = ChannelData<ArrayList<AppInfoBean>>("call_app_info_list_data_get_result")
@@ -84,9 +84,9 @@ object FrameworkTool {
 
         /**
          * 监听使用系统框架打开 APP
-         * @param result 回调包名
+         * @param result 回调包名和用户 ID
          */
-        fun onOpenAppUsedFramework(result: (String) -> Unit) = instance?.dataChannel?.wait(CALL_OPEN_SPECIFY_APP) { result(it) }
+        fun onOpenAppUsedFramework(result: (Pair<String, Int>) -> Unit) = instance?.dataChannel?.wait(CALL_OPEN_SPECIFY_APP) { result(it) }
 
         /**
          * 监听发送 APP 异常信息数组
@@ -230,9 +230,10 @@ object FrameworkTool {
      * 使用系统框架打开 [packageName]
      * @param context 实例
      * @param packageName APP 包名
+     * @param userId APP 用户 ID
      */
-    fun openAppUsedFramework(context: Context, packageName: String) =
-        context.dataChannel(SYSTEM_FRAMEWORK_NAME).put(CALL_OPEN_SPECIFY_APP, packageName)
+    fun openAppUsedFramework(context: Context, packageName: String, userId: Int) =
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).put(CALL_OPEN_SPECIFY_APP, Pair(packageName, userId))
 
     /**
      * 获取 APP 异常信息数组
