@@ -36,6 +36,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
@@ -87,6 +88,13 @@ fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetr
  * @return [Drawable]
  */
 fun Resources.drawableOf(@DrawableRes resId: Int) = ResourcesCompat.getDrawable(this, resId, null) ?: error("Invalid resources")
+
+/**
+ * 获取颜色
+ * @param resId 属性资源 ID
+ * @return [Int]
+ */
+fun Resources.colorOf(@ColorRes resId: Int) = ResourcesCompat.getColor(this, resId, null)
 
 /**
  * 得到 APP 安装包信息 (兼容)
