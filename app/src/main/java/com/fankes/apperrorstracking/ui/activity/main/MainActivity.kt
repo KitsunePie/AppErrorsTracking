@@ -56,6 +56,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.enableAppsConfigsTemplateSwitch.bind(ConfigData.ENABLE_APP_CONFIG_TEMPLATE) {
             binding.mgrAppsConfigsTemplateButton.isVisible = it
         }
+        binding.enableMaterial3AppErrorsDialogSwitch.bind(ConfigData.ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
         /** 设置桌面图标显示隐藏 */
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->

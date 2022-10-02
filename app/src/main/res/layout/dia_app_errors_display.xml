@@ -40,6 +40,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/app_info_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
@@ -63,6 +64,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/close_app_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
@@ -85,6 +87,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/reopen_app_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
@@ -107,6 +110,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/error_detail_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
@@ -129,6 +133,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/muted_if_unlock_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
@@ -151,6 +156,7 @@
                 android:paddingVertical="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/muted_if_restart_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="15dp"
