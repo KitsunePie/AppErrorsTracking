@@ -25,6 +25,7 @@ package com.fankes.apperrorstracking.data
 
 import android.content.ContentResolver
 import android.content.Context
+import android.os.Build
 import android.provider.Settings
 import android.widget.CompoundButton
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
@@ -43,6 +44,9 @@ object ConfigData {
 
     /** 显示开发者提示 */
     val SHOW_DEVELOPER_NOTICE = PrefsData("_show_developer_notice", true)
+
+    /** 启用 Material 3 风格的错误对话框 */
+    val ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG = PrefsData("_enable_material3_style_dialog", Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
 
     /** 仅对前台应用显示错误对话框 */
     val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PrefsData("_enable_only_show_errors_in_front", false)
@@ -179,5 +183,15 @@ object ConfigData {
         get() = getBoolean(ENABLE_APP_CONFIG_TEMPLATE)
         set(value) {
             putBoolean(ENABLE_APP_CONFIG_TEMPLATE, value)
+        }
+
+    /**
+     * 是否启用 Material 3 风格的错误对话框
+     * @return [Boolean]
+     */
+    var isEnableMaterial3StyleAppErrorsDialog
+        get() = getBoolean(ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
+        set(value) {
+            putBoolean(ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG, value)
         }
 }
