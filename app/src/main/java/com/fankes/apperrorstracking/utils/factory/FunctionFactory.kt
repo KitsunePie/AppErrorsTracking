@@ -338,13 +338,18 @@ fun Context.isAppCanOpened(packageName: String = this.packageName) =
 
 /**
  * 启动指定 APP
- * @param packageName 包名
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @param userId APP 用户 ID - 默认 0
  */
-fun Context.openApp(packageName: String = this.packageName) = runCatching {
-    startActivity(packageManager.getLaunchIntentForPackage(packageName)?.apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    })
-}.onFailure { toast(msg = "Cannot start '$packageName'") }
+fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = runCatching {
+    val startingActivityName = packageManager.runCatching {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= 33)
+            queryIntentActivities(getLaunchIntentForPackage(packageName)!!, PackageManager.ResolveInfoFlags.of(0)).first().activityInfo.name
+        else queryIntentActivities(getLaunchIntentForPackage(packageName)!!, 0).first().activityInfo.name
+    }.getOrNull() ?: ""
+    Runtime.getRuntime().exec("am start -n $packageName/$startingActivityName --user $userId")
+}.onFailure { toast(msg = "Cannot start \"$packageName\"${if (userId > 0) " for user $userId" else ""}") }
 
 /**
  * 是否有 Root 权限
