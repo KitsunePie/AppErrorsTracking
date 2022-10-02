@@ -123,4 +123,5 @@
     <string name="enable_md3_app_errors_dialog">啟用 Material 3 風格錯誤對話框</string>
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目標版本為 12 及以上時默認啟用，動態主題色功能僅會在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>
+    <string name="unable_get_app_errors_record_tip">無法獲取當前程式的異常記錄，請稍後重試</string>
 </resources>
