@@ -134,6 +134,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                     listData[position].also { bean ->
                         binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
                         binding.appNameText.text = appNameOf(bean.packageName)
+                        binding.appUserIdText.isVisible = bean.userId > 0
+                        binding.appUserIdText.text = LocaleString.userId(bean.userId)
                         binding.errorsTimeText.text = bean.crossTime
                         binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.simpleThwName()

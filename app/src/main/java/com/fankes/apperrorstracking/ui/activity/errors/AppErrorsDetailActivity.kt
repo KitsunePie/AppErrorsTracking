@@ -27,6 +27,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
@@ -86,6 +87,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appIcon.setImageDrawable(appIconOf(appErrorsInfo.packageName))
         binding.appNameText.text = appNameOf(appErrorsInfo.packageName)
         binding.appVersionText.text = appVersionBrandOf(appErrorsInfo.packageName)
+        binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
+        binding.appUserIdText.text = LocaleString.userId(appErrorsInfo.userId)
         binding.appAbiText.text = appCpuAbiOf(appErrorsInfo.packageName).ifBlank { LocaleString.noCpuAbi }
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)

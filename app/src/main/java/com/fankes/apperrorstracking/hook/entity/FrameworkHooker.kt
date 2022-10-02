@@ -75,6 +75,9 @@ object FrameworkHooker : YukiBaseHooker() {
         "com.android.server.am.ErrorDialogController"
     )
 
+    /** 已记录的 APP 用户 ID */
+    private var appUserIdRecords = HashMap<String, Int>()
+
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
     private var mutedErrorsIfUnlockApps = HashSet<String>()
 
@@ -250,10 +253,12 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
+                    /** 写入到用户 ID 记录 */
+                    appUserIdRecords[proc.toString()] = userId
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
-                                " has crashed${if (isRepeating) " again" else ""}"
+                                "${if (userId != 0) " --user $userId" else ""} has crashed${if (isRepeating) " again" else ""}"
                     ) else loggerE(msg = "Process \"$processName\" has crashed${if (isRepeating) " again" else ""}")
                     /** 判断是否为模块自身崩溃 */
                     if (packageName == BuildConfig.APPLICATION_ID) {
@@ -308,10 +313,15 @@ object FrameworkHooker : YukiBaseHooker() {
                     paramCount = 2
                 }
                 afterHook {
+                    /** 当前进程信息 */
+                    val proc = args().first().any()
+
                     /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
+                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
                     /** 添加当前异常信息到第一位 */
-                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(appInfo?.packageName, args().last().cast()))
+                    appErrorsRecords.add(
+                        0, AppErrorsInfoBean.clone(appInfo?.packageName, appUserIdRecords[proc.toString()], args().last().cast())
+                    )
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
                 }
