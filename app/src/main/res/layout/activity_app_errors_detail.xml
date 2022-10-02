@@ -151,6 +151,23 @@
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="15sp" />
 
+                            <TextView
+                                android:id="@+id/app_user_id_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bg_blue_round"
+                                android:ellipsize="end"
+                                android:paddingLeft="3dp"
+                                android:paddingTop="0.5dp"
+                                android:paddingRight="3dp"
+                                android:paddingBottom="0.5dp"
+                                android:singleLine="true"
+                                android:text="@string/user_id"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                android:visibility="gone" />
+
                             <ImageView
                                 android:layout_width="13dp"
                                 android:layout_height="13dp"

@@ -32,6 +32,7 @@ import java.util.*
 
 /**
  * 应用异常信息 bean
+ * @param userId 用户 ID
  * @param packageName 包名
  * @param isNativeCrash 是否为原生层异常
  * @param exceptionClassName 异常类名
@@ -44,6 +45,7 @@ import java.util.*
  * @param timestamp 记录时间戳
  */
 data class AppErrorsInfoBean(
+    @Keep var userId: Int,
     @Keep var packageName: String,
     @Keep var isNativeCrash: Boolean,
     @Keep var exceptionClassName: String,
@@ -61,12 +63,14 @@ data class AppErrorsInfoBean(
         /**
          * 从 [ApplicationErrorReport.CrashInfo] 克隆
          * @param packageName APP 包名
+         * @param userId APP 用户 ID
          * @param crashInfo [ApplicationErrorReport.CrashInfo]
          * @return [AppErrorsInfoBean]
          */
-        fun clone(packageName: String?, crashInfo: ApplicationErrorReport.CrashInfo?) =
+        fun clone(packageName: String?, userId: Int?, crashInfo: ApplicationErrorReport.CrashInfo?) =
             (crashInfo?.exceptionClassName?.lowercase() == "native crash").let { isNativeCrash ->
                 AppErrorsInfoBean(
+                    userId = userId ?: 0,
                     packageName = packageName ?: "unknown",
                     isNativeCrash = isNativeCrash,
                     exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
@@ -122,6 +126,7 @@ data class AppErrorsInfoBean(
                 "[API Version]: ${Build.VERSION.SDK_INT}\n" +
                 "[System Locale]: ${Locale.getDefault()}\n" +
                 "[Package Name]: $packageName\n" +
+                (if (userId > 0) "[User Id]: $userId\n" else "") +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
                 "[Stack Trace]:\n" + stackTrace
@@ -142,6 +147,7 @@ data class AppErrorsInfoBean(
                 "[API Version]: ${Build.VERSION.SDK_INT}\n" +
                 "[System Locale]: ${Locale.getDefault()}\n" +
                 "[Package Name]: $packageName\n" +
+                (if (userId > 0) "[User Id]: $userId\n" else "") +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
                 "[Crash Time]: $dateTime\n" +
                 "[Stack Trace]:\n" + stackTrace
