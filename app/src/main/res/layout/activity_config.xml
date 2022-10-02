@@ -25,7 +25,7 @@
             android:layout_height="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp"
-            android:src="@mipmap/ic_back"
+            android:src="@drawable/ic_back"
             android:tint="@color/colorTextGray"
             android:tooltipText="@string/back" />
 
