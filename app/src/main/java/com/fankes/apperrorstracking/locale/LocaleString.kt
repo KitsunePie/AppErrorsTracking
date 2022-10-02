@@ -466,4 +466,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun fastRestartProblem(vararg objArrs: Any) = R.string.fast_restart_problem.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val userId get() = userId()
+
+    /** @string Automatic generated */
+    fun userId(vararg objArrs: Any) = R.string.user_id.bind(*objArrs)
 }

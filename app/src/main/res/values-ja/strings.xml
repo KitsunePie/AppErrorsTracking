@@ -122,4 +122,5 @@
     <string name="theme_setting">テーマ設定</string>
     <string name="enable_md3_app_errors_dialog">MD3 スタイルのエラーダイアログを有効</string>
     <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲット バージョンが 12 以降の場合にデフォルトで有効になり、動的テーマ カラー機能は Android 12 以降でのみ有効になります。</string>
+    <string name="user_id">ユーザー %1$s</string>
 </resources>
