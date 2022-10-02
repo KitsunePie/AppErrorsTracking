@@ -28,6 +28,7 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.difference
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -91,6 +92,12 @@ data class AppErrorsInfoBean(
     }
 
     /**
+     * 获取异常本地化 UTC 时间
+     * @return [String]
+     */
+    private val utcTime get() = timestamp.toUtcTime()
+
+    /**
      * 获取异常本地化经过时间
      * @return [String]
      */
@@ -106,10 +113,10 @@ data class AppErrorsInfoBean(
         )
 
     /**
-     * 获取异常本地化 UTC 时间
+     * 获取异常本地化时间
      * @return [String]
      */
-    val dateTime get() = timestamp.toUtcTime()
+    val dateTime get() = SimpleDateFormat.getDateTimeInstance().format(Date(timestamp)) ?: utcTime
 
     /**
      * 获取异常堆栈分享模板
@@ -128,7 +135,7 @@ data class AppErrorsInfoBean(
                 "[Package Name]: $packageName\n" +
                 (if (userId > 0) "[User Id]: $userId\n" else "") +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
-                "[Crash Time]: $dateTime\n" +
+                "[Crash Time]: $utcTime\n" +
                 "[Stack Trace]:\n" + stackTrace
 
     /**
@@ -149,6 +156,6 @@ data class AppErrorsInfoBean(
                 "[Package Name]: $packageName\n" +
                 (if (userId > 0) "[User Id]: $userId\n" else "") +
                 "[Error Type]: ${if (isNativeCrash) "Native" else "Jvm"}\n" +
-                "[Crash Time]: $dateTime\n" +
+                "[Crash Time]: $utcTime\n" +
                 "[Stack Trace]:\n" + stackTrace
 }
