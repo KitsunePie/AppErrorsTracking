@@ -81,7 +81,6 @@
     <string name="only_show_errors_in_front_tip">After enabling, the error dialog will only be displayed when the abnormal apps is in the foreground (in use). Although the abnormal background application will not display the error dialog, they will be recorded in the errors history.</string>
     <string name="only_show_errors_in_main_process_tip">After enabling, the error dialog will only be displayed if the exception occurred in the application is in the main process (the first Application instance object).</string>
     <string name="apps_config_template_tip">Here you can individually configure whether to display an error dialog and other error tips when an exception occurs for each apps.</string>
-    <string name="view_errors_record_tip">Here you can find all apps errors records since the system was turned on until now. The exception history will be automatically cleared after restarting. You can view, export, share and clear the records.</string>
     <string name="view_muted_errors_apps_tip">Here you can find apps that you have manually muted errors in different forms. This list will be automatically cleared after restarting. You can manage these ignored applications and remove them from the mute list.</string>
     <string name="muted_errors_apps">Muted Errors Apps</string>
     <string name="unmute">Unmute</string>
@@ -119,4 +118,5 @@
     <string name="developer_notice">Instructions</string>
     <string name="warning">Warning</string>
     <string name="fast_restart_problem">Some custom systems may experience errors after using fast restart.\\nDo you want to continue?</string>
+    <string name="view_errors_record_tip">Here you can find all apps exception records since the module started recording. The exception history will continue to be retained until you manually clear it or do a factory reset. You can view, export, share and clear the records.</string>
 </resources>
