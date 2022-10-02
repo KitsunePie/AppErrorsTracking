@@ -33,6 +33,7 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.bindAdapter
+import com.fankes.apperrorstracking.utils.factory.newThread
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 
@@ -161,7 +162,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
         binding.titleCountText.text = LocaleString.loading
         FrameworkTool.fetchAppListData(context = this, appFilters) {
             listData.clear()
-            Thread {
+            newThread {
                 it.takeIf { e -> e.isNotEmpty() }?.forEach { e ->
                     listData.add(e)
                     e.icon = appIconOf(e.packageName)
@@ -176,7 +177,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                     binding.listNoDataView.isVisible = listData.isEmpty()
                     binding.titleCountText.text = LocaleString.resultCount(listData.size)
                 }
-            }.start()
+            }
         }
     }
 }

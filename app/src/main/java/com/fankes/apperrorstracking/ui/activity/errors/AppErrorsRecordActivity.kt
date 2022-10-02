@@ -77,7 +77,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 progressContent = LocaleString.generatingStatistics
                 noCancelable()
                 FrameworkTool.fetchAppListData(context, AppFiltersBean(isContainsSystem = true)) {
-                    Thread {
+                    newThread {
                         val errorsApps = listData.groupBy { it.packageName }
                             .map { it.key to it.value.size }
                             .sortedByDescending { it.second }
@@ -101,7 +101,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                                 confirmButton(LocaleString.gotIt)
                             }
                         }
-                    }.start()
+                    }
                 }
             }
         }
