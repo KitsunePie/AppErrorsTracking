@@ -23,6 +23,7 @@ package com.fankes.apperrorstracking.bean
 
 import android.app.ApplicationErrorReport
 import android.os.Build
+import androidx.annotation.Keep
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.difference
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
@@ -43,16 +44,16 @@ import java.util.*
  * @param timestamp 记录时间戳
  */
 data class AppErrorsInfoBean(
-    var packageName: String,
-    var isNativeCrash: Boolean,
-    var exceptionClassName: String,
-    var exceptionMessage: String,
-    var throwFileName: String,
-    var throwClassName: String,
-    var throwMethodName: String,
-    var throwLineNumber: Int,
-    var stackTrace: String,
-    var timestamp: Long,
+    @Keep var packageName: String,
+    @Keep var isNativeCrash: Boolean,
+    @Keep var exceptionClassName: String,
+    @Keep var exceptionMessage: String,
+    @Keep var throwFileName: String,
+    @Keep var throwClassName: String,
+    @Keep var throwMethodName: String,
+    @Keep var throwLineNumber: Int,
+    @Keep var stackTrace: String,
+    @Keep var timestamp: Long,
 ) : Serializable {
 
     companion object {
