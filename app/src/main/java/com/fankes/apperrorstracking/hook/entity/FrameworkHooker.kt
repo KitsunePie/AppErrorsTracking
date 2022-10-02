@@ -260,7 +260,7 @@ object FrameworkHooker : YukiBaseHooker() {
                                 channelName = LocaleString.appName,
                                 title = errorTitle,
                                 content = LocaleString.appErrorsTip,
-                                icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.mipmap.ic_notify).toBitmap()),
+                                icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.drawable.ic_notify).toBitmap()),
                                 color = 0xFFFF6200.toInt(),
                                 intent = AppErrorsRecordActivity.intent()
                             )
