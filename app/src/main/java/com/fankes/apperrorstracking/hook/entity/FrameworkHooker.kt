@@ -198,7 +198,7 @@ object FrameworkHooker : YukiBaseHooker() {
                 }
                 afterHook {
                     /** 当前实例 */
-                    val context = field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
+                    val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
 
                     /** 错误数据 */
                     val errData = args().first().cast<Message>()?.obj
