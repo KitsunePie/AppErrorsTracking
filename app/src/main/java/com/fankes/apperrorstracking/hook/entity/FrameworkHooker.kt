@@ -98,7 +98,7 @@ object FrameworkHooker : YukiBaseHooker() {
             onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: arrayListOf() }
         }
         FrameworkTool.Host.with(instance = this) {
-            onOpenAppUsedFramework { appContext?.openApp(it) }
+            onOpenAppUsedFramework { appContext?.openApp(it.first, it.second) }
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData {
                 appErrorsRecords.remove(it)
@@ -295,6 +295,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 启动错误对话框显示窗口 */
                     AppErrorsDisplayActivity.start(
                         context, AppErrorsDisplayBean(
+                            userId = userId,
                             packageName = packageName,
                             processName = processName,
                             appName = appName,

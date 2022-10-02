@@ -26,6 +26,7 @@ import java.io.Serializable
 
 /**
  * 应用异常信息显示 bean
+ * @param userId APP 用户 ID
  * @param packageName APP 包名
  * @param processName APP 进程名
  * @param appName APP 名称
@@ -35,6 +36,7 @@ import java.io.Serializable
  * @param isShowReopenButton 是否显示重新打开按钮
  */
 data class AppErrorsDisplayBean(
+    @Keep var userId: Int,
     @Keep var packageName: String,
     @Keep var processName: String,
     @Keep var appName: String,
