@@ -142,7 +142,7 @@ object ConfigData {
         }
 
     /**
-     * 仅对前台应用显示错误对话框
+     * 是否仅对前台应用显示错误对话框
      * @return [Boolean]
      */
     var isEnableOnlyShowErrorsInFront
@@ -152,7 +152,7 @@ object ConfigData {
         }
 
     /**
-     * 仅对应用主进程显示错误对话框
+     * 是否仅对应用主进程显示错误对话框
      * @return [Boolean]
      */
     var isEnableOnlyShowErrorsInMain
@@ -162,7 +162,7 @@ object ConfigData {
         }
 
     /**
-     * 错误对话框始终显示“重新打开”选项
+     * 错误对话框是否始终显示“重新打开”选项
      * @return [Boolean]
      */
     var isEnableAlwaysShowsReopenAppOptions
@@ -172,7 +172,7 @@ object ConfigData {
         }
 
     /**
-     * 启用应用配置模板
+     * 是否启用应用配置模板
      * @return [Boolean]
      */
     var isEnableAppConfigTemplate
