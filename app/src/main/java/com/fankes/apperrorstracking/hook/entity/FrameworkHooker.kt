@@ -81,8 +81,8 @@ object FrameworkHooker : YukiBaseHooker() {
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
     private var mutedErrorsIfRestartApps = HashSet<String>()
 
-    /** 已记录的 APP 异常信息数组 - 直到重新启动 */
-    private val appErrorsRecords = ArrayList<AppErrorsInfoBean>()
+    /** 已记录的 APP 异常信息数组 */
+    private var appErrorsRecords = ArrayList<AppErrorsInfoBean>()
 
     /** 注册生命周期 */
     private fun registerLifecycle() {
@@ -91,12 +91,20 @@ object FrameworkHooker : YukiBaseHooker() {
             registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> mutedErrorsIfUnlockApps.clear() }
             /** 刷新模块 Resources 缓存 */
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
+            /** 启动时从本地获取异常记录 */
+            onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: arrayListOf() }
         }
         FrameworkTool.Host.with(instance = this) {
             onOpenAppUsedFramework { appContext?.openApp(it) }
             onPushAppErrorsInfoData { appErrorsRecords }
-            onRemoveAppErrorsInfoData { appErrorsRecords.remove(it) }
-            onClearAppErrorsInfoData { appErrorsRecords.clear() }
+            onRemoveAppErrorsInfoData {
+                appErrorsRecords.remove(it)
+                saveAllAppErrorsRecords()
+            }
+            onClearAppErrorsInfoData {
+                appErrorsRecords.clear()
+                saveAllAppErrorsRecords()
+            }
             onMutedErrorsIfUnlock { mutedErrorsIfUnlockApps.add(it) }
             onMutedErrorsIfRestart { mutedErrorsIfRestartApps.add(it) }
             onPushMutedErrorsAppsData {
@@ -137,6 +145,9 @@ object FrameworkHooker : YukiBaseHooker() {
             }
         }
     }
+
+    /** 保存异常记录到本地 */
+    private fun saveAllAppErrorsRecords() = newThread { ConfigData.putResolverString(ConfigData.APP_ERRORS_DATA, appErrorsRecords.toJson()) }
 
     override fun onHook() {
         /** 注册生命周期 */
@@ -301,6 +312,8 @@ object FrameworkHooker : YukiBaseHooker() {
                     val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(args().first().any()).cast<ApplicationInfo>()
                     /** 添加当前异常信息到第一位 */
                     appErrorsRecords.add(0, AppErrorsInfoBean.clone(appInfo?.packageName, args().last().cast()))
+                    /** 保存异常记录到本地 */
+                    saveAllAppErrorsRecords()
                 }
             }
         }

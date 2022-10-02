@@ -38,6 +38,9 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
  */
 object ConfigData {
 
+    /** 存取全部应用异常数据的键值名称 */
+    const val APP_ERRORS_DATA = "app_errors_data"
+
     /** 显示开发者提示 */
     val SHOW_DEVELOPER_NOTICE = PrefsData("_show_developer_notice", true)
 
