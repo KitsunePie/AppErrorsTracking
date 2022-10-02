@@ -209,7 +209,10 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前进程信息 */
                     val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(errData).any()
 
-                    /** 当前 UserId 信息 */
+                    /** 当前 pid 信息 */
+                    val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
+
+                    /** 当前用户 ID 信息 */
                     val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
 
                     /** 当前 APP 信息 */
@@ -258,8 +261,8 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
-                                "${if (userId != 0) " --user $userId" else ""} has crashed${if (isRepeating) " again" else ""}"
-                    ) else loggerE(msg = "Process \"$processName\" has crashed${if (isRepeating) " again" else ""}")
+                                "${if (userId != 0) " --user $userId" else ""} --pid $pid has crashed${if (isRepeating) " again" else ""}"
+                    ) else loggerE(msg = "Process \"$processName\" --pid $pid has crashed${if (isRepeating) " again" else ""}")
                     /** 判断是否为模块自身崩溃 */
                     if (packageName == BuildConfig.APPLICATION_ID) {
                         context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
