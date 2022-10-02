@@ -21,6 +21,7 @@
  */
 package com.fankes.apperrorstracking.bean
 
+import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -28,7 +29,10 @@ import java.io.Serializable
  * @param type 类型
  * @param packageName 包名
  */
-data class MutedErrorsAppBean(var type: MuteType, var packageName: String) : Serializable {
+data class MutedErrorsAppBean(
+    @Keep var type: MuteType,
+    @Keep var packageName: String
+) : Serializable {
 
     /**
      * 已忽略的异常类型

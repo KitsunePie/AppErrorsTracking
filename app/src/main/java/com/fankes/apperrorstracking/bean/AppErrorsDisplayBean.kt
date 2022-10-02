@@ -21,6 +21,7 @@
  */
 package com.fankes.apperrorstracking.bean
 
+import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -34,11 +35,11 @@ import java.io.Serializable
  * @param isShowReopenButton 是否显示重新打开按钮
  */
 data class AppErrorsDisplayBean(
-    var packageName: String,
-    var processName: String,
-    var appName: String,
-    var title: String,
-    var isShowAppInfoButton: Boolean,
-    var isShowCloseAppButton: Boolean,
-    var isShowReopenButton: Boolean
+    @Keep var packageName: String,
+    @Keep var processName: String,
+    @Keep var appName: String,
+    @Keep var title: String,
+    @Keep var isShowAppInfoButton: Boolean,
+    @Keep var isShowCloseAppButton: Boolean,
+    @Keep var isShowReopenButton: Boolean
 ) : Serializable
