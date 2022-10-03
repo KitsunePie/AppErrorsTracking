@@ -61,6 +61,19 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     override fun onCreate() {
         val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsInfo")
+        if (appErrorsInfo.isEmpty) {
+            binding.appPanelScrollView.isVisible = false
+            showDialog {
+                title = LocaleString.notice
+                msg = LocaleString.unableGetAppErrorsRecordTip
+                confirmButton(LocaleString.gotIt) {
+                    cancel()
+                    finish()
+                }
+                noCancelable()
+            }
+            return
+        }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
