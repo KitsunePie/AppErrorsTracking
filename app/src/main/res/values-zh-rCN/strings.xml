@@ -123,5 +123,5 @@
     <string name="enable_md3_app_errors_dialog">启用 Material 3 风格错误对话框</string>
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目标版本为 12 及以上时默认启用，动态主题色功能仅会在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>
-    <string name="unable_get_app_errors_record_tip">无法获取当前应用的异常记录，请稍后重试</string>
+    <string name="unable_get_app_errors_record_tip">现在无法获取异常记录，你可能需要稍后在异常历史记录中查看，若问题持续出现，可能是你的系统关闭了错误报告收集功能。</string>
 </resources>
