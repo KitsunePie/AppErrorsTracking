@@ -108,7 +108,7 @@ data class AppErrorsInfoBean(
      * 获取异常本地化 UTC 时间
      * @return [String]
      */
-    private val utcTime get() = timestamp.toUtcTime()
+    val utcTime get() = timestamp.toUtcTime()
 
     /**
      * 获取异常本地化经过时间
