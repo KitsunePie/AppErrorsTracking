@@ -48,7 +48,11 @@ import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
+import com.highcapable.yukihookapi.hook.type.android.ContextClass
+import com.highcapable.yukihookapi.hook.type.android.IntentClass
+import com.highcapable.yukihookapi.hook.type.android.UserHandleClass
 import com.topjohnwu.superuser.Shell
 import java.io.Serializable
 import java.math.RoundingMode
@@ -342,13 +346,10 @@ fun Context.isAppCanOpened(packageName: String = this.packageName) =
  * @param userId APP 用户 ID - 默认 0
  */
 fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = runCatching {
-    val startingActivityName = packageManager.runCatching {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= 33)
-            queryIntentActivities(getLaunchIntentForPackage(packageName)!!, PackageManager.ResolveInfoFlags.of(0)).first().activityInfo.name
-        else queryIntentActivities(getLaunchIntentForPackage(packageName)!!, 0).first().activityInfo.name
-    }.getOrNull() ?: ""
-    Runtime.getRuntime().exec("am start -n $packageName/$startingActivityName --user $userId")
+    ContextClass.method {
+        name = "startActivityAsUser"
+        param(IntentClass, UserHandleClass)
+    }.get(this).call(packageManager.getLaunchIntentForPackage(packageName), UserHandleClass.method { name = "of" }.get().call(userId))
 }.onFailure { toast(msg = "Cannot start \"$packageName\"${if (userId > 0) " for user $userId" else ""}") }
 
 /**
