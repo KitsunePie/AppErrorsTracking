@@ -119,7 +119,7 @@
     <string name="developer_notice_tip">此模块专为 Android 开发者而打造。\n\n在可能的无法连接电脑，不能进行 ADB 调试的时候，可通过此模块来快速捕获任意已安装应用的任意异常，以便快速定位问题。\n\n应用发生崩溃的错误日志对开发者来说是无价的财富，若你不是开发者，你依然可以安装此模块，以便给开发者提供更多异常信息快速解决问题。</string>
     <string name="developer_notice">使用说明</string>
     <string name="fast_restart_problem">部分定制系统使用快速重启后可能会发生错误，仍然要继续吗？</string>
-    <string name="theme_setting">主题设置</string>
+    <string name="theme_settings">主题设置</string>
     <string name="enable_md3_app_errors_dialog">启用 Material 3 风格错误对话框</string>
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目标版本为 12 及以上时默认启用，动态主题色功能仅会在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>

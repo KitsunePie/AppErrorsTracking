@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">AppErrorsDemo</string>
     <string name="back">Back</string>
-    <string name="function_desc">The business exception logic in common scenarios is provided here. After activating the Xposed module, you can test whether the exception can be caught here. In order to verify the effectiveness of the Xposed module, the current App does not have any logic code for manually handling exceptions.</string>
-    <string name="throw_runtime">throw RuntimeException</string>
-    <string name="throw_illegalstate">throw IllegalStateException</string>
-    <string name="throw_nullpointer">throw NullPointerException</string>
-    <string name="throw_exception">throw Exception</string>
-    <string name="throw_native_error">throw Native Error</string>
-    <string name="throw_multi_process_error">throw Multi-Process Exception</string>
+    <string name="function_desc">The business exception logic in common scenarios is provided here.\nAfter activating the Xposed Module, you can test whether the exception can be caught here.\nIn order to verify the effectiveness of the Xposed Module, the current App does not have any logic code for manually handling exceptions.</string>
+    <string name="throw_runtime">Throw RuntimeException</string>
+    <string name="throw_illegalstate">Throw IllegalStateException</string>
+    <string name="throw_nullpointer">Throw NullPointerException</string>
+    <string name="throw_exception">Throw Exception</string>
+    <string name="throw_native_error">Throw Native Error</string>
+    <string name="throw_multi_process_error">Throw Multi-Process Exception</string>
     <string name="suicide_in_progress">Suicide in progress</string>
 </resources>
