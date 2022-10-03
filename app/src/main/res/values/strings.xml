@@ -123,5 +123,5 @@
     <string name="enable_md3_app_errors_dialog">Enable Material 3 style errors dialog</string>
     <string name="enable_md3_app_errors_dialog_tip">This feature is enabled by default when the Android target version is 12 and above, and the theme dynamic colors function will only take effect on Android 12 and above.</string>
     <string name="user_id">User %1$s</string>
-    <string name="unable_get_app_errors_record_tip">Unable to get the current app\'s error log, please try again later</string>
+    <string name="unable_get_app_errors_record_tip">The errors record cannot be obtained now, you may need to check the errors history record later.\\nIf the problem persists, it may be that your system has turned off the errors report collection function.</string>
 </resources>

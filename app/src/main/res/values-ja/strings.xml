@@ -123,5 +123,5 @@
     <string name="enable_md3_app_errors_dialog">MD3 スタイルのエラーダイアログを有効</string>
     <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲット バージョンが 12 以降の場合にデフォルトで有効になり、動的テーマ カラー機能は Android 12 以降でのみ有効になります。</string>
     <string name="user_id">ユーザー %1$s</string>
-    <string name="unable_get_app_errors_record_tip">現在のアプリのエラー レコードを取得できません、後でもう一度お試しください</string>
+    <string name="unable_get_app_errors_record_tip">現在、エラー レコードを取得できません。後でエラー履歴で確認する必要があるかもしれません。問題が解決しない場合は、システムがエラー レポート収集機能をオフにしている可能性があります。</string>
 </resources>
