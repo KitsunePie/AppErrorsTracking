@@ -42,14 +42,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
 
+        /** 系统版本 */
+        private val systemVersion = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}"
+
         /** 模块是否有效 */
         var isModuleValied = false
     }
 
     override fun onCreate() {
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
-        binding.mainTextSystemVersion.text =
-            LocaleString.systemVersion("${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}) ${Build.DISPLAY}")
+        binding.mainTextSystemVersion.text = LocaleString.systemVersion(systemVersion)
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.alwaysShowsReopenAppOptionsSwitch.bind(ConfigData.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
@@ -62,6 +64,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
+        }
+        /** 系统版本点击事件 */
+        binding.mainTextSystemVersion.setOnClickListener {
+            showDialog {
+                title = LocaleString.notice
+                msg = systemVersion
+                confirmButton(LocaleString.gotIt)
+            }
         }
         /** 管理应用配置模板按钮点击事件 */
         binding.mgrAppsConfigsTemplateButton.setOnClickListener { whenActivated { navigate<ConfigureActivity>() } }
