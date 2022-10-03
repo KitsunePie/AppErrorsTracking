@@ -309,7 +309,7 @@ fun Context.openSelfSetting(packageName: String = this.packageName) = runCatchin
         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         data = Uri.fromParts("package", packageName, null)
     })
-}.onFailure { toast(msg = "Cannot open '$packageName'") }
+}.onFailure { toast(msg = "Cannot open \"$packageName\"") }
 
 /**
  * 启动系统浏览器
@@ -325,7 +325,7 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }.onFailure {
-    if (packageName.isNotBlank()) snake(msg = "Cannot start '$packageName'")
+    if (packageName.isNotBlank()) snake(msg = "Cannot start \"$packageName\"")
     else snake(msg = "Start system browser failed")
 }
 
