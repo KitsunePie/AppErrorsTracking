@@ -368,7 +368,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.85"
                         android:singleLine="true"
-                        android:text="@string/theme_setting"
+                        android:text="@string/theme_settings"
                         android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
