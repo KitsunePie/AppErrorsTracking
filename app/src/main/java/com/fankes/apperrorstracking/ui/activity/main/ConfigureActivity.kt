@@ -161,13 +161,18 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
         binding.listNoDataView.isVisible = false
         binding.titleCountText.text = LocaleString.loading
         FrameworkTool.fetchAppListData(context = this, appFilters) {
-            listData.clear()
+            /** 设置一个临时变量用于更新列表数据 */
+            val tempsData = ArrayList<AppInfoBean>()
             newThread {
-                it.takeIf { e -> e.isNotEmpty() }?.forEach { e ->
-                    listData.add(e)
-                    e.icon = appIconOf(e.packageName)
+                runCatching {
+                    it.takeIf { e -> e.isNotEmpty() }?.forEach { e ->
+                        tempsData.add(e)
+                        e.icon = appIconOf(e.packageName)
+                    }
                 }
-                runOnUiThread {
+                if (isDestroyed.not()) runOnUiThread {
+                    listData.clear()
+                    listData.addAll(tempsData)
                     onChanged?.invoke()
                     binding.listView.post { binding.listView.setSelection(0) }
                     binding.listProgressView.isVisible = false
@@ -176,7 +181,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                     binding.listView.isVisible = listData.isNotEmpty()
                     binding.listNoDataView.isVisible = listData.isEmpty()
                     binding.titleCountText.text = LocaleString.resultCount(listData.size)
-                }
+                } else tempsData.clear()
             }
         }
     }
