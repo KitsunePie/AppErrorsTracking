@@ -74,7 +74,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "*/application"
-                    putExtra(Intent.EXTRA_TITLE, "${appErrorsInfo.packageName}_${appErrorsInfo.timestamp}.log")
+                    putExtra(Intent.EXTRA_TITLE, "${appErrorsInfo.packageName}_${appErrorsInfo.utcTime}.log")
                 }, WRITE_REQUEST_CODE)
             }.onFailure { toast(msg = "Start Android SAF failed") }
         }
