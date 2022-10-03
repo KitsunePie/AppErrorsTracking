@@ -85,10 +85,8 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
             }
             binding.errorDetailItem.setOnClickListener {
                 FrameworkTool.fetchAppErrorInfoData(context, appErrorsDisplay.pid) { appErrorsInfo ->
-                    appErrorsInfo.takeIf { it.isEmpty.not() }?.also {
-                        AppErrorsDetailActivity.start(context, it)
-                        cancel()
-                    } ?: toast(LocaleString.unableGetAppErrorsRecordTip)
+                    AppErrorsDetailActivity.start(context, appErrorsInfo)
+                    cancel()
                 }
             }
             binding.mutedIfUnlockItem.setOnClickListener {
