@@ -261,7 +261,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     appUserIdRecords[pid] = userId
                     /** 打印错误日志 */
                     if (isApp) loggerE(
-                        msg = "App \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
+                        msg = "Application \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
                                 "${if (userId != 0) " --user $userId" else ""} --pid $pid has crashed${if (isRepeating) " again" else ""}"
                     ) else loggerE(msg = "Process \"$processName\" --pid $pid has crashed${if (isRepeating) " again" else ""}")
                     /** 判断是否为模块自身崩溃 */
