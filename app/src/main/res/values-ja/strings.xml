@@ -131,4 +131,6 @@
     <string name="export_all_logs_fail">すべてのデバッグ ログのエクスポートに失敗しました</string>
     <string name="this_contents_clear_when_restarts_tip">ここのコンテンツは、デバイスのリスタート後に自動的に消去されます</string>
     <string name="when_logger_how_to_show_tip">現在のデバッグ ログ表示の優先度フィルタ条件を設定できます。</string>
+    <string name="enable_anonymous_statistics">匿名統計を有効</string>
+    <string name="enable_anonymous_statistics_tip">有効にすると、Microsoft App Center を使用してアプリ関連の診断データを匿名で送信し、アプリの機能を向上させます。\n収集される情報は匿名であり、独立したデバイスまたはユーザーまで追跡することはできません。\nこの機能を有効または無効にするには、リスタートアプリが有効になります。</string>
 </resources>
