@@ -36,6 +36,7 @@ import com.fankes.apperrorstracking.ui.activity.debug.LoggerActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.*
+import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool.bindAppAnalytics
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.highcapable.yukihookapi.YukiHookAPI
 
@@ -66,6 +67,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
         }
+        /** 设置匿名统计 */
+        binding.enableAnonymousStatisticsSwitch.bindAppAnalytics()
         /** 系统版本点击事件 */
         binding.mainTextSystemVersion.setOnClickListener {
             showDialog {
