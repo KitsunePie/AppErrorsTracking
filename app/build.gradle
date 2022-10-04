@@ -27,6 +27,9 @@ android {
         versionName rootProject.ext.appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        /** 添加 App Center Secret 到 BuildConfig */
+        buildConfigField("String", "APP_CENTER_SECRET", "\"${getAppCenterSecret()}\"")
     }
 
     buildTypes {
@@ -58,10 +61,23 @@ android {
     }
 }
 
+/**
+ * 获取 App Center Secret
+ * @return [String]
+ */
+String getAppCenterSecret() {
+    def fileName = '../.secret/APP_CENTER_SECRET'
+    def content = ''
+    if (file(fileName).exists()) file(fileName).eachLine { content = it }
+    return content
+}
+
 dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     implementation 'com.highcapable.yukihookapi:api:1.1.4'
     ksp 'com.highcapable.yukihookapi:ksp-xposed:1.1.4'
+    implementation "com.microsoft.appcenter:appcenter-analytics:4.4.5"
+    implementation "com.microsoft.appcenter:appcenter-crashes:4.4.5"
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.duanhong169:drawabletoolbox:1.0.7'
     implementation "com.github.topjohnwu.libsu:core:3.1.2"

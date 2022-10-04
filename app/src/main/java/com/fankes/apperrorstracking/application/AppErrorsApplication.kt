@@ -24,6 +24,7 @@ package com.fankes.apperrorstracking.application
 import androidx.appcompat.app.AppCompatDelegate
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
 class AppErrorsApplication : ModuleApplication() {
@@ -36,5 +37,7 @@ class AppErrorsApplication : ModuleApplication() {
         LocaleString.bind(instance = this)
         /** 装载存储控制类 */
         ConfigData.init(instance = this)
+        /** 装载 App Center */
+        AppAnalyticsTool.init(instance = this)
     }
 }
