@@ -131,4 +131,7 @@
     <string name="export_all_logs_fail">Failed to export all debug logs</string>
     <string name="this_contents_clear_when_restarts_tip">Here\'s content will be cleared after device restarts</string>
     <string name="when_logger_how_to_show_tip">You can configure the priority filter conditions for the current debug log display.</string>
+    <string name="microsoft_app_center" translatable="false">Microsoft App Center</string>
+    <string name="enable_anonymous_statistics">Enable anonymous statistics</string>
+    <string name="enable_anonymous_statistics_tip">After enabling, we will use the Microsoft App Center to anonymously send application-related diagnostic data to help the application function better.\nThe information collected is anonymous, and we cannot trace it back to an independent device or user.\nEnabling or disabling this feature requires restarting the app to take effect.</string>
 </resources>
