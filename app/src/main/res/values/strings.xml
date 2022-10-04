@@ -124,4 +124,11 @@
     <string name="enable_md3_app_errors_dialog_tip">This feature is enabled by default when the Android target version is 12 and above, and the theme dynamic colors function will only take effect on Android 12 and above.</string>
     <string name="user_id">User %1$s</string>
     <string name="unable_get_app_errors_record_tip">The errors record cannot be obtained now, you may need to check the errors history record later.\n\nIf the problem persists, it may be that your system has turned off the errors report collection function.</string>
+    <string name="debug_log">Debug Log</string>
+    <string name="refresh">Refresh</string>
+    <string name="copy">Copy</string>
+    <string name="export_all_logs_success">All debug logs exported</string>
+    <string name="export_all_logs_fail">Failed to export all debug logs</string>
+    <string name="this_contents_clear_when_restarts_tip">Here\'s content will be cleared after device restarts</string>
+    <string name="when_logger_how_to_show_tip">You can configure the priority filter conditions for the current debug log display.</string>
 </resources>

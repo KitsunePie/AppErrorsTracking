@@ -168,6 +168,12 @@ object LocaleString {
     fun muteIfRestartTip(vararg objArrs: Any) = R.string.mute_if_restart_tip.bind(*objArrs)
 
     /** @string Automatic generated */
+    val noListData get() = noListData()
+
+    /** @string Automatic generated */
+    fun noListData(vararg objArrs: Any) = R.string.no_list_data.bind(*objArrs)
+
+    /** @string Automatic generated */
     val confirm get() = confirm()
 
     /** @string Automatic generated */
@@ -354,6 +360,12 @@ object LocaleString {
     fun areYouSureUnmuteAll(vararg objArrs: Any) = R.string.are_you_sure_unmute_all.bind(*objArrs)
 
     /** @string Automatic generated */
+    val noListResult get() = noListResult()
+
+    /** @string Automatic generated */
+    fun noListResult(vararg objArrs: Any) = R.string.no_list_result.bind(*objArrs)
+
+    /** @string Automatic generated */
     val filterByCondition get() = filterByCondition()
 
     /** @string Automatic generated */
@@ -478,4 +490,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun unableGetAppErrorsRecordTip(vararg objArrs: Any) = R.string.unable_get_app_errors_record_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val exportAllLogsSuccess get() = exportAllLogsSuccess()
+
+    /** @string Automatic generated */
+    fun exportAllLogsSuccess(vararg objArrs: Any) = R.string.export_all_logs_success.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val exportAllLogsFail get() = exportAllLogsFail()
+
+    /** @string Automatic generated */
+    fun exportAllLogsFail(vararg objArrs: Any) = R.string.export_all_logs_fail.bind(*objArrs)
 }
