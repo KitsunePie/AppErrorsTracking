@@ -124,4 +124,11 @@
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目標版本為 12 及以上時默認啟用，動態主題色功能僅會在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>
     <string name="unable_get_app_errors_record_tip">現在無法獲取異常記錄，你可能需要稍後在異常歷史記錄中查看，若問題持續出現，可能是你的系統關閉了錯誤報告收集功能。</string>
+    <string name="debug_log">調試日誌</string>
+    <string name="refresh">刷新</string>
+    <string name="copy">複製</string>
+    <string name="export_all_logs_success">已導出全部調試日誌</string>
+    <string name="export_all_logs_fail">導出全部調試日誌失敗</string>
+    <string name="this_contents_clear_when_restarts_tip">這裡的內容會在設備重開後自動清空</string>
+    <string name="when_logger_how_to_show_tip">你可以配置當前調試日誌顯示的優先級過濾條件。</string>
 </resources>
