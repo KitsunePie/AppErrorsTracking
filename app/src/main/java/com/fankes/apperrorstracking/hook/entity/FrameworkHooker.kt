@@ -320,7 +320,7 @@ object FrameworkHooker : YukiBaseHooker() {
                 }
                 afterHook {
                     /** 当前进程信息 */
-                    val proc = args().first().any()
+                    val proc = args().first().any() ?: return@afterHook
 
                     /** 当前 pid 信息 */
                     val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
