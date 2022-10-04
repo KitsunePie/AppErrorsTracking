@@ -51,7 +51,10 @@ import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
+import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.log.loggerI
+import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 
@@ -98,19 +101,35 @@ object FrameworkHooker : YukiBaseHooker() {
             onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: arrayListOf() }
         }
         FrameworkTool.Host.with(instance = this) {
-            onOpenAppUsedFramework { appContext?.openApp(it.first, it.second) }
-            onPushAppErrorInfoData { appErrorsRecords.firstOrNull { e -> e.pid == it } ?: AppErrorsInfoBean.createEmpty() }
+            onOpenAppUsedFramework {
+                appContext?.openApp(it.first, it.second)
+                loggerI(msg = "Opened \"${it.first}\"${it.second.takeIf { e -> e > 0 }?.let { e -> " --user $e" } ?: ""}")
+            }
+            onPushAppErrorInfoData {
+                appErrorsRecords.firstOrNull { e -> e.pid == it } ?: run {
+                    loggerW(msg = "Cannot received crash application data --pid $it")
+                    AppErrorsInfoBean.createEmpty()
+                }
+            }
             onPushAppErrorsInfoData { appErrorsRecords }
             onRemoveAppErrorsInfoData {
+                loggerI(msg = "Removed app errors info data for package \"${it.packageName}\"")
                 appErrorsRecords.remove(it)
                 saveAllAppErrorsRecords()
             }
             onClearAppErrorsInfoData {
+                loggerI(msg = "Cleared all app errors info data, size ${appErrorsRecords.size}")
                 appErrorsRecords.clear()
                 saveAllAppErrorsRecords()
             }
-            onMutedErrorsIfUnlock { mutedErrorsIfUnlockApps.add(it) }
-            onMutedErrorsIfRestart { mutedErrorsIfRestartApps.add(it) }
+            onMutedErrorsIfUnlock {
+                mutedErrorsIfUnlockApps.add(it)
+                loggerI(msg = "Muted \"$it\" until unlocks")
+            }
+            onMutedErrorsIfRestart {
+                mutedErrorsIfRestartApps.add(it)
+                loggerI(msg = "Muted \"$it\" until restarts")
+            }
             onPushMutedErrorsAppsData {
                 arrayListOf<MutedErrorsAppBean>().apply {
                     mutedErrorsIfUnlockApps.takeIf { it.isNotEmpty() }
@@ -121,11 +140,18 @@ object FrameworkHooker : YukiBaseHooker() {
             }
             onUnmuteErrorsApp {
                 when (it.type) {
-                    MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> mutedErrorsIfUnlockApps.remove(it.packageName)
-                    MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> mutedErrorsIfRestartApps.remove(it.packageName)
+                    MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> {
+                        loggerI(msg = "Unmuted if unlocks errors app \"${it.packageName}\"")
+                        mutedErrorsIfUnlockApps.remove(it.packageName)
+                    }
+                    MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> {
+                        loggerI(msg = "Unmuted if restarts errors app \"${it.packageName}\"")
+                        mutedErrorsIfRestartApps.remove(it.packageName)
+                    }
                 }
             }
             onUnmuteAllErrorsApps {
+                loggerI(msg = "Unmute all errors apps --unlocks ${mutedErrorsIfUnlockApps.size} --restarts ${mutedErrorsIfRestartApps.size}")
                 mutedErrorsIfUnlockApps.clear()
                 mutedErrorsIfRestartApps.clear()
             }
@@ -144,6 +170,7 @@ object FrameworkHooker : YukiBaseHooker() {
                             /** 移除模块自身 */
                             removeIf { it.packageName == BuildConfig.APPLICATION_ID }
                         }
+                        loggerD(msg = "Fetched installed packages list, size $size")
                     }
                 } ?: arrayListOf()
             }
@@ -261,12 +288,14 @@ object FrameworkHooker : YukiBaseHooker() {
                     appUserIdRecords[pid] = userId
                     /** 打印错误日志 */
                     if (isApp) loggerE(
-                        msg = "Application \"$packageName\"${if (packageName != processName) " --process \"$processName\"" else ""}" +
-                                "${if (userId != 0) " --user $userId" else ""} --pid $pid has crashed${if (isRepeating) " again" else ""}"
-                    ) else loggerE(msg = "Process \"$processName\" --pid $pid has crashed${if (isRepeating) " again" else ""}")
+                        msg = "Application \"$packageName\" ${if (isRepeating) "keeps stopping" else "has stopped"}" +
+                                (if (packageName != processName) " --process \"$processName\"" else "") +
+                                "${if (userId != 0) " --user $userId" else ""} --pid $pid"
+                    ) else loggerE(msg = "Process \"$processName\" ${if (isRepeating) "keeps stopping" else "has stopped"} --pid $pid")
                     /** 判断是否为模块自身崩溃 */
                     if (packageName == BuildConfig.APPLICATION_ID) {
                         context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
+                        loggerE(msg = "AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
                         return@afterHook
                     }
                     /** 判断是否为已忽略的 APP */
@@ -320,7 +349,7 @@ object FrameworkHooker : YukiBaseHooker() {
                 }
                 afterHook {
                     /** 当前进程信息 */
-                    val proc = args().first().any() ?: return@afterHook
+                    val proc = args().first().any() ?: return@afterHook loggerW(msg = "Received but got null ProcessRecord")
 
                     /** 当前 pid 信息 */
                     val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
@@ -335,6 +364,7 @@ object FrameworkHooker : YukiBaseHooker() {
                         appErrorsRecords.add(
                             0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args().last().cast())
                         )
+                        loggerI(msg = "Received crash application data --pid $pid")
                     }
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
