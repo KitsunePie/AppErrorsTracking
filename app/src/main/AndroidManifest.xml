@@ -64,6 +64,11 @@
             android:screenOrientation="behind" />
 
         <activity
+            android:name=".ui.activity.debug.LoggerActivity"
+            android:exported="false"
+            android:screenOrientation="behind" />
+
+        <activity
             android:name=".ui.activity.errors.AppErrorsRecordActivity"
             android:exported="true"
             android:screenOrientation="behind" />

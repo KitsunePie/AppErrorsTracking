@@ -43,7 +43,7 @@ import com.highcapable.yukihookapi.hook.xposed.channel.data.ChannelData
 object FrameworkTool {
 
     /** 系统框架包名 */
-    private const val SYSTEM_FRAMEWORK_NAME = "android"
+    const val SYSTEM_FRAMEWORK_NAME = "android"
 
     private const val CALL_APP_ERRORS_DATA_GET = "call_app_errors_data_get"
     private const val CALL_MUTED_ERRORS_APP_DATA_GET = "call_muted_app_errors_data_get"
