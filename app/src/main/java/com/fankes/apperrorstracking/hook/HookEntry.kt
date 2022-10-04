@@ -33,7 +33,10 @@ import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 class HookEntry : IYukiHookXposedInit {
 
     override fun onInit() = configs {
-        debugLog { tag = "AppErrorsTracking" }
+        debugLog {
+            tag = "AppErrorsTracking"
+            isRecord = true
+        }
         isDebug = false
         isEnableModulePrefsCache = false
     }

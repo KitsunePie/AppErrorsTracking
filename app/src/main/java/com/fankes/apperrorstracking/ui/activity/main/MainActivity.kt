@@ -32,6 +32,7 @@ import com.fankes.apperrorstracking.data.ConfigData.bind
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
+import com.fankes.apperrorstracking.ui.activity.debug.LoggerActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.*
@@ -78,6 +79,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 功能管理按钮点击事件 */
         binding.viewErrorsRecordButton.setOnClickListener { whenActivated { navigate<AppErrorsRecordActivity>() } }
         binding.viewMutedErrorsAppsButton.setOnClickListener { whenActivated { navigate<AppErrorsMutedActivity>() } }
+        /** 调试日志按钮点击事件 */
+        binding.titleLoggerIcon.setOnClickListener { navigate<LoggerActivity>() }
         /** 重启按钮点击事件 */
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */

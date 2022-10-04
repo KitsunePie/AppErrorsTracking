@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8.5dp"
+        android:layout_marginRight="8.5dp"
+        android:layout_marginBottom="10dp"
+        android:lineSpacingExtra="6dp"
+        android:text="@string/when_logger_how_to_show_tip"
+        android:textSize="13sp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="DEBUG"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="INFO"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="WARN"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="ERROR"
+        app:buttonTint="@color/colorPrimaryAccent" />
+</LinearLayout>
