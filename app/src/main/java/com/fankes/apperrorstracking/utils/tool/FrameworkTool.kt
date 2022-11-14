@@ -62,7 +62,7 @@ object FrameworkTool {
     private val CALL_APP_ERRORS_DATA_REMOVE = ChannelData<AppErrorsInfoBean>("call_app_errors_data_remove")
     private val CALL_APP_LIST_DATA_GET_RESULT = ChannelData<ArrayList<AppInfoBean>>("call_app_info_list_data_get_result")
     private val CALL_APP_ERROR_DATA_GET_RESULT = ChannelData<AppErrorsInfoBean>("call_app_error_data_get_result")
-    private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<ArrayList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
+    private val CALL_APP_ERRORS_DATA_GET_RESULT = ChannelData<MutableList<AppErrorsInfoBean>>("call_app_errors_data_get_result")
     private val CALL_MUTED_ERRORS_APP_DATA_GET_RESULT = ChannelData<ArrayList<MutedErrorsAppBean>>("call_muted_app_errors_data_get_result")
     private val CALL_UNMUTE_ERRORS_APP_DATA = ChannelData<MutedErrorsAppBean>("call_unmute_errors_app_data")
     private val CALL_MUTED_ERRORS_IF_UNLOCK = ChannelData<String>("call_muted_errors_if_unlock")
@@ -102,7 +102,7 @@ object FrameworkTool {
          * 监听发送 APP 异常信息数组
          * @param result 回调数据
          */
-        fun onPushAppErrorsInfoData(result: () -> ArrayList<AppErrorsInfoBean>) {
+        fun onPushAppErrorsInfoData(result: () -> MutableList<AppErrorsInfoBean>) {
             instance?.dataChannel?.with { wait(CALL_APP_ERRORS_DATA_GET) { put(CALL_APP_ERRORS_DATA_GET_RESULT, result()) } }
         }
 
@@ -265,7 +265,7 @@ object FrameworkTool {
      */
     fun fetchAppErrorsInfoData(context: Context, result: (ArrayList<AppErrorsInfoBean>) -> Unit) {
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).with {
-            wait(CALL_APP_ERRORS_DATA_GET_RESULT) { result(it) }
+            wait(CALL_APP_ERRORS_DATA_GET_RESULT) { result(it as ArrayList<AppErrorsInfoBean>) }
             put(CALL_APP_ERRORS_DATA_GET)
         }
     }

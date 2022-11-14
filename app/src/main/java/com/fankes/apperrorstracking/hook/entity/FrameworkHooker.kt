@@ -57,6 +57,7 @@ import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
+import java.util.concurrent.CopyOnWriteArrayList
 
 object FrameworkHooker : YukiBaseHooker() {
 
@@ -88,7 +89,7 @@ object FrameworkHooker : YukiBaseHooker() {
     private var mutedErrorsIfRestartApps = HashSet<String>()
 
     /** 已记录的 APP 异常信息数组 */
-    private var appErrorsRecords = ArrayList<AppErrorsInfoBean>()
+    private var appErrorsRecords = CopyOnWriteArrayList<AppErrorsInfoBean>()
 
     /** 注册生命周期 */
     private fun registerLifecycle() {
@@ -98,7 +99,7 @@ object FrameworkHooker : YukiBaseHooker() {
             /** 刷新模块 Resources 缓存 */
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
             /** 启动时从本地获取异常记录 */
-            onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: arrayListOf() }
+            onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: CopyOnWriteArrayList() }
         }
         FrameworkTool.Host.with(instance = this) {
             onOpenAppUsedFramework {
@@ -111,7 +112,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     AppErrorsInfoBean.createEmpty()
                 }
             }
-            onPushAppErrorsInfoData { appErrorsRecords }
+            onPushAppErrorsInfoData { appErrorsRecords.toMutableList() }
             onRemoveAppErrorsInfoData {
                 loggerI(msg = "Removed app errors info data for package \"${it.packageName}\"")
                 appErrorsRecords.remove(it)
@@ -179,6 +180,14 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 保存异常记录到本地 */
     private fun saveAllAppErrorsRecords() = newThread { ConfigData.putResolverString(ConfigData.APP_ERRORS_DATA, appErrorsRecords.toJson()) }
+
+    /** 由于使用广播与界面进行通信，大于 200 条日志会超过可发送上限而失败 **/
+    private fun limitMaxAppErrorsRecords() {
+        if (appErrorsRecords.size > 200) {
+            appErrorsRecords.removeLast()
+            limitMaxAppErrorsRecords()
+        }
+    }
 
     override fun onHook() {
         /** 注册生命周期 */
@@ -356,16 +365,12 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
-                    /** 启动新线程延迟防止方法执行顺序在前导致无法正确获取数据 */
-                    newThread {
-                        /** 延迟 50ms */
-                        Thread.sleep(50)
-                        /** 添加当前异常信息到第一位 */
-                        appErrorsRecords.add(
-                            0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args().last().cast())
-                        )
-                        loggerI(msg = "Received crash application data --pid $pid")
-                    }
+
+                    /** 添加当前异常信息到第一位 */
+                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args().last().cast()))
+                    loggerI(msg = "Received crash application data --pid $pid")
+                    limitMaxAppErrorsRecords()
+
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
                 }
