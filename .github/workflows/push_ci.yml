@@ -45,8 +45,6 @@ jobs:
           key: gradle-builds-core-${{ github.sha }}
           restore-keys: |
             gradle-builds
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
       - name: Build with Gradle
         run: |
           ./gradlew :app:assembleRelease
