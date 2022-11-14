@@ -15,18 +15,20 @@ jobs:
     name: Build CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.12
+        uses: jwlawson/actions-setup-cmake@v1
         with:
           cmake-version: '3.22.1'
       - name: Prepare Java 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
           java-package: jdk
+          distribution: 'temurin'
+          cache: 'gradle'
       - name: Cache Gradle Dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -36,15 +38,13 @@ jobs:
           restore-keys: |
             gradle-deps
       - name: Cache Gradle Build
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches/build-cache-*
           key: gradle-builds-core-${{ github.sha }}
           restore-keys: |
             gradle-builds
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
       - name: Build with Gradle
         run: |
           ./gradlew :app:assembleRelease
@@ -52,12 +52,12 @@ jobs:
           echo "APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
           echo "DEMO_APK_FILE=$(find demo-app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
       - name: Upload Artifacts(module)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: ${{ env.APK_FILE }}
           name: module-release
       - name: Upload Artifacts(demo-app)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: ${{ env.DEMO_APK_FILE }}
           name: demo-release
