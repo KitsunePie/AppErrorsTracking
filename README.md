@@ -58,9 +58,46 @@ Similar to **Bugly** to automatically collect errors, the system cannot obtain w
 
 - Errors display function for multi-process apps
 
-## Translation contribution
+## Translation Contribution
 
 Contributions to this project are welcome to translate it into your country's language.
+
+## Release Channel Description
+
+- [Automatic Build on Commit](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml)
+
+The above update is automatically triggered after the code `commit`.
+
+The specific update content can be viewed by clicking the text above and going to **Github Actions**.
+
+This update is automatically compiled and released by the open source process, **no guarantee of its stability**, so the released version is
+**for testing only**, and there is no special explanation or even the version may change or remain the same as the current stable version.
+
+- [Release](https://github.com/KitsunePie/AppErrorsTracking/releases)
+- [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
+
+The above update is a manually released stable version.
+
+For the specific update content, you can click the text above to go to the designated release page to view.
+
+The update of the stable version will be released to the above address at the same time and updated synchronously.
+
+## Release Status Description
+
+![Blank](https://img.shields.io/badge/build-passing-brightgreen)
+
+The above status is that the current stable version is consistent with the automatic build version or the current code changes and the stable
+version have no functional difference.
+
+![Blank](https://img.shields.io/badge/build-pending-dbab09)
+
+The above state is that there are automatic build versions and updates with new features but no stable version is currently released, and it is
+in a pre-release state.
+
+![Blank](https://img.shields.io/badge/build-problem-red)
+
+The above status is that the currently released stable version may have serious problems but have not been fixed in time and the stable version
+has not been released.
 
 ## License
 
