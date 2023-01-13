@@ -234,7 +234,8 @@ object FrameworkTool {
      * @param context 实例
      * @param result 成功后回调
      */
-    fun checkingActivated(context: Context, result: (Boolean) -> Unit) = context.dataChannel(SYSTEM_FRAMEWORK_NAME).checkingVersionEquals(result)
+    fun checkingActivated(context: Context, result: (Boolean) -> Unit) =
+        context.dataChannel(SYSTEM_FRAMEWORK_NAME).checkingVersionEquals(result = result)
 
     /**
      * 使用系统框架打开 [packageName]
