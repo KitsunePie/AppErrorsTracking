@@ -86,7 +86,7 @@ data class AppErrorsInfoBean(
                     isNativeCrash = isNativeCrash,
                     exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
                     exceptionMessage = if (isNativeCrash) crashInfo?.stackTrace.let {
-                        if (it?.contains(other = "Abort message: '") == true)
+                        if (it?.contains("Abort message: '") == true)
                             runCatching { it.split("Abort message: '")[1].split("'")[0] }.getOrNull()
                                 ?: crashInfo?.exceptionMessage ?: "unknown"
                         else crashInfo?.exceptionMessage ?: "unknown"

@@ -193,7 +193,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
      * @return [String]
      */
     private fun String.simpleThwName() =
-        let { text -> if (text.contains(other = ".")) text.split(".").let { e -> e[e.lastIndex] } else text }
+        let { text -> if (text.contains(".")) text.split(".").let { e -> e[e.lastIndex] } else text }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menuInflater.inflate(R.menu.menu_list_detail_action, menu)

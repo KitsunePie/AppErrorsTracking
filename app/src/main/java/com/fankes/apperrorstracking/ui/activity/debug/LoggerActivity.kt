@@ -167,7 +167,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
      * 格式化消息字符串样式
      * @return [String]
      */
-    private fun String.format() = replace(oldValue = "--", newValue = "\n--")
+    private fun String.format() = replace("--", "\n--")
 
     /**
      * 获取完整的异常堆栈内容
