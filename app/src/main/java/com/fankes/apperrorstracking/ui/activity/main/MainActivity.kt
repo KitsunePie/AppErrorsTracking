@@ -120,7 +120,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 else -> LocaleString.moduleNotActivated
             }
         binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
-        binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
+        binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
     }
 
     /**

@@ -38,7 +38,6 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
-import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.dataChannel
 import com.highcapable.yukihookapi.hook.log.YukiHookLogger
 import com.highcapable.yukihookapi.hook.log.YukiLoggerData
@@ -138,26 +137,6 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
     }
 
     /**
-     * 获取当前所有日志写出文件的格式
-     *
-     * 复制自 [YukiHookLogger.contents]
-     * @return [String]
-     */
-    private val loggerContents: String
-        get() {
-            var content = ""
-            listData.takeIf { it.isNotEmpty() }?.forEach {
-                val head = "${it.time} ------ "
-                content += "$head$it\n"
-                it.throwable?.also { e ->
-                    content += "${head}Dump stack trace for \"${e.current().name}\":\n"
-                    content += e.toStackTrace()
-                }
-            }
-            return content
-        }
-
-    /**
      * 格式化为本地时间格式
      * @return [String]
      */
@@ -193,7 +172,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
             data?.data?.let {
-                contentResolver?.openOutputStream(it)?.apply { write(loggerContents.toByteArray()) }?.close()
+                contentResolver?.openOutputStream(it)?.apply { write(YukiHookLogger.contents(listData).toByteArray()) }?.close()
                 toast(LocaleString.exportAllLogsSuccess)
             } ?: toast(LocaleString.exportAllLogsFail)
         }.onFailure { toast(LocaleString.exportAllLogsFail) }
