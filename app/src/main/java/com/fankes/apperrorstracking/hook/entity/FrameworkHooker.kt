@@ -218,7 +218,14 @@ object FrameworkHooker : YukiBaseHooker() {
                     param(BundleClass)
                 }
                 afterHook { instance<Dialog>().cancel() }
-            }
+            }.ignoredNoSuchMemberFailure()
+            injectMember {
+                method {
+                    name = "onStart"
+                    emptyParam()
+                }
+                afterHook { instance<Dialog>().cancel() }
+            }.ignoredNoSuchMemberFailure()
         }
         /** 注入自定义错误对话框 */
         AppErrorsClass.hook {
