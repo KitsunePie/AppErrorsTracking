@@ -72,16 +72,16 @@ data class AppErrorsInfoBean(
         /**
          * 从 [ApplicationErrorReport.CrashInfo] 克隆
          * @param pid APP 进程 ID
-         * @param packageName APP 包名
          * @param userId APP 用户 ID
+         * @param packageName APP 包名
          * @param crashInfo [ApplicationErrorReport.CrashInfo]
          * @return [AppErrorsInfoBean]
          */
-        fun clone(pid: Int, packageName: String?, userId: Int?, crashInfo: ApplicationErrorReport.CrashInfo?) =
+        fun clone(pid: Int, userId: Int, packageName: String?, crashInfo: ApplicationErrorReport.CrashInfo?) =
             (crashInfo?.exceptionClassName?.lowercase() == "native crash").let { isNativeCrash ->
                 AppErrorsInfoBean(
                     pid = pid,
-                    userId = userId ?: 0,
+                    userId = userId,
                     packageName = packageName ?: "unknown",
                     isNativeCrash = isNativeCrash,
                     exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
