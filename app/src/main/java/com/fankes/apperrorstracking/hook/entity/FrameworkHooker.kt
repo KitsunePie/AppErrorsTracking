@@ -79,9 +79,6 @@ object FrameworkHooker : YukiBaseHooker() {
         "com.android.server.am.ErrorDialogController"
     )
 
-    /** 已记录的 APP 用户 ID */
-    private var appUserIdRecords = HashMap<Int, Int>()
-
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
     private var mutedErrorsIfUnlockApps = HashSet<String>()
 
@@ -301,8 +298,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 崩溃标题 */
                     val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
-                    /** 写入到用户 ID 记录 */
-                    appUserIdRecords[pid] = userId
                     /** 打印错误日志 */
                     if (isApp) loggerE(
                         msg = "Application \"$packageName\" ${if (isRepeating) "keeps stopping" else "has stopped"}" +
@@ -371,11 +366,14 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前 pid 信息 */
                     val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
 
+                    /** 当前用户 ID 信息 */
+                    val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
+
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
                     /** 添加当前异常信息到第一位 */
-                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args(index = 1).cast()))
-                    loggerI(msg = "Received crash application data --pid $pid")
+                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, args(index = 1).cast()))
+                    loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
                 }
