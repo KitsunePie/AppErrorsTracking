@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/5/7.
  */
-@file:Suppress("unused")
+@file:Suppress("unused", "NotificationPermission")
 
 package com.fankes.apperrorstracking.utils.factory
 
@@ -261,7 +261,8 @@ fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {
  */
 fun Context.pushNotify(channelId: String, channelName: String, title: String, content: String, icon: IconCompat, color: Int, intent: Intent) {
     getSystemService<NotificationManager>()?.apply {
-        createNotificationChannel(NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            createNotificationChannel(NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH))
         notify((0..999).random(), NotificationCompat.Builder(this@pushNotify, channelId).apply {
             this.color = color
             setAutoCancel(true)

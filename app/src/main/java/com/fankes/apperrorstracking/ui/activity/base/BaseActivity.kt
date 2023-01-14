@@ -23,6 +23,8 @@
 
 package com.fankes.apperrorstracking.ui.activity.base
 
+import android.app.ActivityManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -66,6 +68,24 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     /** 回调 [onCreate] 方法 */
     abstract fun onCreate()
+
+    /**
+     * 在旧版的 Android 系统中使用了 activity-alias 标签从启动器启动 Activity 会造成其组件名称 (完整类名) 为代理名称
+     *
+     * 为了获取真实的顶层 Activity 组件名称 (完整类名) - 如果名称不正确将自动执行一次结束并重新打开当前 Activity
+     */
+    fun checkingTopComponentName() {
+        /** 当前顶层的 Activity 组件名称 (完整类名) */
+        val topComponentName = runCatching {
+            @Suppress("DEPRECATION")
+            (getSystemService(ACTIVITY_SERVICE) as? ActivityManager?)
+                ?.getRunningTasks(9999)?.firstOrNull()?.topActivity?.className ?: ""
+        }.getOrNull() ?: ""
+        if (topComponentName.isNotBlank() && topComponentName != javaClass.name) {
+            finish()
+            startActivity(Intent(this, javaClass))
+        }
+    }
 
     /**
      * 弹出提示并退出

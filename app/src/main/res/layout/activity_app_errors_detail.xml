@@ -8,7 +8,7 @@
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
     tools:context=".ui.activity.errors.AppErrorsDetailActivity"
-    tools:ignore="ContentDescription,UseCompoundDrawables,SmallSp">
+    tools:ignore="ContentDescription,UseCompoundDrawables,SmallSp,UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"

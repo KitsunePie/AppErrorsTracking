@@ -20,7 +20,7 @@ any installed apps, so as to quickly locate the problem.
 The error log of apps crashing is an invaluable asset for developers. If you are not a developer, you can still install this module to provide
 developers with more exception information to quickly solve problems.
 
-> Minimum support Android 8.1
+> Minimum support Android 7.0
 
 ## Project Reason
 
