@@ -113,12 +113,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 else -> R.drawable.ic_warn
             }
         )
-        binding.mainTextStatus.text =
-            when {
-                YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> LocaleString.moduleNotFullyActivated
-                YukiHookAPI.Status.isXposedModuleActive -> LocaleString.moduleIsActivated
-                else -> LocaleString.moduleNotActivated
-            }
+        binding.mainTextStatus.text = when {
+            YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> LocaleString.moduleNotFullyActivated
+            YukiHookAPI.Status.isXposedModuleActive -> LocaleString.moduleIsActivated
+            else -> LocaleString.moduleNotActivated
+        }
         binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
         binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
     }
