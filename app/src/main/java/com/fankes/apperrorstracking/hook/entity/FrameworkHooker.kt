@@ -58,6 +58,7 @@ import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
+import com.highcapable.yukihookapi.hook.type.java.*
 
 object FrameworkHooker : YukiBaseHooker() {
 
@@ -360,8 +361,8 @@ object FrameworkHooker : YukiBaseHooker() {
             }
             injectMember {
                 method {
-                    name = "crashApplication"
-                    paramCount = 2
+                    name = "handleAppCrashInActivityController"
+                    returnType = BooleanType
                 }
                 afterHook {
                     /** 当前进程信息 */
@@ -372,16 +373,9 @@ object FrameworkHooker : YukiBaseHooker() {
 
                     /** 当前 APP 信息 */
                     val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
-                    /** 启动新线程延迟防止方法执行顺序在前导致无法正确获取数据 */
-                    newThread {
-                        /** 延迟 50ms */
-                        Thread.sleep(50)
-                        /** 添加当前异常信息到第一位 */
-                        appErrorsRecords.add(
-                            0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args().last().cast())
-                        )
-                        loggerI(msg = "Received crash application data --pid $pid")
-                    }
+                    /** 添加当前异常信息到第一位 */
+                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, appInfo?.packageName, appUserIdRecords[pid], args(index = 1).cast()))
+                    loggerI(msg = "Received crash application data --pid $pid")
                     /** 保存异常记录到本地 */
                     saveAllAppErrorsRecords()
                 }
