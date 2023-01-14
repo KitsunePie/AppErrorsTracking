@@ -29,6 +29,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.os.Message
+import android.util.ArrayMap
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.fankes.apperrorstracking.BuildConfig
@@ -72,7 +73,6 @@ object FrameworkHooker : YukiBaseHooker() {
         "com.android.server.am.ProcessRecord\$PackageList",
         "com.android.server.am.PackageList"
     )
-
     private val ErrorDialogControllerClass = VariousClass(
         "com.android.server.am.ProcessRecord\$ErrorDialogController",
         "com.android.server.am.ErrorDialogController"
@@ -201,15 +201,26 @@ object FrameworkHooker : YukiBaseHooker() {
             }
         }.ignoredHookClassNotFoundFailure()
         /** 干掉原生错误对话框 - API 30 以下 */
-        ActivityTaskManagerService_LocalServiceClass.hook {
-            injectMember {
-                method {
-                    name = "canShowErrorDialogs"
-                    emptyParam()
-                }
-                replaceToFalse()
-            }
-        }.by { Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q }
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            ActivityTaskManagerService_LocalServiceClass.hook {
+                injectMember {
+                    method {
+                        name = "canShowErrorDialogs"
+                        emptyParam()
+                    }
+                    replaceToFalse()
+                }.ignoredNoSuchMemberFailure()
+            }.ignoredHookClassNotFoundFailure()
+            ActivityManagerServiceClass.hook {
+                injectMember {
+                    method {
+                        name = "canShowErrorDialogs"
+                        emptyParam()
+                    }
+                    replaceToFalse()
+                }.ignoredNoSuchMemberFailure()
+            }.ignoredHookClassNotFoundFailure()
+        }
         /** 干掉原生错误对话框 - 如果上述方法全部失效则直接结束对话框 */
         AppErrorDialogClass.hook {
             injectMember {
@@ -262,26 +273,24 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前 APP 名称 */
                     val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
 
+                    /** 当前包列表实例 */
+                    val pkgList = (if (ProcessRecordClass.toClass().hasMethod { name = "getPkgList"; emptyParam() })
+                        ProcessRecordClass.toClass().method { name = "getPkgList"; emptyParam() }.get(proc).call()
+                    else ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).any())
+
+                    /** 当前包列表数组大小 */
+                    val pkgListSize = PackageListClass.toClassOrNull()?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
+                        ?: ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
+
                     /** 是否为 APP */
-                    val isApp = (PackageListClass.toClass().method {
-                        name = "size"
-                        emptyParam()
-                    }.get(if (ProcessRecordClass.toClass().hasMethod {
-                            name = "getPkgList"
-                            emptyParam()
-                        }) ProcessRecordClass.toClass().method {
-                        name = "getPkgList"
-                        emptyParam()
-                    }.get(proc).call() else ProcessRecordClass.toClass().field {
-                        name = "pkgList"
-                    }.get(proc).any()).int() == 1 && appInfo != null)
+                    val isApp = pkgListSize == 1 && appInfo != null
 
                     /** 是否为主进程 */
                     val isMainProcess = packageName == processName
 
                     /** 是否为后台进程 */
                     val isBackgroundProcess = UserControllerClass.toClass()
-                        .method { name = "getCurrentProfileIds" }
+                        .method { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
                         .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
                             .get(field { name = "mService" }.get(instance).any()).any())
                         .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
