@@ -52,6 +52,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onCreate() {
+        checkingTopComponentName()
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text = LocaleString.systemVersion(systemVersion)
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)

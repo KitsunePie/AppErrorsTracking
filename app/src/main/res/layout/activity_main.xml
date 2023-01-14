@@ -7,7 +7,7 @@
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
     tools:context=".ui.activity.main.MainActivity"
-    tools:ignore="UseCompoundDrawables,ContentDescription,SmallSp">
+    tools:ignore="UseCompoundDrawables,ContentDescription,SmallSp,UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
