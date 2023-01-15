@@ -23,6 +23,7 @@
 
 package com.fankes.apperrorstracking.hook.entity
 
+import android.app.ApplicationErrorReport
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -39,6 +40,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.data.ConfigData
+import com.fankes.apperrorstracking.data.factory.isAppShowErrorsDialog
 import com.fankes.apperrorstracking.data.factory.isAppShowErrorsNotify
 import com.fankes.apperrorstracking.data.factory.isAppShowErrorsToast
 import com.fankes.apperrorstracking.data.factory.isAppShowNothing
@@ -87,6 +89,88 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 已记录的 APP 异常信息数组 */
     private var appErrorsRecords = ArrayList<AppErrorsInfoBean>()
+
+    /**
+     * APP 进程异常数据定义类
+     * @param errors [AppErrorsClass] 实例
+     * @param proc [ProcessRecordClass] 实例
+     * @param resultData [AppErrorDialog_DataClass] 实例 - 默认空
+     */
+    private class AppErrorsData(errors: Any?, proc: Any?, resultData: Any? = null) {
+
+        /**
+         * 获取当前包列表实例
+         * @return [Any] or null
+         */
+        private val pkgList = if (ProcessRecordClass.toClass().hasMethod { name = "getPkgList"; emptyParam() })
+            ProcessRecordClass.toClass().method { name = "getPkgList"; emptyParam() }.get(proc).call()
+        else ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).any()
+
+        /**
+         * 获取当前包列表数组大小
+         * @return [Int]
+         */
+        private val pkgListSize = PackageListClass.toClassOrNull()?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
+            ?: ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
+
+        /**
+         * 获取当前 pid 信息
+         * @return [Int]
+         */
+        val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
+
+        /**
+         * 获取当前用户 ID 信息
+         * @return [Int]
+         */
+        val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
+
+        /**
+         * 获取当前 APP 信息
+         * @return [ApplicationInfo] or null
+         */
+        val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
+
+        /**
+         * 获取当前进程名称
+         * @return [String]
+         */
+        val processName = ProcessRecordClass.toClass().field { name = "processName" }.get(proc).string()
+
+        /**
+         * 获取当前 APP、进程 包名
+         * @return [String]
+         */
+        val packageName = appInfo?.packageName ?: processName
+
+        /**
+         * 获取当前进程是否为可被启动的 APP - 非框架 APP
+         * @return [Boolean]
+         */
+        val isActualApp = pkgListSize == 1 && appInfo != null
+
+        /**
+         * 获取当前进程是否为主进程
+         * @return [Boolean]
+         */
+        val isMainProcess = packageName == processName
+
+        /**
+         * 获取当前进程是否为后台进程
+         * @return [Boolean]
+         */
+        val isBackgroundProcess = UserControllerClass.toClass()
+            .method { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
+            .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
+                .get(AppErrorsClass.toClass().field { name = "mService" }.get(errors).any()).any())
+            .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
+
+        /**
+         * 获取当前进程是否短时内重复崩溃
+         * @return [Boolean]
+         */
+        val isRepeatingCrash = resultData?.let { AppErrorDialog_DataClass.toClass().field { name = "repeating" }.get(it).boolean() } ?: false
+    }
 
     /** 注册生命周期 */
     private fun registerLifecycle() {
@@ -178,6 +262,89 @@ object FrameworkHooker : YukiBaseHooker() {
     /** 保存异常记录到本地 */
     private fun saveAllAppErrorsRecords() = newThread { ConfigData.putResolverString(ConfigData.APP_ERRORS_DATA, appErrorsRecords.toJson()) }
 
+    /**
+     * 处理 APP 进程异常信息展示
+     * @param context 当前实例
+     */
+    private fun AppErrorsData.handleShowAppErrorUi(context: Context) {
+        /** 当前 APP 名称 */
+        val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
+
+        /** 崩溃标题 */
+        val errorTitle = if (isRepeatingCrash) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
+
+        /** 使用通知推送异常信息 */
+        fun showAppErrorsWithNotify() =
+            context.pushNotify(
+                channelId = "APPS_ERRORS",
+                channelName = LocaleString.appName,
+                title = errorTitle,
+                content = LocaleString.appErrorsTip,
+                icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.drawable.ic_notify).toBitmap()),
+                color = 0xFFFF6200.toInt(),
+                intent = AppErrorsRecordActivity.intent()
+            )
+
+        /** 使用 Toast 展示异常信息 */
+        fun showAppErrorsWithToast() = context.toast(errorTitle)
+
+        /** 使用对话框展示异常信息 */
+        fun showAppErrorsWithDialog() =
+            AppErrorsDisplayActivity.start(
+                context, AppErrorsDisplayBean(
+                    pid = pid,
+                    userId = userId,
+                    packageName = packageName,
+                    processName = processName,
+                    appName = appName,
+                    title = errorTitle,
+                    isShowAppInfoButton = isActualApp,
+                    isShowReopenButton = isActualApp &&
+                            (isRepeatingCrash.not() || ConfigData.isEnableAlwaysShowsReopenAppOptions) &&
+                            context.isAppCanOpened(packageName) &&
+                            isMainProcess,
+                    isShowCloseAppButton = isActualApp
+                )
+            )
+        /** 判断是否为已忽略的 APP */
+        if (mutedErrorsIfUnlockApps.contains(packageName) || mutedErrorsIfRestartApps.contains(packageName)) return
+        /** 判断是否为后台进程 */
+        if ((isBackgroundProcess || context.isAppCanOpened(packageName).not()) && ConfigData.isEnableOnlyShowErrorsInFront) return
+        /** 判断是否为主进程 */
+        if (isMainProcess.not() && ConfigData.isEnableOnlyShowErrorsInMain) return
+        when {
+            packageName == BuildConfig.APPLICATION_ID -> {
+                context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
+                loggerE(msg = "AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
+            }
+            ConfigData.isEnableAppConfigTemplate -> when {
+                isAppShowNothing(packageName) -> {}
+                isAppShowErrorsNotify(packageName) -> showAppErrorsWithNotify()
+                isAppShowErrorsToast(packageName) -> showAppErrorsWithToast()
+                isAppShowErrorsDialog(packageName) -> showAppErrorsWithDialog()
+            }
+            else -> showAppErrorsWithDialog()
+        }
+        /** 打印错误日志 */
+        if (isActualApp) loggerE(
+            msg = "Application \"$packageName\" ${if (isRepeatingCrash) "keeps stopping" else "has stopped"}" +
+                    (if (packageName != processName) " --process \"$processName\"" else "") +
+                    "${if (userId != 0) " --user $userId" else ""} --pid $pid"
+        ) else loggerE(msg = "Process \"$processName\" ${if (isRepeatingCrash) "keeps stopping" else "has stopped"} --pid $pid")
+    }
+
+    /**
+     * 处理 APP 进程异常数据
+     * @param info 系统错误报告数据实例
+     */
+    private fun AppErrorsData.handleAppErrorsInfo(info: ApplicationErrorReport.CrashInfo?) {
+        /** 添加当前异常信息到第一位 */
+        appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, info))
+        loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
+        /** 保存异常记录到本地 */
+        saveAllAppErrorsRecords()
+    }
+
     override fun onHook() {
         /** 注册生命周期 */
         registerLifecycle()
@@ -247,111 +414,13 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前实例 */
                     val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
 
-                    /** 错误数据 */
-                    val errData = args().first().cast<Message>()?.obj
+                    /** 当前错误数据 */
+                    val resultData = args().first().cast<Message>()?.obj
 
                     /** 当前进程信息 */
-                    val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(errData).any()
-
-                    /** 当前 pid 信息 */
-                    val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
-
-                    /** 当前用户 ID 信息 */
-                    val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
-
-                    /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
-
-                    /** 当前进程名称 */
-                    val processName = ProcessRecordClass.toClass().field { name = "processName" }.get(proc).string()
-
-                    /** 当前 APP、进程 包名 */
-                    val packageName = appInfo?.packageName ?: processName
-
-                    /** 当前 APP 名称 */
-                    val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
-
-                    /** 当前包列表实例 */
-                    val pkgList = (if (ProcessRecordClass.toClass().hasMethod { name = "getPkgList"; emptyParam() })
-                        ProcessRecordClass.toClass().method { name = "getPkgList"; emptyParam() }.get(proc).call()
-                    else ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).any())
-
-                    /** 当前包列表数组大小 */
-                    val pkgListSize = PackageListClass.toClassOrNull()?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
-                        ?: ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
-
-                    /** 是否为 APP */
-                    val isApp = pkgListSize == 1 && appInfo != null
-
-                    /** 是否为主进程 */
-                    val isMainProcess = packageName == processName
-
-                    /** 是否为后台进程 */
-                    val isBackgroundProcess = UserControllerClass.toClass()
-                        .method { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
-                        .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
-                            .get(field { name = "mService" }.get(instance).any()).any())
-                        .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
-
-                    /** 是否短时内重复错误 */
-                    val isRepeating = AppErrorDialog_DataClass.toClass().field { name = "repeating" }.get(errData).boolean()
-
-                    /** 崩溃标题 */
-                    val errorTitle = if (isRepeating) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
-                    /** 打印错误日志 */
-                    if (isApp) loggerE(
-                        msg = "Application \"$packageName\" ${if (isRepeating) "keeps stopping" else "has stopped"}" +
-                                (if (packageName != processName) " --process \"$processName\"" else "") +
-                                "${if (userId != 0) " --user $userId" else ""} --pid $pid"
-                    ) else loggerE(msg = "Process \"$processName\" ${if (isRepeating) "keeps stopping" else "has stopped"} --pid $pid")
-                    /** 判断是否为模块自身崩溃 */
-                    if (packageName == BuildConfig.APPLICATION_ID) {
-                        context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
-                        loggerE(msg = "AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
-                        return@afterHook
-                    }
-                    /** 判断是否为已忽略的 APP */
-                    if (mutedErrorsIfUnlockApps.contains(packageName) || mutedErrorsIfRestartApps.contains(packageName)) return@afterHook
-                    /** 判断配置模块启用状态 */
-                    if (ConfigData.isEnableAppConfigTemplate) {
-                        if (isAppShowNothing(packageName)) return@afterHook
-                        if (isAppShowErrorsNotify(packageName)) {
-                            context.pushNotify(
-                                channelId = "APPS_ERRORS",
-                                channelName = LocaleString.appName,
-                                title = errorTitle,
-                                content = LocaleString.appErrorsTip,
-                                icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.drawable.ic_notify).toBitmap()),
-                                color = 0xFFFF6200.toInt(),
-                                intent = AppErrorsRecordActivity.intent()
-                            )
-                            return@afterHook
-                        }
-                        if (isAppShowErrorsToast(packageName)) {
-                            context.toast(errorTitle)
-                            return@afterHook
-                        }
-                    }
-                    /** 判断是否为后台进程 */
-                    if ((isBackgroundProcess || context.isAppCanOpened(packageName).not()) && ConfigData.isEnableOnlyShowErrorsInFront)
-                        return@afterHook
-                    /** 判断是否为主进程 */
-                    if (isMainProcess.not() && ConfigData.isEnableOnlyShowErrorsInMain) return@afterHook
-                    /** 启动错误对话框显示窗口 */
-                    AppErrorsDisplayActivity.start(
-                        context, AppErrorsDisplayBean(
-                            pid = pid,
-                            userId = userId,
-                            packageName = packageName,
-                            processName = processName,
-                            appName = appName,
-                            title = errorTitle,
-                            isShowAppInfoButton = isApp,
-                            isShowReopenButton = isApp && (isRepeating.not() || ConfigData.isEnableAlwaysShowsReopenAppOptions)
-                                    && context.isAppCanOpened(packageName) && isMainProcess,
-                            isShowCloseAppButton = isApp
-                        )
-                    )
+                    val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(resultData).any()
+                    /** 创建 APP 进程异常数据类 */
+                    AppErrorsData(instance, proc, resultData).handleShowAppErrorUi(context)
                 }
             }
             injectMember {
@@ -362,20 +431,8 @@ object FrameworkHooker : YukiBaseHooker() {
                 afterHook {
                     /** 当前进程信息 */
                     val proc = args().first().any() ?: return@afterHook loggerW(msg = "Received but got null ProcessRecord")
-
-                    /** 当前 pid 信息 */
-                    val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
-
-                    /** 当前用户 ID 信息 */
-                    val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
-
-                    /** 当前 APP 信息 */
-                    val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
-                    /** 添加当前异常信息到第一位 */
-                    appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, args(index = 1).cast()))
-                    loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
-                    /** 保存异常记录到本地 */
-                    saveAllAppErrorsRecords()
+                    /** 创建 APP 进程异常数据类 */
+                    AppErrorsData(instance, proc).handleAppErrorsInfo(args(index = 1).cast())
                 }
             }
         }
