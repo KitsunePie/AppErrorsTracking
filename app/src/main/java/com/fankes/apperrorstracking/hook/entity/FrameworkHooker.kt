@@ -263,8 +263,11 @@ object FrameworkHooker : YukiBaseHooker() {
         /** 当前 APP 名称 */
         val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
 
+        /** 当前 APP 名称 (包含用户 ID) */
+        val appNameWithUserId = if (userId != 0) "$appName (${LocaleString.userId(userId)})" else appName
+
         /** 崩溃标题 */
-        val errorTitle = if (isRepeatingCrash) LocaleString.aerrRepeatedTitle(appName) else LocaleString.aerrTitle(appName)
+        val errorTitle = if (isRepeatingCrash) LocaleString.aerrRepeatedTitle(appNameWithUserId) else LocaleString.aerrTitle(appNameWithUserId)
 
         /** 使用通知推送异常信息 */
         fun showAppErrorsWithNotify() =
