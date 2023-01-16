@@ -94,7 +94,7 @@ object FrameworkHooker : YukiBaseHooker() {
      * @param proc [ProcessRecordClass] 实例
      * @param resultData [AppErrorDialog_DataClass] 实例 - 默认空
      */
-    private class AppErrorsData(errors: Any?, proc: Any?, resultData: Any? = null) {
+    private class AppErrorsProcessData(errors: Any?, proc: Any?, resultData: Any? = null) {
 
         /**
          * 获取当前包列表实例
@@ -259,7 +259,7 @@ object FrameworkHooker : YukiBaseHooker() {
      * 处理 APP 进程异常信息展示
      * @param context 当前实例
      */
-    private fun AppErrorsData.handleShowAppErrorUi(context: Context) {
+    private fun AppErrorsProcessData.handleShowAppErrorUi(context: Context) {
         /** 当前 APP 名称 */
         val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
 
@@ -330,7 +330,7 @@ object FrameworkHooker : YukiBaseHooker() {
      * 处理 APP 进程异常数据
      * @param info 系统错误报告数据实例
      */
-    private fun AppErrorsData.handleAppErrorsInfo(info: ApplicationErrorReport.CrashInfo?) {
+    private fun AppErrorsProcessData.handleAppErrorsInfo(info: ApplicationErrorReport.CrashInfo?) {
         AppErrorsRecordData.add(AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, info))
         loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
     }
@@ -410,7 +410,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前进程信息 */
                     val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(resultData).any()
                     /** 创建 APP 进程异常数据类 */
-                    AppErrorsData(instance, proc, resultData).handleShowAppErrorUi(context)
+                    AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
                 }
             }
             injectMember {
@@ -422,7 +422,7 @@ object FrameworkHooker : YukiBaseHooker() {
                     /** 当前进程信息 */
                     val proc = args().first().any() ?: return@afterHook loggerW(msg = "Received but got null ProcessRecord")
                     /** 创建 APP 进程异常数据类 */
-                    AppErrorsData(instance, proc).handleAppErrorsInfo(args(index = 1).cast())
+                    AppErrorsProcessData(instance, proc).handleAppErrorsInfo(args(index = 1).cast())
                 }
             }
         }
