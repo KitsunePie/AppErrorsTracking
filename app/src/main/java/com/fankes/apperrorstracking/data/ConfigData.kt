@@ -23,13 +23,10 @@
 
 package com.fankes.apperrorstracking.data
 
-import android.content.ContentResolver
 import android.content.Context
 import android.os.Build
-import android.provider.Settings
 import android.widget.CompoundButton
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
-import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
@@ -38,9 +35,6 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
  * 全局配置存储控制类
  */
 object ConfigData {
-
-    /** 存取全部应用异常数据的键值名称 */
-    const val APP_ERRORS_DATA = "app_errors_data"
 
     /** 显示开发者提示 */
     val SHOW_DEVELOPER_NOTICE = PrefsData("_show_developer_notice", true)
@@ -111,27 +105,6 @@ object ConfigData {
                 putBoolean(data, isChecked)
                 onChange(isChecked)
             }
-        }
-    }
-
-    /**
-     * 获取 [ContentResolver] 字符串数据 (仅限 Hook 进程)
-     * @param key 键值名称
-     * @return [String]
-     */
-    fun getResolverString(key: String) =
-        runCatching { (instance as? PackageParam)?.appContext?.let { Settings.Secure.getString(it.contentResolver, key) } }.getOrNull() ?: ""
-
-    /**
-     * 存入 [ContentResolver] 字符串数据 (仅限 Hook 进程)
-     * @param key 键值名称
-     * @param value 键值数据
-     */
-    fun putResolverString(key: String, value: String) {
-        runCatching {
-            (instance as? PackageParam)?.appContext?.also { Settings.Secure.putString(it.contentResolver, key, value) }
-        }.onFailure {
-            loggerE(msg = "Write secure settings failed", e = it)
         }
     }
 

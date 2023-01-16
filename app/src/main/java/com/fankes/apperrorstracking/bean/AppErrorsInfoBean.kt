@@ -105,6 +105,12 @@ data class AppErrorsInfoBean(
     var isEmpty = false
 
     /**
+     * 获取生成的 Json 文件名
+     * @return [String]
+     */
+    val jsonFileName get() = "${packageName}_${pid}_${timestamp}.json"
+
+    /**
      * 获取异常本地化 UTC 时间
      * @return [String]
      */
