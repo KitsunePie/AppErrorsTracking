@@ -39,6 +39,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
+import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.factory.isAppShowErrorsDialog
 import com.fankes.apperrorstracking.data.factory.isAppShowErrorsNotify
@@ -86,9 +87,6 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
     private var mutedErrorsIfRestartApps = HashSet<String>()
-
-    /** 已记录的 APP 异常信息数组 */
-    private var appErrorsRecords = ArrayList<AppErrorsInfoBean>()
 
     /**
      * APP 进程异常数据定义类
@@ -179,8 +177,8 @@ object FrameworkHooker : YukiBaseHooker() {
             registerReceiver(Intent.ACTION_USER_PRESENT) { _, _ -> mutedErrorsIfUnlockApps.clear() }
             /** 刷新模块 Resources 缓存 */
             registerReceiver(Intent.ACTION_LOCALE_CHANGED) { _, _ -> refreshModuleAppResources() }
-            /** 启动时从本地获取异常记录 */
-            onCreate { appErrorsRecords = ConfigData.getResolverString(ConfigData.APP_ERRORS_DATA).toEntity() ?: arrayListOf() }
+            /** 启动时从本地获取异常记录数据 */
+            onCreate { AppErrorsRecordData.init(context = this) }
         }
         FrameworkTool.Host.with(instance = this) {
             onOpenAppUsedFramework {
@@ -188,21 +186,19 @@ object FrameworkHooker : YukiBaseHooker() {
                 loggerI(msg = "Opened \"${it.first}\"${it.second.takeIf { e -> e > 0 }?.let { e -> " --user $e" } ?: ""}")
             }
             onPushAppErrorInfoData {
-                appErrorsRecords.firstOrNull { e -> e.pid == it } ?: run {
+                AppErrorsRecordData.allData.firstOrNull { e -> e.pid == it } ?: run {
                     loggerW(msg = "Cannot received crash application data --pid $it")
                     AppErrorsInfoBean.createEmpty()
                 }
             }
-            onPushAppErrorsInfoData { appErrorsRecords }
+            onPushAppErrorsInfoData { AppErrorsRecordData.allData.toArrayList() }
             onRemoveAppErrorsInfoData {
                 loggerI(msg = "Removed app errors info data for package \"${it.packageName}\"")
-                appErrorsRecords.remove(it)
-                saveAllAppErrorsRecords()
+                AppErrorsRecordData.remove(it)
             }
             onClearAppErrorsInfoData {
-                loggerI(msg = "Cleared all app errors info data, size ${appErrorsRecords.size}")
-                appErrorsRecords.clear()
-                saveAllAppErrorsRecords()
+                loggerI(msg = "Cleared all app errors info data, size ${AppErrorsRecordData.allData.size}")
+                AppErrorsRecordData.clearAll()
             }
             onMutedErrorsIfUnlock {
                 mutedErrorsIfUnlockApps.add(it)
@@ -258,9 +254,6 @@ object FrameworkHooker : YukiBaseHooker() {
             }
         }
     }
-
-    /** 保存异常记录到本地 */
-    private fun saveAllAppErrorsRecords() = newThread { ConfigData.putResolverString(ConfigData.APP_ERRORS_DATA, appErrorsRecords.toJson()) }
 
     /**
      * 处理 APP 进程异常信息展示
@@ -338,11 +331,8 @@ object FrameworkHooker : YukiBaseHooker() {
      * @param info 系统错误报告数据实例
      */
     private fun AppErrorsData.handleAppErrorsInfo(info: ApplicationErrorReport.CrashInfo?) {
-        /** 添加当前异常信息到第一位 */
-        appErrorsRecords.add(0, AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, info))
+        AppErrorsRecordData.add(AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, info))
         loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
-        /** 保存异常记录到本地 */
-        saveAllAppErrorsRecords()
     }
 
     override fun onHook() {
