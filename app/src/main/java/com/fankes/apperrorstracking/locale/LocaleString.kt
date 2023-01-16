@@ -502,4 +502,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun exportAllLogsFail(vararg objArrs: Any) = R.string.export_all_logs_fail.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val goItNow get() = goItNow()
+
+    /** @string Automatic generated */
+    fun goItNow(vararg objArrs: Any) = R.string.go_it_now.bind(*objArrs)
 }

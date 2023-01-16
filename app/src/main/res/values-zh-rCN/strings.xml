@@ -133,4 +133,5 @@
     <string name="when_logger_how_to_show_tip">你可以配置当前调试日志显示的优先级过滤条件。</string>
     <string name="enable_anonymous_statistics">启用匿名统计</string>
     <string name="enable_anonymous_statistics_tip">启用后，我们将会使用 Microsoft App Center 来匿名发送应用相关的诊断数据以帮助应用的功能更加完善，收集的信息是匿名的，我们无法追溯到独立的设备或用户，启用或关闭此功能需要重启应用方可生效。</string>
+    <string name="go_it_now">现在前往</string>
 </resources>

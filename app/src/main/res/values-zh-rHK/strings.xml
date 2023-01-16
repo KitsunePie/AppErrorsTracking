@@ -133,4 +133,5 @@
     <string name="when_logger_how_to_show_tip">你可以配置當前調試日誌顯示的優先級過濾條件。</string>
     <string name="enable_anonymous_statistics">啟用匿名統計</string>
     <string name="enable_anonymous_statistics_tip">啟用後，我們將會使用 Microsoft App Center 來匿名發送程式相關的診斷數據以幫助程式的功能更加完善，收集的信息是匿名的，我們無法追溯到獨立的裝置或用戶，啟用或關閉此功能需要重啟程式方可生效。</string>
+    <string name="go_it_now">現在前往</string>
 </resources>

@@ -134,4 +134,5 @@
     <string name="microsoft_app_center" translatable="false">Microsoft App Center</string>
     <string name="enable_anonymous_statistics">Enable anonymous statistics</string>
     <string name="enable_anonymous_statistics_tip">After enabling, we will use the Microsoft App Center to anonymously send application-related diagnostic data to help the application function better.\nThe information collected is anonymous, and we cannot trace it back to an independent device or user.\nEnabling or disabling this feature requires restarting the app to take effect.</string>
+    <string name="go_it_now">Got It Now</string>
 </resources>
