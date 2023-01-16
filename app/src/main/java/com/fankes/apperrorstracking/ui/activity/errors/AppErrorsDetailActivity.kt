@@ -26,6 +26,7 @@ package com.fankes.apperrorstracking.ui.activity.errors
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
@@ -121,6 +122,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
         }
+        /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
+        binding.appPanelScrollView.post { binding.appPanelScrollView.scrollTo(0, 0) }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
     }
 
