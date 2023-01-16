@@ -176,6 +176,12 @@ inline fun <reified T : Serializable> Intent.getSerializableExtraCompat(key: Str
 }
 
 /**
+ * [List]<[T]> 转换为 [ArrayList]<[T]>
+ * @return [ArrayList]<[T]>
+ */
+fun <T> List<T>.toArrayList() = toMutableList() as ArrayList<T>
+
+/**
  * 计算与当前时间戳相差的友好时间
  * @param now 刚刚
  * @param second 秒前
