@@ -23,6 +23,8 @@ package com.fankes.apperrorstracking.utils.factory
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonIOException
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 
 /**
@@ -34,11 +36,25 @@ val GSON by lazy { GsonBuilder().setLenient().create() ?: error("Gson create fai
 /**
  * 实体类转 Json 字符串
  * @return [String]
+ * @throws [JsonIOException] 如果不是有效的 Json 数据
  */
 fun Any?.toJson() = GSON.toJson(this) ?: ""
+
+/**
+ * 实体类转 Json 字符串
+ * @return [String] or null
+ */
+fun Any?.toJsonOrNull() = runCatching { toJson() }.getOrNull()
+
+/**
+ * Json 字符串转实体类
+ * @return [T] or null
+ * @throws [JsonSyntaxException] 如果 Json 格式不正确
+ */
+inline fun <reified T> String.toEntity(): T? = takeIf { it.isNotBlank() }.let { GSON.fromJson(this, object : TypeToken<T>() {}.type) }
 
 /**
  * Json 字符串转实体类
  * @return [T] or null
  */
-inline fun <reified T> String.toEntity(): T? = takeIf { it.isNotBlank() }.let { GSON.fromJson(this, object : TypeToken<T>() {}.type) }
+inline fun <reified T> String.toEntityOrNull(): T? = runCatching { toEntity<T?>() }.getOrNull()
