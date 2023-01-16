@@ -136,7 +136,7 @@ fun Context.listOfPackages() = runCatching {
  * @return [String]
  */
 fun Context.appNameOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
+    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: "unknown"
 
 /**
  * 得到 APP 版本信息与版本号
