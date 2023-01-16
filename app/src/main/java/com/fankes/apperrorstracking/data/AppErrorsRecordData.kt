@@ -51,9 +51,9 @@ object AppErrorsRecordData {
 
     /**
      * 获取当前全部异常记录数据文件
-     * @return [File]
+     * @return [List]<[File]>
      */
-    private val errorsInfoDataFiles get() = errorsInfoDataFolder.listFiles() ?: emptyArray()
+    private val errorsInfoDataFiles get() = errorsInfoDataFolder.listFiles()?.sortedByDescending { it.lastModified() } ?: emptyList()
 
     /** 已记录的全部 APP 异常信息数组 */
     var allData = CopyOnWriteArrayList<AppErrorsInfoBean>()
