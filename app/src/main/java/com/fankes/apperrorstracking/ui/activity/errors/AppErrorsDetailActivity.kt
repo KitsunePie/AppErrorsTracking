@@ -70,6 +70,11 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                     cancel()
                     finish()
                 }
+                cancelButton(LocaleString.goItNow) {
+                    cancel()
+                    finish()
+                    navigate<AppErrorsRecordActivity>()
+                }
                 noCancelable()
             }
             return
