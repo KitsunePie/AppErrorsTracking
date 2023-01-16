@@ -236,17 +236,15 @@ object FrameworkHooker : YukiBaseHooker() {
             onPushAppListData { filters ->
                 appContext?.let { context ->
                     arrayListOf<AppInfoBean>().apply {
-                        context.listOfPackages().also { info ->
-                            (if (filters.name.isNotBlank())
-                                info.filter { it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name) }
-                            else info).let { result ->
+                        context.listOfPackages().filter { it.packageName != BuildConfig.APPLICATION_ID }.also { info ->
+                            (if (filters.name.isNotBlank()) info.filter {
+                                it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
+                            } else info).let { result ->
                                 if (filters.isContainsSystem.not())
                                     result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
                                 else result
                             }.sortedByDescending { it.lastUpdateTime }
                                 .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
-                            /** 移除模块自身 */
-                            removeIf { it.packageName == BuildConfig.APPLICATION_ID }
                         }
                         loggerD(msg = "Fetched installed packages list, size $size")
                     }
