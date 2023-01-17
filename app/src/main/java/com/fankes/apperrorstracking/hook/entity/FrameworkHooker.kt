@@ -19,8 +19,6 @@
  *
  * This file is Created by fankes on 2022/5/7.
  */
-@file:Suppress("UseCompatLoadingForDrawables")
-
 package com.fankes.apperrorstracking.hook.entity
 
 import android.app.ApplicationErrorReport
@@ -61,7 +59,7 @@ import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
-import com.highcapable.yukihookapi.hook.type.java.*
+import com.highcapable.yukihookapi.hook.type.java.BooleanType
 
 object FrameworkHooker : YukiBaseHooker() {
 
