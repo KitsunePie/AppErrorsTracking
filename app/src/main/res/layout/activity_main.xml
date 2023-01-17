@@ -226,7 +226,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/only_show_errors_in_front_switch"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -250,7 +250,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/only_show_errors_in_main_process_switch"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -274,7 +274,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/always_shows_reopen_app_options_switch"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -298,7 +298,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/enable_apps_configs_template_switch"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -385,7 +385,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/enable_material3_app_errors_dialog_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -551,7 +551,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/hide_icon_in_launcher_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -626,7 +626,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.apperrorstracking.ui.view.MaterialSwitch
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
                     android:id="@+id/enable_anonymous_statistics_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

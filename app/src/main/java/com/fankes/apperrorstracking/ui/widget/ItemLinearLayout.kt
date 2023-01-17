@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/6/1.
  */
-package com.fankes.apperrorstracking.ui.view
+package com.fankes.apperrorstracking.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet
