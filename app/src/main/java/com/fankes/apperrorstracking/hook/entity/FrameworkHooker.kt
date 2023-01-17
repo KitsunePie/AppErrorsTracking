@@ -235,19 +235,20 @@ object FrameworkHooker : YukiBaseHooker() {
             }
             onPushAppListData { filters ->
                 appContext?.let { context ->
-                    arrayListOf<AppInfoBean>().apply {
-                        context.listOfPackages().filter { it.packageName != BuildConfig.APPLICATION_ID }.also { info ->
-                            (if (filters.name.isNotBlank()) info.filter {
-                                it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
-                            } else info).let { result ->
-                                if (filters.isContainsSystem.not())
-                                    result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
-                                else result
-                            }.sortedByDescending { it.lastUpdateTime }
-                                .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
+                    context.listOfPackages()
+                        .filter { it.packageName.let { e -> e != "android" && e != BuildConfig.APPLICATION_ID } }
+                        .let { info ->
+                            arrayListOf<AppInfoBean>().apply {
+                                (if (filters.name.isNotBlank()) info.filter {
+                                    it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
+                                } else info).let { result ->
+                                    if (filters.isContainsSystem.not())
+                                        result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
+                                    else result
+                                }.sortedByDescending { it.lastUpdateTime }
+                                    .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
+                            }.apply { loggerD(msg = "Fetched installed packages list, size $size") }
                         }
-                        loggerD(msg = "Fetched installed packages list, size $size")
-                    }
                 } ?: arrayListOf()
             }
         }
