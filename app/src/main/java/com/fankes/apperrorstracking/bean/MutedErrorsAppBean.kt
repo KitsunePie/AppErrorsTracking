@@ -21,7 +21,6 @@
  */
 package com.fankes.apperrorstracking.bean
 
-import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -30,8 +29,8 @@ import java.io.Serializable
  * @param packageName 包名
  */
 data class MutedErrorsAppBean(
-    @Keep var type: MuteType,
-    @Keep var packageName: String
+    var type: MuteType,
+    var packageName: String
 ) : Serializable {
 
     /**

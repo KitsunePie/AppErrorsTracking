@@ -22,7 +22,6 @@
 package com.fankes.apperrorstracking.bean
 
 import android.graphics.drawable.Drawable
-import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -32,7 +31,7 @@ import java.io.Serializable
  * @param packageName APP 包名
  */
 data class AppInfoBean(
-    @Keep var icon: Drawable? = null,
-    @Keep var name: String,
-    @Keep var packageName: String
+    var icon: Drawable? = null,
+    var name: String,
+    var packageName: String
 ) : Serializable

@@ -23,10 +23,10 @@ package com.fankes.apperrorstracking.bean
 
 import android.app.ApplicationErrorReport
 import android.os.Build
-import androidx.annotation.Keep
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.difference
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,18 +47,30 @@ import java.util.*
  * @param timestamp 记录时间戳
  */
 data class AppErrorsInfoBean(
-    @Keep var pid: Int = -1,
-    @Keep var userId: Int = -1,
-    @Keep var packageName: String = "",
-    @Keep var isNativeCrash: Boolean = false,
-    @Keep var exceptionClassName: String = "",
-    @Keep var exceptionMessage: String = "",
-    @Keep var throwFileName: String = "",
-    @Keep var throwClassName: String = "",
-    @Keep var throwMethodName: String = "",
-    @Keep var throwLineNumber: Int = -1,
-    @Keep var stackTrace: String = "",
-    @Keep var timestamp: Long = -1L
+    @SerializedName("pid")
+    var pid: Int = -1,
+    @SerializedName("userId")
+    var userId: Int = -1,
+    @SerializedName("packageName")
+    var packageName: String = "",
+    @SerializedName("isNativeCrash")
+    var isNativeCrash: Boolean = false,
+    @SerializedName("exceptionClassName")
+    var exceptionClassName: String = "",
+    @SerializedName("exceptionMessage")
+    var exceptionMessage: String = "",
+    @SerializedName("throwFileName")
+    var throwFileName: String = "",
+    @SerializedName("throwClassName")
+    var throwClassName: String = "",
+    @SerializedName("throwMethodName")
+    var throwMethodName: String = "",
+    @SerializedName("throwLineNumber")
+    var throwLineNumber: Int = -1,
+    @SerializedName("stackTrace")
+    var stackTrace: String = "",
+    @SerializedName("timestamp")
+    var timestamp: Long = -1L
 ) : Serializable {
 
     companion object {
