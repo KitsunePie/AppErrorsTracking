@@ -186,7 +186,7 @@ object FrameworkHooker : YukiBaseHooker() {
             onPushAppErrorInfoData {
                 AppErrorsRecordData.allData.firstOrNull { e -> e.pid == it } ?: run {
                     loggerW(msg = "Cannot received crash application data --pid $it")
-                    AppErrorsInfoBean.createEmpty()
+                    AppErrorsInfoBean()
                 }
             }
             onPushAppErrorsInfoData { AppErrorsRecordData.allData.toArrayList() }

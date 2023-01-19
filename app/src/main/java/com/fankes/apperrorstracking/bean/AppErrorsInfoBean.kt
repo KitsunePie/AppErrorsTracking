@@ -64,12 +64,6 @@ data class AppErrorsInfoBean(
     companion object {
 
         /**
-         * 创建一个空的 [AppErrorsInfoBean]
-         * @return [AppErrorsInfoBean]
-         */
-        fun createEmpty() = AppErrorsInfoBean().apply { isEmpty = true }
-
-        /**
          * 从 [ApplicationErrorReport.CrashInfo] 克隆
          * @param pid APP 进程 ID
          * @param userId APP 用户 ID
@@ -101,8 +95,11 @@ data class AppErrorsInfoBean(
             }
     }
 
-    /** 标识当前内容是否为空 */
-    var isEmpty = false
+    /**
+     * 获取当前内容是否为空
+     * @return [Boolean]
+     */
+    val isEmpty get() = pid == -1 && userId == -1 && timestamp == -1L
 
     /**
      * 获取生成的 Json 文件名
