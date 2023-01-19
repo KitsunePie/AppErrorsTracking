@@ -134,4 +134,5 @@
     <string name="enable_anonymous_statistics">启用匿名统计</string>
     <string name="enable_anonymous_statistics_tip">启用后，我们将会使用 Microsoft App Center 来匿名发送应用相关的诊断数据以帮助应用的功能更加完善，收集的信息是匿名的，我们无法追溯到独立的设备或用户，启用或关闭此功能需要重启应用方可生效。</string>
     <string name="go_it_now">现在前往</string>
+    <string name="access_root_fail_tip">当前无法获取 Root 权限，请确认你的设备已经被 Root 且同意授予 Root 权限。\n如果你正在使用 Magisk 并安装了 Shamiko 模块，请确认当前是否正处于白名单模式。 (白名单模式将导致无法申请 Root 权限)</string>
 </resources>

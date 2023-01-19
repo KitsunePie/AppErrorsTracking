@@ -134,4 +134,5 @@
     <string name="enable_anonymous_statistics">匿名統計を有効</string>
     <string name="enable_anonymous_statistics_tip">有効にすると、Microsoft App Center を使用してアプリ関連の診断データを匿名で送信し、アプリの機能を向上させます。\n収集される情報は匿名であり、独立したデバイスまたはユーザーまで追跡することはできません。\nこの機能を有効または無効にするには、リスタートアプリが有効になります。</string>
     <string name="go_it_now">今行く</string>
+    <string name="access_root_fail_tip">現在、ルート許可を取得できません。デバイスがルート化されていることを確認し、ルート許可を付与することに同意してください。\nMagisk を使用していて、Shamiko モジュールをインストールしている場合は、現在ホワイトリスト モードになっているかどうかを確認してください。(ホワイトリストモードでは、ルート権限の申請ができなくなります)</string>
 </resources>
