@@ -27,25 +27,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/show_errors_dialog"
+            android:text="@string/follow_global_config"
             app:buttonTint="@color/colorPrimaryAccent" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/config_radio_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/show_errors_notify"
+            android:text="@string/show_errors_dialog"
             app:buttonTint="@color/colorPrimaryAccent" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/config_radio_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/show_errors_toast"
+            android:text="@string/show_errors_notify"
             app:buttonTint="@color/colorPrimaryAccent" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/config_radio_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_errors_toast"
+            app:buttonTint="@color/colorPrimaryAccent" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/config_radio_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/show_nothing"

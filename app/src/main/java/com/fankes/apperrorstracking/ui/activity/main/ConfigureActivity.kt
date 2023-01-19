@@ -24,7 +24,8 @@ package com.fankes.apperrorstracking.ui.activity.main
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
-import com.fankes.apperrorstracking.data.factory.*
+import com.fankes.apperrorstracking.data.AppErrorsConfigData
+import com.fankes.apperrorstracking.data.enum.AppErrorsConfigType
 import com.fankes.apperrorstracking.databinding.ActivityConfigBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppInfoBinding
 import com.fankes.apperrorstracking.databinding.DiaAppConfigBinding
@@ -50,30 +51,23 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { finish() }
+        binding.globalIcon.setOnClickListener {
+            showAppConfigDialog(LocaleString.globalConfig, isShowGlobalConfig = false) { type ->
+                AppErrorsConfigData.putAppShowingType(type)
+                onChanged?.invoke()
+            }
+        }
         binding.batchIcon.setOnClickListener {
-            showDialog<DiaAppConfigBinding> {
-                title = LocaleString.batchOperations
-                confirmButton {
-                    val config0 = binding.configRadio0.isChecked
-                    val config1 = binding.configRadio1.isChecked
-                    val config2 = binding.configRadio2.isChecked
-                    val config3 = binding.configRadio3.isChecked
-                    showDialog {
-                        title = LocaleString.notice
-                        msg = LocaleString.areYouSureApplySiteApps(listData.size)
-                        confirmButton {
-                            listData.takeIf { it.isNotEmpty() }?.forEach {
-                                putAppShowErrorsDialog(it.packageName, config0)
-                                putAppShowErrorsNotify(it.packageName, config1)
-                                putAppShowErrorsToast(it.packageName, config2)
-                                putAppShowNothing(it.packageName, config3)
-                            }
-                            onChanged?.invoke()
-                        }
-                        cancelButton()
+            showAppConfigDialog(LocaleString.batchOperationsNumber(listData.size), isNotSetDefaultValue = true) { type ->
+                showDialog {
+                    title = LocaleString.notice
+                    msg = LocaleString.areYouSureApplySiteApps(listData.size)
+                    confirmButton {
+                        listData.takeIf { it.isNotEmpty() }?.forEach { AppErrorsConfigData.putAppShowingType(type, it.packageName) }
+                        onChanged?.invoke()
                     }
+                    cancelButton()
                 }
-                cancelButton()
             }
         }
         binding.filterIcon.setOnClickListener {
@@ -110,10 +104,11 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                         binding.appIcon.setImageDrawable(bean.icon)
                         binding.appNameText.text = bean.name
                         binding.configTypeText.text = when {
-                            isAppShowErrorsDialog(bean.packageName) -> LocaleString.showErrorsDialog
-                            isAppShowErrorsNotify(bean.packageName) -> LocaleString.showErrorsNotify
-                            isAppShowErrorsToast(bean.packageName) -> LocaleString.showErrorsToast
-                            isAppShowNothing(bean.packageName) -> LocaleString.showNothing
+                            AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.GLOBAL, bean.packageName) -> LocaleString.followGlobalConfig
+                            AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.DIALOG, bean.packageName) -> LocaleString.showErrorsDialog
+                            AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTIFY, bean.packageName) -> LocaleString.showErrorsNotify
+                            AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.TOAST, bean.packageName) -> LocaleString.showErrorsToast
+                            AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTHING, bean.packageName) -> LocaleString.showNothing
                             else -> "Unknown type"
                         }
                     }
@@ -121,20 +116,9 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
             }.apply { onChanged = { notifyDataSetChanged() } }
             setOnItemClickListener { _, _, p, _ ->
                 listData[p].also { bean ->
-                    showDialog<DiaAppConfigBinding> {
-                        title = bean.name
-                        binding.configRadio0.isChecked = isAppShowErrorsDialog(bean.packageName)
-                        binding.configRadio1.isChecked = isAppShowErrorsNotify(bean.packageName)
-                        binding.configRadio2.isChecked = isAppShowErrorsToast(bean.packageName)
-                        binding.configRadio3.isChecked = isAppShowNothing(bean.packageName)
-                        confirmButton {
-                            putAppShowErrorsDialog(bean.packageName, binding.configRadio0.isChecked)
-                            putAppShowErrorsNotify(bean.packageName, binding.configRadio1.isChecked)
-                            putAppShowErrorsToast(bean.packageName, binding.configRadio2.isChecked)
-                            putAppShowNothing(bean.packageName, binding.configRadio3.isChecked)
-                            onChanged?.invoke()
-                        }
-                        cancelButton()
+                    showAppConfigDialog(bean.name, bean.packageName) { type ->
+                        AppErrorsConfigData.putAppShowingType(type, bean.packageName)
+                        onChanged?.invoke()
                     }
                 }
             }
@@ -152,9 +136,53 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
         refreshData()
     }
 
+    /**
+     * 显示应用配置对话框
+     * @param title 对话框标题
+     * @param packageName APP 包名 - 默认空 (空时使用全局配置的默认值)
+     * @param isNotSetDefaultValue 是否不设置选项的默认值 - 默认否
+     * @param isShowGlobalConfig 是否显示跟随全局配置选项 - 默认是
+     * @param result 回调类型结果
+     */
+    private fun showAppConfigDialog(
+        title: String,
+        packageName: String = "",
+        isNotSetDefaultValue: Boolean = false,
+        isShowGlobalConfig: Boolean = true,
+        result: (AppErrorsConfigType) -> Unit
+    ) {
+        showDialog<DiaAppConfigBinding> {
+            this.title = title
+            binding.configRadio0.isVisible = isShowGlobalConfig
+            if (isNotSetDefaultValue.not()) {
+                if (isShowGlobalConfig) binding.configRadio0.isChecked =
+                    AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.GLOBAL, packageName)
+                binding.configRadio1.isChecked = AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.DIALOG, packageName)
+                binding.configRadio2.isChecked = AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTIFY, packageName)
+                binding.configRadio3.isChecked = AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.TOAST, packageName)
+                binding.configRadio4.isChecked = AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTHING, packageName)
+            }
+            confirmButton {
+                result(
+                    when {
+                        binding.configRadio0.isChecked -> AppErrorsConfigType.GLOBAL
+                        binding.configRadio1.isChecked -> AppErrorsConfigType.DIALOG
+                        binding.configRadio2.isChecked -> AppErrorsConfigType.NOTIFY
+                        binding.configRadio3.isChecked -> AppErrorsConfigType.TOAST
+                        binding.configRadio4.isChecked -> AppErrorsConfigType.NOTHING
+                        else -> error("Invalid config type")
+                    }
+                )
+                FrameworkTool.refreshFrameworkPrefsData(context)
+            }
+            cancelButton()
+        }
+    }
+
     /** 刷新列表数据 */
     private fun refreshData() {
         binding.listProgressView.isVisible = true
+        binding.globalIcon.isVisible = false
         binding.batchIcon.isVisible = false
         binding.filterIcon.isVisible = false
         binding.listView.isVisible = false
@@ -176,6 +204,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                     onChanged?.invoke()
                     binding.listView.post { binding.listView.setSelection(0) }
                     binding.listProgressView.isVisible = false
+                    binding.globalIcon.isVisible = true
                     binding.batchIcon.isVisible = listData.isNotEmpty()
                     binding.filterIcon.isVisible = true
                     binding.listView.isVisible = listData.isNotEmpty()
