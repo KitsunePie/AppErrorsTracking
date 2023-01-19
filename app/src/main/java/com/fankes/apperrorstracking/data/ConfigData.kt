@@ -67,6 +67,55 @@ object ConfigData {
             is Context, is PackageParam -> this.instance = instance
             else -> error("Unknown type for init ConfigData")
         }
+        AppErrorsConfigData.refresh()
+    }
+
+    /**
+     * 读取 [Set]<[String]> 数据
+     * @param key 键值名称
+     * @return [Set]<[String]>
+     */
+    internal fun getStringSet(key: String) = when (instance) {
+        is Context -> (instance as Context).modulePrefs.getStringSet(key, setOf())
+        is PackageParam -> (instance as PackageParam).prefs.getStringSet(key, setOf())
+        else -> error("Unknown type for get prefs data")
+    }
+
+    /**
+     * 存入 [Set]<[String]> 数据
+     * @param key 键值名称
+     * @param value 键值内容
+     */
+    internal fun putStringSet(key: String, value: Set<String>) {
+        when (instance) {
+            is Context -> (instance as Context).modulePrefs.putStringSet(key, value)
+            is PackageParam -> loggerW(msg = "Not support for this method")
+            else -> error("Unknown type for put prefs data")
+        }
+    }
+
+    /**
+     * 读取 [Int] 数据
+     * @param data 键值数据模板
+     * @return [Int]
+     */
+    internal fun getInt(data: PrefsData<Int>) = when (instance) {
+        is Context -> (instance as Context).modulePrefs.get(data)
+        is PackageParam -> (instance as PackageParam).prefs.get(data)
+        else -> error("Unknown type for get prefs data")
+    }
+
+    /**
+     * 存入 [Int] 数据
+     * @param data 键值数据模板
+     * @param value 键值内容
+     */
+    internal fun putInt(data: PrefsData<Int>, value: Int) {
+        when (instance) {
+            is Context -> (instance as Context).modulePrefs.put(data, value)
+            is PackageParam -> loggerW(msg = "Not support for this method")
+            else -> error("Unknown type for put prefs data")
+        }
     }
 
     /**

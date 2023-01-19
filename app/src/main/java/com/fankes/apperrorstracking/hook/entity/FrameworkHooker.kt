@@ -28,6 +28,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.os.Message
+import android.os.SystemClock
 import android.util.ArrayMap
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -37,12 +38,10 @@ import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
+import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
-import com.fankes.apperrorstracking.data.factory.isAppShowErrorsDialog
-import com.fankes.apperrorstracking.data.factory.isAppShowErrorsNotify
-import com.fankes.apperrorstracking.data.factory.isAppShowErrorsToast
-import com.fankes.apperrorstracking.data.factory.isAppShowNothing
+import com.fankes.apperrorstracking.data.enum.AppErrorsConfigType
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
@@ -178,6 +177,13 @@ object FrameworkHooker : YukiBaseHooker() {
             onCreate { AppErrorsRecordData.init(context = this) }
         }
         FrameworkTool.Host.with(instance = this) {
+            onRefreshFrameworkPrefsData {
+                /** 必要的延迟防止 Sp 存储不刷新 */
+                SystemClock.sleep(100)
+                /** 刷新存储类 */
+                AppErrorsConfigData.refresh()
+                if (prefs.isPreferencesAvailable.not()) loggerW(msg = "Cannot refreshing app errors config data, preferences is not available")
+            }
             onOpenAppUsedFramework {
                 appContext?.openApp(it.first, it.second)
                 loggerI(msg = "Opened \"${it.first}\"${it.second.takeIf { e -> e > 0 }?.let { e -> " --user $e" } ?: ""}")
@@ -310,10 +316,16 @@ object FrameworkHooker : YukiBaseHooker() {
                 loggerE(msg = "AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
             }
             ConfigData.isEnableAppConfigTemplate -> when {
-                isAppShowNothing(packageName) -> {}
-                isAppShowErrorsNotify(packageName) -> showAppErrorsWithNotify()
-                isAppShowErrorsToast(packageName) -> showAppErrorsWithToast()
-                isAppShowErrorsDialog(packageName) -> showAppErrorsWithDialog()
+                AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.GLOBAL, packageName) -> when {
+                    AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.DIALOG) -> showAppErrorsWithDialog()
+                    AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTIFY) -> showAppErrorsWithNotify()
+                    AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.TOAST) -> showAppErrorsWithToast()
+                    AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTHING) -> {}
+                }
+                AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.DIALOG, packageName) -> showAppErrorsWithDialog()
+                AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTIFY, packageName) -> showAppErrorsWithNotify()
+                AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.TOAST, packageName) -> showAppErrorsWithToast()
+                AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.NOTHING, packageName) -> {}
             }
             else -> showAppErrorsWithDialog()
         }

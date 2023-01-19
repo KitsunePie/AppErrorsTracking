@@ -44,6 +44,7 @@ object FrameworkTool {
     /** 系统框架包名 */
     const val SYSTEM_FRAMEWORK_NAME = "android"
 
+    private const val CALL_REFRESH_HOST_PREFS_DATA = "call_refresh_host_prefs_data"
     private const val CALL_APP_ERRORS_DATA_GET = "call_app_errors_data_get"
     private const val CALL_MUTED_ERRORS_APP_DATA_GET = "call_muted_app_errors_data_get"
     private const val CALL_APP_ERRORS_DATA_CLEAR = "call_app_errors_data_clear"
@@ -82,6 +83,12 @@ object FrameworkTool {
          * @return [Host]
          */
         fun with(instance: PackageParam, initiate: Host.() -> Unit) = apply { this.instance = instance }.apply(initiate)
+
+        /**
+         * 通知系统框架刷新存储的数据
+         * @param callback 回调
+         */
+        fun onRefreshFrameworkPrefsData(callback: () -> Unit) = instance?.dataChannel?.wait(CALL_REFRESH_HOST_PREFS_DATA) { callback() }
 
         /**
          * 监听使用系统框架打开 APP
@@ -243,6 +250,12 @@ object FrameworkTool {
      */
     fun checkingActivated(context: Context, result: (Boolean) -> Unit) =
         context.dataChannel(SYSTEM_FRAMEWORK_NAME).checkingVersionEquals(result = result)
+
+    /**
+     * 通知系统框架刷新存储的数据
+     * @param context 实例
+     */
+    fun refreshFrameworkPrefsData(context: Context) = context.dataChannel(SYSTEM_FRAMEWORK_NAME).put(CALL_REFRESH_HOST_PREFS_DATA)
 
     /**
      * 使用系统框架打开 [packageName]

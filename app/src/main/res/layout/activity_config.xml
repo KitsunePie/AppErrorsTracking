@@ -58,6 +58,16 @@
         </LinearLayout>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/global_icon"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_global"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="@string/global_config"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/batch_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"
