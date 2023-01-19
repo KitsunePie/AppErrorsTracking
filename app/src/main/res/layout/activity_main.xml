@@ -39,7 +39,7 @@
             android:padding="0.5dp"
             android:src="@drawable/ic_debug"
             android:tint="@color/colorTextGray"
-            android:tooltipText="@string/debug_log" />
+            android:tooltipText="@string/debug_logs" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/title_restart_icon"
