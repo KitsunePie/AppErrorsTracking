@@ -53,7 +53,6 @@ import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
@@ -245,7 +244,7 @@ object FrameworkHooker : YukiBaseHooker() {
                                     else result
                                 }.sortedByDescending { it.lastUpdateTime }
                                     .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
-                            }.apply { loggerD(msg = "Fetched installed packages list, size $size") }
+                            }.apply { if (size <= 0) loggerW(msg = "Fetched installed packages but got empty list") }
                         }
                 } ?: arrayListOf()
             }
