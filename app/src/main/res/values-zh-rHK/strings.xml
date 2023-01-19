@@ -52,10 +52,10 @@
     <string name="module_version">模組版本：%1$s</string>
     <string name="system_version">系統版本：%1$s</string>
     <string name="module_is_activated">模組已激活</string>
-    <string name="display_settings">顯示設置</string>
+    <string name="display_settings">展示設置</string>
     <string name="hide_app_icon_on_launcher">在桌面隱藏模組圖標</string>
-    <string name="hide_app_icon_on_launcher_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面顯示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
-    <string name="hide_app_icon_on_launcher_notice">注意：請務必在 LSPosed 中關閉“強制顯示桌面圖標”功能</string>
+    <string name="hide_app_icon_on_launcher_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面展示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
+    <string name="hide_app_icon_on_launcher_notice">注意：請務必在 LSPosed 中關閉“強制展示桌面圖標”功能</string>
     <string name="about_module">此模組使用 YukiHookAPI 構建。 \n了解更多 https://github.com/fankes/YukiHookAPI</string>
     <string name="module_not_fully_activated">模組未完全激活，請重新開機</string>
     <string name="are_your_sure_restart_system">你確定要重新開機嗎？</string>
@@ -80,7 +80,7 @@
     <string name="view_muted_errors_apps">查看已忽略異常的程式</string>
     <string name="only_show_errors_in_front_tip">啟用後，只有程式處於前台（正在使用中）時才會展示其發生的異常，發生異常的後台程式雖然不會有任何提示信息，但是它們都會被記錄到異常歷史記錄中。</string>
     <string name="only_show_errors_in_main_process_tip">啟用後，只有程式位於主進程（第一個 Application 實例對象）時才會展示其發生的異常。</string>
-    <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框以及其它錯誤提示。</string>
+    <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框以及其它錯誤提示。\n關閉後，全部程式將始終以錯誤對話框的形式展示異常信息。</string>
     <string name="view_errors_record_tip">在這裡，你可以找到從模組開始記錄以來的全部程式異常記錄，異常歷史記錄會持續保留直到你手動清空或恢復出廠設置，你可以對記錄進行查看、導出和分享以及清空。</string>
     <string name="view_muted_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
     <string name="muted_errors_apps">已忽略異常的程式</string>
@@ -96,9 +96,9 @@
     <string name="result_count">共 %1$s 個結果</string>
     <string name="loading">加載中</string>
     <string name="when_errors_how_to_show_tip">你可以配置當程式崩潰時系統將如何向你展示錯誤提醒副案。</string>
-    <string name="show_errors_dialog">顯示錯誤對話框</string>
-    <string name="show_errors_toast">顯示錯誤 Toast</string>
-    <string name="show_nothing">什麼也不顯示</string>
+    <string name="show_errors_dialog">展示錯誤對話框</string>
+    <string name="show_errors_toast">展示錯誤 Toast</string>
+    <string name="show_nothing">什麼也不展示</string>
     <string name="app_errors_statistics">程式異常統計</string>
     <string name="total_errors">異常總數</string>
     <string name="total_apps">程式總數</string>
@@ -113,8 +113,8 @@
     <string name="app_errors_tip">程式發生了未處理的異常而崩潰，點擊查看詳情或反饋給程式開發者。</string>
     <string name="batch_operations">批量操作</string>
     <string name="are_you_sure_apply_site_apps">你確認要一次性應用設置給 %1$s 個程式嗎？</string>
-    <string name="errors_dialog_always_show_reopen">錯誤對話框始終顯示“重新開啟”選項</string>
-    <string name="errors_dialog_always_show_reopen_tip">啟用後，在使用對話框顯示程式異常時，非首次異常時也將展示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會展示此選項。</string>
+    <string name="errors_dialog_always_show_reopen">錯誤對話框始終展示“重新開啟”選項</string>
+    <string name="errors_dialog_always_show_reopen_tip">啟用後，在使用對話框展示程式異常時，非首次異常時也將展示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會展示此選項。</string>
     <string name="developer_notice">使用說明</string>
     <string name="developer_notice_tip">此模組專為 Android 開發者而打造。\n\n在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便快速定位問題。 \n\n程式發生崩潰的錯誤日誌對開發者來說是無價的財富，若你不是開發者，你依然可以安裝此模組，以便給開發者提供更多異常信息快速解決問題。</string>
     <string name="warning">警告</string>
@@ -130,9 +130,12 @@
     <string name="export_all_logs_success">已導出全部調試日誌</string>
     <string name="export_all_logs_fail">導出全部調試日誌失敗</string>
     <string name="this_contents_clear_when_restarts_tip">這裡的內容會在設備重開後自動清空</string>
-    <string name="when_logger_how_to_show_tip">你可以配置當前調試日誌顯示的優先級過濾條件。</string>
+    <string name="when_logger_how_to_show_tip">你可以配置當前調試日誌展示的優先級過濾條件。</string>
     <string name="enable_anonymous_statistics">啟用匿名統計</string>
     <string name="enable_anonymous_statistics_tip">啟用後，我們將會使用 Microsoft App Center 來匿名發送程式相關的診斷數據以幫助程式的功能更加完善，收集的信息是匿名的，我們無法追溯到獨立的裝置或用戶，啟用或關閉此功能需要重啟程式方可生效。</string>
     <string name="go_it_now">現在前往</string>
     <string name="access_root_fail_tip">當前無法取得 Root 權限，請確認你的裝置已經被 Root 且同意授予 Root 權限。\n如果你正在使用 Magisk 並安裝了 Shamiko 模組，請確認當前是否正處於白名單模式。 (白名單模式將導致無法申請 Root 權限)</string>
+    <string name="global_config">全局配置</string>
+    <string name="follow_global_config">跟隨全局配置</string>
+    <string name="batch_operations_number">批量操作 %1$s 個程式</string>
 </resources>

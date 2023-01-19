@@ -514,4 +514,22 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun accessRootFailTip(vararg objArrs: Any) = R.string.access_root_fail_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val globalConfig get() = globalConfig()
+
+    /** @string Automatic generated */
+    fun globalConfig(vararg objArrs: Any) = R.string.global_config.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val followGlobalConfig get() = followGlobalConfig()
+
+    /** @string Automatic generated */
+    fun followGlobalConfig(vararg objArrs: Any) = R.string.follow_global_config.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val batchOperationsNumber get() = batchOperationsNumber()
+
+    /** @string Automatic generated */
+    fun batchOperationsNumber(vararg objArrs: Any) = R.string.batch_operations_number.bind(*objArrs)
 }

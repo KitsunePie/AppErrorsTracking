@@ -53,9 +53,9 @@
     <string name="system_version">ｼｽﾃﾑﾊﾞｰｼﾞｮﾝ: %1$s</string>
     <string name="module_is_activated">ﾓｼﾞｭｰﾙが有効化でした</string>
     <string name="display_settings">表示設定</string>
-    <string name="hide_app_icon_on_launcher">ﾃﾞｽｸﾄｯﾌﾟ上のｱﾌﾟﾘｱｲｺﾝを非表示</string>
-    <string name="hide_app_icon_on_launcher_tip">モジュールアイコンを非表示にすると、インターフェイスが閉じてデスクトップに表示されなくなります。モジュール設定は、EdXposedまたはLSPosedで検索して開くことができます。</string>
-    <string name="hide_app_icon_on_launcher_notice">注：LSPosedの「Force apps to show launcher icons」機能を必ずオフにしてください</string>
+    <string name="hide_app_icon_on_launcher">ﾗﾝﾁｬｰ上のｱﾌﾟﾘｱｲｺﾝを非表示</string>
+    <string name="hide_app_icon_on_launcher_tip">モジュールアイコンを非表示にすると、インターフェイスが閉じてランチャーに表示されなくなります。モジュール設定は、EdXposedまたはLSPosedで検索して開くことができます。</string>
+    <string name="hide_app_icon_on_launcher_notice">注：LSPosedの「ランチャーアイコンを強制的に表示」機能を必ずオフにしてください</string>
     <string name="about_module">このモジュールは、YukiHookAPIを使用して構築できます。 \n詳細 https://github.com/fankes/YukiHookAPI</string>
     <string name="module_not_fully_activated">ﾓｼﾞｭｰﾙが不完全に有効化でした</string>
     <string name="are_your_sure_restart_system">リスタートシステムしてもよろしいですか</string>
@@ -80,7 +80,7 @@
     <string name="view_muted_errors_apps">ｴﾗｰを無視したｱﾌﾟﾘを表示する</string>
     <string name="only_show_errors_in_front_tip">有効にすると、アプリがフォアグラウンド (使用中) の場合にのみエラーが表示されます。エラーが発生したバックグラウンドアプリにはプロンプト情報はありませんが、エラー履歴に記録されます。</string>
     <string name="only_show_errors_in_main_process_tip">有効にすると、アプリがメインプロセス (最初の Application インスタンスオブジェクト) にあるときに、アプリのエラーのみが表示されます。</string>
-    <string name="apps_config_template_tip">ここでは、アプリごとに個別にエラーが発生したときにエラーダイアログおよびその他のエラーメッセージを表示するかどうかを設定できます。</string>
+    <string name="apps_config_template_tip">ここでは、アプリごとに個別にエラーが発生したときにエラーダイアログおよびその他のエラーメッセージを表示するかどうかを設定できます。\n無効にすると、すべてのアプリで常にエラーダイアログの形式でエラーメッセージが表示されます。</string>
     <string name="view_muted_errors_apps_tip">ここでは、さまざまな形式のエラーを手動で無視したアプリを見つけることができます。このリストは、リスタート後に自動的にクリアされます。これらの無視されたアプリを管理し、無視リストから削除できます。</string>
     <string name="muted_errors_apps">エラーを無視したアプリ</string>
     <string name="unmute">無視を解除</string>
@@ -135,4 +135,7 @@
     <string name="enable_anonymous_statistics_tip">有効にすると、Microsoft App Center を使用してアプリ関連の診断データを匿名で送信し、アプリの機能を向上させます。\n収集される情報は匿名であり、独立したデバイスまたはユーザーまで追跡することはできません。\nこの機能を有効または無効にするには、リスタートアプリが有効になります。</string>
     <string name="go_it_now">今行く</string>
     <string name="access_root_fail_tip">現在、ルート許可を取得できません。デバイスがルート化されていることを確認し、ルート許可を付与することに同意してください。\nMagisk を使用していて、Shamiko モジュールをインストールしている場合は、現在ホワイトリスト モードになっているかどうかを確認してください。(ホワイトリストモードでは、ルート権限の申請ができなくなります)</string>
+    <string name="global_config">グローバル構成</string>
+    <string name="follow_global_config">グローバル構成に従う</string>
+    <string name="batch_operations_number">一括操作 %1$s 個のアプリ</string>
 </resources>
