@@ -508,4 +508,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun goItNow(vararg objArrs: Any) = R.string.go_it_now.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val accessRootFailTip get() = accessRootFailTip()
+
+    /** @string Automatic generated */
+    fun accessRootFailTip(vararg objArrs: Any) = R.string.access_root_fail_tip.bind(*objArrs)
 }
