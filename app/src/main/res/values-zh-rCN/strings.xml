@@ -81,7 +81,7 @@
     <string name="view_muted_errors_apps">查看已忽略异常的应用</string>
     <string name="only_show_errors_in_front_tip">启用后，只有应用处于前台（正在使用中）时才会显示其发生的异常，发生异常的后台应用虽然不会有任何提示信息，但是它们都会被记录到异常历史记录中。</string>
     <string name="only_show_errors_in_main_process_tip">启用后，只有应用位于主进程（第一个 Application 实例对象）时才会显示其发生的异常。</string>
-    <string name="apps_config_template_tip">你可以在这里对每个应用发生异常时，单独配置其在发生异常时是否显示错误对话框以及其它错误提示。</string>
+    <string name="apps_config_template_tip">你可以在这里对每个应用发生异常时，单独配置其在发生异常时是否显示错误对话框以及其它错误提示。\n关闭后，全部应用将始终以错误对话框的形式显示异常信息。</string>
     <string name="view_errors_record_tip">在这里，你可以找到从模块开始记录以来的全部应用异常记录，异常历史记录会持续保留直到你手动清空或恢复出厂设置，你可以对记录进行查看、导出和分享以及清空。</string>
     <string name="view_muted_errors_apps_tip">在这里，你可以找到已被你以不同形式手动忽略异常的应用，这个列表将会在重新启动后自动清空，你可以对这些已忽略的应用进行管理以及从忽略列表中移除它们。</string>
     <string name="muted_errors_apps">已忽略异常的应用</string>
@@ -135,4 +135,7 @@
     <string name="enable_anonymous_statistics_tip">启用后，我们将会使用 Microsoft App Center 来匿名发送应用相关的诊断数据以帮助应用的功能更加完善，收集的信息是匿名的，我们无法追溯到独立的设备或用户，启用或关闭此功能需要重启应用方可生效。</string>
     <string name="go_it_now">现在前往</string>
     <string name="access_root_fail_tip">当前无法获取 Root 权限，请确认你的设备已经被 Root 且同意授予 Root 权限。\n如果你正在使用 Magisk 并安装了 Shamiko 模块，请确认当前是否正处于白名单模式。 (白名单模式将导致无法申请 Root 权限)</string>
+    <string name="global_config">全局配置</string>
+    <string name="follow_global_config">跟随全局配置</string>
+    <string name="batch_operations_number">批量操作 %1$s 个应用</string>
 </resources>
