@@ -72,14 +72,14 @@
     <string name="share_error_stack">分享異常堆棧</string>
     <string name="preference_settings">偏好設置</string>
     <string name="function_mgr">功能管理</string>
-    <string name="only_show_errors_in_front">僅為前台程式展示錯誤對話框</string>
-    <string name="only_show_errors_in_main_process">僅為程式主進程展示錯誤對話框</string>
+    <string name="only_show_errors_in_front">僅展示前台程式發生的異常</string>
+    <string name="only_show_errors_in_main_process">僅展示程式主進程發生的異常</string>
     <string name="enable_apps_config_template">啟用程式配置模板</string>
     <string name="mgr_apps_config_template">管理程式配置模板</string>
     <string name="view_errors_record">查看異常歷史記錄</string>
     <string name="view_muted_errors_apps">查看已忽略異常的程式</string>
-    <string name="only_show_errors_in_front_tip">啟用後，只有發生異常的程式處於前台（正在使用中）時才會展示錯誤對話框，發生異常的後台程式雖然不會展示錯誤對話框，但是它們都會被記錄到異常歷史記錄中。</string>
-    <string name="only_show_errors_in_main_process_tip">啟用後，只有程式發生的異常位於主進程（第一個 Application 實例對象）時才會展示錯誤對話框。</string>
+    <string name="only_show_errors_in_front_tip">啟用後，只有程式處於前台（正在使用中）時才會展示其發生的異常，發生異常的後台程式雖然不會有任何提示信息，但是它們都會被記錄到異常歷史記錄中。</string>
+    <string name="only_show_errors_in_main_process_tip">啟用後，只有程式位於主進程（第一個 Application 實例對象）時才會展示其發生的異常。</string>
     <string name="apps_config_template_tip">你可以在這裡對每個程式發生異常時，單獨配置其在發生異常時是否展示錯誤對話框以及其它錯誤提示。</string>
     <string name="view_errors_record_tip">在這裡，你可以找到從模組開始記錄以來的全部程式異常記錄，異常歷史記錄會持續保留直到你手動清空或恢復出廠設置，你可以對記錄進行查看、導出和分享以及清空。</string>
     <string name="view_muted_errors_apps_tip">在這裡，你可以找到已被你以不同形式手動忽略異常的程式，這個列表將會在重新啟動後自動清空，你可以對這些已忽略的程式進行管理以及從忽略列表中移除它們。</string>
@@ -114,7 +114,7 @@
     <string name="batch_operations">批量操作</string>
     <string name="are_you_sure_apply_site_apps">你確認要一次性應用設置給 %1$s 個程式嗎？</string>
     <string name="errors_dialog_always_show_reopen">錯誤對話框始終顯示“重新開啟”選項</string>
-    <string name="errors_dialog_always_show_reopen_tip">啟用後，在程式非首次異常時也將顯示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會顯示此選項。</string>
+    <string name="errors_dialog_always_show_reopen_tip">啟用後，在使用對話框顯示程式異常時，非首次異常時也將展示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會展示此選項。</string>
     <string name="developer_notice">使用說明</string>
     <string name="developer_notice_tip">此模組專為 Android 開發者而打造。\n\n在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便快速定位問題。 \n\n程式發生崩潰的錯誤日誌對開發者來說是無價的財富，若你不是開發者，你依然可以安裝此模組，以便給開發者提供更多異常信息快速解決問題。</string>
     <string name="warning">警告</string>
@@ -124,7 +124,7 @@
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目標版本為 12 及以上時默認啟用，動態主題色功能僅會在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>
     <string name="unable_get_app_errors_record_tip">現在無法獲取異常記錄，你可能需要稍後在異常歷史記錄中查看，若問題持續出現，可能是你的系統關閉了錯誤報告收集功能。</string>
-    <string name="debug_log">調試日誌</string>
+    <string name="debug_logs">調試日誌</string>
     <string name="refresh">刷新</string>
     <string name="copy">複製</string>
     <string name="export_all_logs_success">已導出全部調試日誌</string>

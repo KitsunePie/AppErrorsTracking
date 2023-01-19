@@ -73,14 +73,14 @@
     <string name="share_error_stack">分享异常堆栈</string>
     <string name="preference_settings">偏好设置</string>
     <string name="function_mgr">功能管理</string>
-    <string name="only_show_errors_in_front">仅对前台应用显示错误对话框</string>
-    <string name="only_show_errors_in_main_process">仅对应用主进程显示错误对话框</string>
+    <string name="only_show_errors_in_front">仅显示前台应用发生的异常</string>
+    <string name="only_show_errors_in_main_process">仅显示应用主进程发生的异常</string>
     <string name="enable_apps_config_template">启用应用配置模板</string>
     <string name="mgr_apps_config_template">管理应用配置模板</string>
     <string name="view_errors_record">查看异常历史记录</string>
     <string name="view_muted_errors_apps">查看已忽略异常的应用</string>
-    <string name="only_show_errors_in_front_tip">启用后，只有发生异常的应用处于前台（正在使用中）时才会显示错误对话框，发生异常的后台应用虽然不会显示错误对话框，但是它们都会被记录到异常历史记录中。</string>
-    <string name="only_show_errors_in_main_process_tip">启用后，只有应用发生的异常位于主进程（第一个 Application 实例对象）时才会显示错误对话框。</string>
+    <string name="only_show_errors_in_front_tip">启用后，只有应用处于前台（正在使用中）时才会显示其发生的异常，发生异常的后台应用虽然不会有任何提示信息，但是它们都会被记录到异常历史记录中。</string>
+    <string name="only_show_errors_in_main_process_tip">启用后，只有应用位于主进程（第一个 Application 实例对象）时才会显示其发生的异常。</string>
     <string name="apps_config_template_tip">你可以在这里对每个应用发生异常时，单独配置其在发生异常时是否显示错误对话框以及其它错误提示。</string>
     <string name="view_errors_record_tip">在这里，你可以找到从模块开始记录以来的全部应用异常记录，异常历史记录会持续保留直到你手动清空或恢复出厂设置，你可以对记录进行查看、导出和分享以及清空。</string>
     <string name="view_muted_errors_apps_tip">在这里，你可以找到已被你以不同形式手动忽略异常的应用，这个列表将会在重新启动后自动清空，你可以对这些已忽略的应用进行管理以及从忽略列表中移除它们。</string>
@@ -115,7 +115,7 @@
     <string name="batch_operations">批量操作</string>
     <string name="are_you_sure_apply_site_apps">你确定要一次性应用设置给 %1$s 个应用吗？</string>
     <string name="errors_dialog_always_show_reopen">错误对话框始终显示“重新打开”选项</string>
-    <string name="errors_dialog_always_show_reopen_tip">启用后，在应用非首次异常时也将显示“重新打开”选项，若当前异常非主进程或应用无法打开则依然不会显示此选项。</string>
+    <string name="errors_dialog_always_show_reopen_tip">启用后，在使用对话框显示应用异常时，非首次异常时也将显示“重新打开”选项，若当前异常非主进程或应用无法打开则依然不会显示此选项。</string>
     <string name="developer_notice_tip">此模块专为 Android 开发者而打造。\n\n在可能的无法连接电脑，不能进行 ADB 调试的时候，可通过此模块来快速捕获任意已安装应用的任意异常，以便快速定位问题。\n\n应用发生崩溃的错误日志对开发者来说是无价的财富，若你不是开发者，你依然可以安装此模块，以便给开发者提供更多异常信息快速解决问题。</string>
     <string name="developer_notice">使用说明</string>
     <string name="fast_restart_problem">部分定制系统使用快速重启后可能会发生错误，仍然要继续吗？</string>
@@ -124,7 +124,7 @@
     <string name="enable_md3_app_errors_dialog_tip">此功能在 Android 目标版本为 12 及以上时默认启用，动态主题色功能仅会在 Android 12 及以上版本生效。</string>
     <string name="user_id">用户 %1$s</string>
     <string name="unable_get_app_errors_record_tip">现在无法获取异常记录，你可能需要稍后在异常历史记录中查看，若问题持续出现，可能是你的系统关闭了错误报告收集功能。</string>
-    <string name="debug_log">调试日志</string>
+    <string name="debug_logs">调试日志</string>
     <string name="refresh">刷新</string>
     <string name="copy">复制</string>
     <string name="export_all_logs_success">已导出全部调试日志</string>
