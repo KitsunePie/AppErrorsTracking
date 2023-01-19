@@ -32,7 +32,6 @@ import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.utils.factory.execShell
 import com.fankes.apperrorstracking.utils.factory.isRootAccess
 import com.fankes.apperrorstracking.utils.factory.showDialog
-import com.fankes.apperrorstracking.utils.factory.snake
 import com.highcapable.yukihookapi.hook.factory.dataChannel
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.xposed.channel.data.ChannelData
@@ -205,14 +204,21 @@ object FrameworkTool {
      * 重启系统
      * @param context 实例
      */
-    fun restartSystem(context: Context) =
+    fun restartSystem(context: Context) {
+        /** 当 Root 权限获取失败时显示对话框 */
+        fun showWhenAccessRootFail() =
+            context.showDialog {
+                title = LocaleString.accessRootFail
+                msg = LocaleString.accessRootFailTip
+                confirmButton(LocaleString.gotIt)
+            }
         context.showDialog {
             title = LocaleString.notice
             msg = LocaleString.areYouSureRestartSystem
             confirmButton {
                 if (isRootAccess)
                     execShell(cmd = "reboot")
-                else context.snake(LocaleString.accessRootFail)
+                else showWhenAccessRootFail()
             }
             neutralButton(LocaleString.fastRestart) {
                 context.showDialog {
@@ -221,13 +227,14 @@ object FrameworkTool {
                     confirmButton {
                         if (isRootAccess)
                             execShell(cmd = "killall zygote")
-                        else context.snake(LocaleString.accessRootFail)
+                        else showWhenAccessRootFail()
                     }
                     cancelButton()
                 }
             }
             cancelButton()
         }
+    }
 
     /**
      * 检查模块是否激活
