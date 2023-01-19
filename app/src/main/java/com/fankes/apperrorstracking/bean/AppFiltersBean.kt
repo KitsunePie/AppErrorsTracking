@@ -21,7 +21,6 @@
  */
 package com.fankes.apperrorstracking.bean
 
-import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -30,6 +29,6 @@ import java.io.Serializable
  * @param isContainsSystem 是否包含系统应用
  */
 data class AppFiltersBean(
-    @Keep var name: String = "",
-    @Keep var isContainsSystem: Boolean = false
+    var name: String = "",
+    var isContainsSystem: Boolean = false
 ) : Serializable
