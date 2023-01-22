@@ -140,4 +140,5 @@
     <string name="user_apps">ﾕｰｻﾞｰｱﾌﾟﾘ</string>
     <string name="all_apps">全てのｱﾌﾟﾘ</string>
     <string name="system_apps">ｼｽﾃﾑｱﾌﾟﾘ</string>
+    <string name="disable_auto_wrap_error_stack_trace_content">ｴﾗｰｽﾀｯｸｺﾝﾃﾝﾂの自動ﾗｯﾋﾟﾝｸﾞを無効</string>
 </resources>
