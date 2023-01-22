@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:singleLine="true"
             android:text="@string/follow_global_config"
             app:buttonTint="@color/colorPrimaryAccent" />
 
@@ -34,6 +35,7 @@
             android:id="@+id/config_radio_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="@string/show_errors_dialog"
             app:buttonTint="@color/colorPrimaryAccent" />
 
@@ -41,6 +43,7 @@
             android:id="@+id/config_radio_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="@string/show_errors_notify"
             app:buttonTint="@color/colorPrimaryAccent" />
 
@@ -48,6 +51,7 @@
             android:id="@+id/config_radio_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="@string/show_errors_toast"
             app:buttonTint="@color/colorPrimaryAccent" />
 
@@ -55,6 +59,7 @@
             android:id="@+id/config_radio_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="@string/show_nothing"
             app:buttonTint="@color/colorPrimaryAccent" />
     </RadioGroup>
