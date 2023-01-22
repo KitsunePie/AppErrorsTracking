@@ -17,19 +17,20 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/6/4.
+ * This file is Created by fankes on 2023/1/22.
  */
-package com.fankes.apperrorstracking.bean
-
-import com.fankes.apperrorstracking.bean.enum.AppFiltersType
-import java.io.Serializable
+package com.fankes.apperrorstracking.bean.enum
 
 /**
- * 应用过滤条件 bean
- * @param name 名称或包名
- * @param type 过滤条件类型
+ * 应用过滤条件类型定义类
  */
-data class AppFiltersBean(
-    var name: String = "",
-    var type: AppFiltersType = AppFiltersType.USER
-) : Serializable
+enum class AppFiltersType {
+    /** 用户 */
+    USER,
+
+    /** 系统 */
+    SYSTEM,
+
+    /** 全部 */
+    ALL
+}
