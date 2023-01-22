@@ -26,6 +26,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.os.Build
 import android.os.Message
 import android.os.SystemClock
@@ -38,6 +39,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
+import com.fankes.apperrorstracking.bean.enum.AppFiltersType
 import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
@@ -245,9 +247,16 @@ object FrameworkHooker : YukiBaseHooker() {
                                 (if (filters.name.isNotBlank()) info.filter {
                                     it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
                                 } else info).let { result ->
-                                    if (filters.isContainsSystem.not())
-                                        result.filter { (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
-                                    else result
+                                    /**
+                                     * 是否为系统应用
+                                     * @return [Boolean]
+                                     */
+                                    fun PackageInfo.isSystemApp() = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                                    when (filters.type) {
+                                        AppFiltersType.USER -> result.filter { it.isSystemApp().not() }
+                                        AppFiltersType.SYSTEM -> result.filter { it.isSystemApp() }
+                                        AppFiltersType.ALL -> result
+                                    }
                                 }.sortedByDescending { it.lastUpdateTime }
                                     .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
                             }.apply { if (size <= 0) loggerW(msg = "Fetched installed packages but got empty list") }

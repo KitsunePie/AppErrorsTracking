@@ -24,6 +24,7 @@ package com.fankes.apperrorstracking.ui.activity.main
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
+import com.fankes.apperrorstracking.bean.enum.AppFiltersType
 import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.enum.AppErrorsConfigType
 import com.fankes.apperrorstracking.databinding.ActivityConfigBinding
@@ -73,7 +74,9 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
         binding.filterIcon.setOnClickListener {
             showDialog<DiaAppsFilterBinding> {
                 title = LocaleString.filterByCondition
-                binding.containsSystemSwitch.isChecked = appFilters.isContainsSystem
+                binding.filtersRadioUser.isChecked = appFilters.type == AppFiltersType.USER
+                binding.filtersRadioSystem.isChecked = appFilters.type == AppFiltersType.SYSTEM
+                binding.filtersRadioAll.isChecked = appFilters.type == AppFiltersType.ALL
                 binding.appFiltersEdit.apply {
                     requestFocus()
                     invalidate()
@@ -82,15 +85,24 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                         setSelection(appFilters.name.length)
                     }
                 }
+                /** 设置 [AppFiltersBean.type] */
+                fun setAppFiltersType() {
+                    appFilters.type = when {
+                        binding.filtersRadioUser.isChecked -> AppFiltersType.USER
+                        binding.filtersRadioSystem.isChecked -> AppFiltersType.SYSTEM
+                        binding.filtersRadioAll.isChecked -> AppFiltersType.ALL
+                        else -> error("Invalid app filters type")
+                    }
+                }
                 confirmButton {
-                    appFilters.isContainsSystem = binding.containsSystemSwitch.isChecked
+                    setAppFiltersType()
                     appFilters.name = binding.appFiltersEdit.text.toString().trim()
                     refreshData()
                 }
                 cancelButton()
                 if (appFilters.name.isNotBlank())
                     neutralButton(LocaleString.clearFilters) {
-                        appFilters.isContainsSystem = binding.containsSystemSwitch.isChecked
+                        setAppFiltersType()
                         appFilters.name = ""
                         refreshData()
                     }

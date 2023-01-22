@@ -35,6 +35,7 @@ import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppFiltersBean
+import com.fankes.apperrorstracking.bean.enum.AppFiltersType
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsStatisticsBinding
@@ -76,7 +77,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 title = LocaleString.notice
                 progressContent = LocaleString.generatingStatistics
                 noCancelable()
-                FrameworkTool.fetchAppListData(context, AppFiltersBean(isContainsSystem = true)) {
+                FrameworkTool.fetchAppListData(context, AppFiltersBean(type = AppFiltersType.ALL)) {
                     newThread {
                         val errorsApps = listData.groupBy { it.packageName }
                             .map { it.key to it.value.size }
