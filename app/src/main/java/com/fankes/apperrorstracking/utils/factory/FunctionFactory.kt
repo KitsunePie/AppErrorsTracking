@@ -141,10 +141,23 @@ fun Context.appNameOf(packageName: String = getPackageName()) =
 /**
  * 得到 APP 版本信息与版本号
  * @param packageName APP 包名 - 默认为当前 APP
+ * @return [String] 无法获取时返回 "unknown(-1)"
+ */
+fun Context.appVersionBrandOf(packageName: String = getPackageName()) = "${appVersionNameOf(packageName)}(${appVersionCodeOf(packageName)})"
+
+/**
+ * 得到 APP 版本名称
+ * @param packageName APP 包名 - 默认为当前 APP
  * @return [String] 无法获取时返回 "unknown"
  */
-fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.let { "${it.versionName}(${it.versionCodeCompat})" } ?: "unknown"
+fun Context.appVersionNameOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.versionName ?: "unknown"
+
+/**
+ * 得到 APP 版本号
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [Long] 无法获取时返回 -1
+ */
+fun Context.appVersionCodeOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.versionCodeCompat ?: -1L
 
 /**
  * 获取 APP CPU ABI 名称
