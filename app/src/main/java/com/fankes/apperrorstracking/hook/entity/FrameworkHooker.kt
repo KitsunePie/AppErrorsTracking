@@ -244,22 +244,24 @@ object FrameworkHooker : YukiBaseHooker() {
                         .filter { it.packageName.let { e -> e != "android" && e != BuildConfig.APPLICATION_ID } }
                         .let { info ->
                             arrayListOf<AppInfoBean>().apply {
-                                (if (filters.name.isNotBlank()) info.filter {
-                                    it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
-                                } else info).let { result ->
-                                    /**
-                                     * 是否为系统应用
-                                     * @return [Boolean]
-                                     */
-                                    fun PackageInfo.isSystemApp() = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
-                                    when (filters.type) {
-                                        AppFiltersType.USER -> result.filter { it.isSystemApp().not() }
-                                        AppFiltersType.SYSTEM -> result.filter { it.isSystemApp() }
-                                        AppFiltersType.ALL -> result
-                                    }
-                                }.sortedByDescending { it.lastUpdateTime }
-                                    .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
-                            }.apply { if (size <= 0) loggerW(msg = "Fetched installed packages but got empty list") }
+                                if (info.isNotEmpty())
+                                    (if (filters.name.isNotBlank()) info.filter {
+                                        it.packageName.contains(filters.name) || context.appNameOf(it.packageName).contains(filters.name)
+                                    } else info).let { result ->
+                                        /**
+                                         * 是否为系统应用
+                                         * @return [Boolean]
+                                         */
+                                        fun PackageInfo.isSystemApp() = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                                        when (filters.type) {
+                                            AppFiltersType.USER -> result.filter { it.isSystemApp().not() }
+                                            AppFiltersType.SYSTEM -> result.filter { it.isSystemApp() }
+                                            AppFiltersType.ALL -> result
+                                        }
+                                    }.sortedByDescending { it.lastUpdateTime }
+                                        .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
+                                else loggerW(msg = "Fetched installed packages but got empty list")
+                            }
                         }
                 } ?: arrayListOf()
             }
