@@ -87,6 +87,7 @@ object AppErrorsConfigData {
      * 写入当前 APP 显示错误的类型
      * @param type 当前类型
      * @param packageName 当前 APP 包名 - 不填为全局配置
+     * @throws IllegalStateException 如果 [packageName] 为空 [type] 为 [AppErrorsConfigType.GLOBAL]
      */
     fun putAppShowingType(type: AppErrorsConfigType, packageName: String = "") {
         if (packageName.isBlank() && type == AppErrorsConfigType.GLOBAL)
