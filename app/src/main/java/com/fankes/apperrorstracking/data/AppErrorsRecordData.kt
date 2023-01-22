@@ -26,8 +26,7 @@ package com.fankes.apperrorstracking.data
 import android.content.Context
 import android.provider.Settings
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.utils.factory.toEntityOrNull
-import com.fankes.apperrorstracking.utils.factory.toJsonOrNull
+import com.fankes.apperrorstracking.utils.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerE
 import java.io.File
 import java.util.concurrent.CopyOnWriteArrayList
@@ -87,6 +86,9 @@ object AppErrorsRecordData {
             Settings.Secure.getString(it.contentResolver, keyName)
                 ?.toEntityOrNull<CopyOnWriteArrayList<AppErrorsInfoBean>>()
                 ?.onEach { e ->
+                    e.cpuAbi = it.appCpuAbiOf(e.packageName)
+                    e.versionName = it.appVersionNameOf(e.packageName)
+                    e.versionCode = it.appVersionCodeOf(e.packageName)
                     e.toJsonOrNull()?.also { json -> File(errorsInfoDataFolder.absolutePath, e.jsonFileName).writeText(json) }
                 }.let { result ->
                     if (result != null) {
