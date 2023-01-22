@@ -90,7 +90,6 @@
     <string name="filter_by_condition">条件でフィルタリング</string>
     <string name="no_list_result">表示結果はありません</string>
     <string name="typo_app_name_pkg_name">アプリ名とパッケージ名を入力できます</string>
-    <string name="result_contains_system_apps">結果にはシステムアプリが含まれます</string>
     <string name="clear_filters">条件をクリア</string>
     <string name="result_count">%1$s の合計結果</string>
     <string name="loading">ロード中</string>
@@ -138,4 +137,7 @@
     <string name="global_config">グローバル構成</string>
     <string name="follow_global_config">グローバル構成に従う</string>
     <string name="batch_operations_number">一括操作 %1$s 個のアプリ</string>
+    <string name="user_apps">ﾕｰｻﾞｰｱﾌﾟﾘ</string>
+    <string name="all_apps">全てのｱﾌﾟﾘ</string>
+    <string name="system_apps">ｼｽﾃﾑｱﾌﾟﾘ</string>
 </resources>
