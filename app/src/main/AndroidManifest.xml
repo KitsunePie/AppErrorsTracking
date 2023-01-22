@@ -95,7 +95,6 @@
             android:name=".ui.activity.errors.AppErrorsDetailActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="behind"
             android:taskAffinity=":detail" />
 
         <service
