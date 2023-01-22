@@ -437,8 +437,51 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
+                android:id="@+id/disable_auto_wrap_error_stack_trace_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_permotion_round"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp"
+                android:text="@string/disable_auto_wrap_error_stack_trace_content"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
+
+            <HorizontalScrollView
+                android:id="@+id/error_stack_trace_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_stack_round"
+                android:fadingEdgeLength="10dp"
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:padding="15dp"
+                android:requiresFadingEdge="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/error_stack_trace_movable_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:lineSpacingExtra="5dp"
+                    android:textColor="#B65B57"
+                    android:textIsSelectable="true"
+                    android:textSize="12sp"
+                    android:typeface="monospace" />
+            </HorizontalScrollView>
+
             <TextView
-                android:id="@+id/error_stack_text"
+                android:id="@+id/error_stack_trace_fixed_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
