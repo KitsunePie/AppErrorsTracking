@@ -108,7 +108,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appVersionText.text = appVersionBrandOf(appErrorsInfo.packageName)
         binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
         binding.appUserIdText.text = LocaleString.userId(appErrorsInfo.userId)
-        binding.appAbiText.text = appCpuAbiOf(appErrorsInfo.packageName).ifBlank { LocaleString.noCpuAbi }
+        binding.appCpuAbiText.text = appCpuAbiOf(appErrorsInfo.packageName).ifBlank { LocaleString.noCpuAbi }
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage
