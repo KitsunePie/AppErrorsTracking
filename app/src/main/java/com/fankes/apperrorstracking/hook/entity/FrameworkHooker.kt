@@ -350,10 +350,11 @@ object FrameworkHooker : YukiBaseHooker() {
 
     /**
      * 处理 APP 进程异常数据
+     * @param context 当前实例
      * @param info 系统错误报告数据实例
      */
-    private fun AppErrorsProcessData.handleAppErrorsInfo(info: ApplicationErrorReport.CrashInfo?) {
-        AppErrorsRecordData.add(AppErrorsInfoBean.clone(pid, userId, appInfo?.packageName, info))
+    private fun AppErrorsProcessData.handleAppErrorsInfo(context: Context, info: ApplicationErrorReport.CrashInfo?) {
+        AppErrorsRecordData.add(AppErrorsInfoBean.clone(context, pid, userId, appInfo?.packageName, info))
         loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
     }
 
@@ -441,10 +442,13 @@ object FrameworkHooker : YukiBaseHooker() {
                     returnType = BooleanType
                 }
                 afterHook {
+                    /** 当前实例 */
+                    val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
+
                     /** 当前进程信息 */
                     val proc = args().first().any() ?: return@afterHook loggerW(msg = "Received but got null ProcessRecord")
                     /** 创建 APP 进程异常数据类 */
-                    AppErrorsProcessData(instance, proc).handleAppErrorsInfo(args(index = 1).cast())
+                    AppErrorsProcessData(instance, proc).handleAppErrorsInfo(context, args(index = 1).cast())
                 }
             }
         }
