@@ -140,4 +140,5 @@
     <string name="user_apps">用戶程式</string>
     <string name="all_apps">全部程式</string>
     <string name="system_apps">系統程式</string>
+    <string name="disable_auto_wrap_error_stack_trace_content">禁止異常堆棧內容自動換行</string>
 </resources>
