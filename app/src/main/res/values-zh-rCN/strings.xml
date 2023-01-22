@@ -92,7 +92,6 @@
     <string name="filter_by_condition">按条件过滤</string>
     <string name="no_list_result">没有结果可以显示</string>
     <string name="typo_app_name_pkg_name">可输入 APP 名称、包名</string>
-    <string name="result_contains_system_apps">结果包含系统应用</string>
     <string name="clear_filters">清除条件</string>
     <string name="result_count">共 %1$s 个结果</string>
     <string name="loading">加载中</string>
@@ -138,4 +137,7 @@
     <string name="global_config">全局配置</string>
     <string name="follow_global_config">跟随全局配置</string>
     <string name="batch_operations_number">批量操作 %1$s 个应用</string>
+    <string name="user_apps">用户应用</string>
+    <string name="system_apps">系统应用</string>
+    <string name="all_apps">全部应用</string>
 </resources>

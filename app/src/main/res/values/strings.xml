@@ -90,7 +90,6 @@
     <string name="filter_by_condition">Filter by Condition</string>
     <string name="no_list_result">No result to display</string>
     <string name="typo_app_name_pkg_name">Typo apps name or package name</string>
-    <string name="result_contains_system_apps">Result contains system apps</string>
     <string name="clear_filters">Clear Filters</string>
     <string name="result_count">%1$s results found</string>
     <string name="loading">Loading</string>
@@ -139,4 +138,7 @@
     <string name="global_config">Global Config</string>
     <string name="follow_global_config">Follow global config</string>
     <string name="batch_operations_number">Batch Operations %1$s Apps</string>
+    <string name="user_apps">User apps</string>
+    <string name="system_apps">System apps</string>
+    <string name="all_apps">All apps</string>
 </resources>
