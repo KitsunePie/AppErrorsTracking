@@ -54,6 +54,9 @@ object ConfigData {
     /** 启用应用配置模板 */
     val ENABLE_APP_CONFIG_TEMPLATE = PrefsData("_enable_app_config_template", false)
 
+    /** 禁止异常堆栈内容自动换行 */
+    val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PrefsData("_disable_auto_wrap_error_stack_trace", false)
+
     /** 当前实例 - [Context] or [PackageParam] */
     private var instance: Any? = null
 

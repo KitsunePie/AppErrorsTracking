@@ -31,6 +31,8 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.data.ConfigData
+import com.fankes.apperrorstracking.data.ConfigData.bind
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
@@ -118,7 +120,13 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorThrowMethodText.text = appErrorsInfo.throwMethodName
         binding.errorLineNumberText.text = appErrorsInfo.throwLineNumber.toString()
         binding.errorRecordTimeText.text = appErrorsInfo.dateTime
-        binding.errorStackText.text = appErrorsInfo.stackTrace
+        binding.errorStackTraceMovableText.text = appErrorsInfo.stackTrace
+        binding.errorStackTraceFixedText.text = appErrorsInfo.stackTrace
+        binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
+            binding.errorStackTraceScrollView.isVisible = it
+            binding.errorStackTraceFixedText.isGone = it
+            binding.errorStackTraceScrollView.post { binding.errorStackTraceScrollView.scrollTo(0, 0) }
+        }
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
         }
