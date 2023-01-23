@@ -78,6 +78,7 @@ dependencies {
     ksp 'com.highcapable.yukihookapi:ksp-xposed:1.1.6'
     implementation 'com.microsoft.appcenter:appcenter-analytics:4.4.5'
     implementation 'com.microsoft.appcenter:appcenter-crashes:4.4.5'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.duanhong169:drawabletoolbox:1.0.7'
     implementation 'com.github.topjohnwu.libsu:core:3.1.2'
