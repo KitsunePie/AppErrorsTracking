@@ -142,4 +142,8 @@
     <string name="system_apps">System apps</string>
     <string name="all_apps">All apps</string>
     <string name="disable_auto_wrap_error_stack_trace_content">Disable error stack trace automatic wrapping</string>
+    <string name="click_to_update">Click to update %1$s</string>
+    <string name="latest_version">Latest Version %1$s</string>
+    <string name="latest_version_tip">Released on %1$s\n\nChangelog\n\n%2$s</string>
+    <string name="update_now">Update</string>
 </resources>

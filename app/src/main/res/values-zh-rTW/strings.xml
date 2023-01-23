@@ -141,4 +141,8 @@
     <string name="all_apps">全部程式</string>
     <string name="system_apps">系統程式</string>
     <string name="disable_auto_wrap_error_stack_trace_content">禁止異常堆棧內容自動換行</string>
+    <string name="click_to_update">點按升級 %1$s</string>
+    <string name="latest_version">最新版本 %1$s</string>
+    <string name="latest_version_tip">發佈於 %1$s\n\n更新日誌\n\n%2$s</string>
+    <string name="update_now">升級</string>
 </resources>
