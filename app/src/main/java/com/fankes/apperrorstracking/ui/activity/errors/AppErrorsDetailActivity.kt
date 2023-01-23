@@ -125,14 +125,21 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
             binding.errorStackTraceScrollView.isVisible = it
             binding.errorStackTraceFixedText.isGone = it
-            binding.errorStackTraceScrollView.post { binding.errorStackTraceScrollView.scrollTo(0, 0) }
+            resetScrollView()
         }
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
         }
-        /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
-        binding.appPanelScrollView.post { binding.appPanelScrollView.scrollTo(0, 0) }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
+        resetScrollView()
+    }
+
+    /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
+    private fun resetScrollView() {
+        binding.rootView.post {
+            binding.appPanelScrollView.scrollTo(0, 0)
+            binding.errorStackTraceScrollView.scrollTo(0, 0)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

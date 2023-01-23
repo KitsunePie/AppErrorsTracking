@@ -467,6 +467,7 @@
                 android:overScrollMode="never"
                 android:padding="15dp"
                 android:requiresFadingEdge="horizontal"
+                android:scrollbars="none"
                 android:visibility="gone">
 
                 <TextView
