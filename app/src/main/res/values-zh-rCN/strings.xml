@@ -141,4 +141,8 @@
     <string name="system_apps">系统应用</string>
     <string name="all_apps">全部应用</string>
     <string name="disable_auto_wrap_error_stack_trace_content">禁止异常堆栈内容自动换行</string>
+    <string name="click_to_update">点击更新 %1$s</string>
+    <string name="latest_version">最新版本 %1$s</string>
+    <string name="latest_version_tip">发布于 %1$s\n\n更新日志\n\n%2$s</string>
+    <string name="update_now">更新</string>
 </resources>

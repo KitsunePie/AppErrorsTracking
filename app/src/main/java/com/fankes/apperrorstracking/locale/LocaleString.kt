@@ -532,4 +532,28 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun batchOperationsNumber(vararg objArrs: Any) = R.string.batch_operations_number.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val clickToUpdate get() = clickToUpdate()
+
+    /** @string Automatic generated */
+    fun clickToUpdate(vararg objArrs: Any) = R.string.click_to_update.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val latestVersion get() = latestVersion()
+
+    /** @string Automatic generated */
+    fun latestVersion(vararg objArrs: Any) = R.string.latest_version.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val latestVersionTip get() = latestVersionTip()
+
+    /** @string Automatic generated */
+    fun latestVersionTip(vararg objArrs: Any) = R.string.latest_version_tip.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val updateNow get() = updateNow()
+
+    /** @string Automatic generated */
+    fun updateNow(vararg objArrs: Any) = R.string.update_now.bind(*objArrs)
 }
