@@ -38,6 +38,7 @@ import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.*
 import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool.bindAppAnalytics
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
+import com.fankes.apperrorstracking.utils.tool.GithubReleaseTool
 import com.highcapable.yukihookapi.YukiHookAPI
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -53,6 +54,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate() {
         checkingTopComponentName()
+        /** 检查更新 */
+        GithubReleaseTool.checkingForUpdate(context = this, BuildConfig.VERSION_NAME) { version, function ->
+            binding.mainTextReleaseVersion.apply {
+                text = LocaleString.clickToUpdate(version)
+                isVisible = true
+                setOnClickListener { function() }
+            }
+        }
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text = LocaleString.systemVersion(systemVersion)
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
