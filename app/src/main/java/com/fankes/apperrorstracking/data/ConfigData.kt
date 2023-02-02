@@ -25,7 +25,6 @@ package com.fankes.apperrorstracking.data
 
 import android.content.Context
 import android.os.Build
-import android.widget.CompoundButton
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.param.PackageParam
@@ -126,7 +125,7 @@ object ConfigData {
      * @param data 键值数据模板
      * @return [Boolean]
      */
-    private fun getBoolean(data: PrefsData<Boolean>) = when (instance) {
+    internal fun getBoolean(data: PrefsData<Boolean>) = when (instance) {
         is Context -> (instance as Context).modulePrefs.get(data)
         is PackageParam -> (instance as PackageParam).prefs.get(data)
         else -> error("Unknown type for get prefs data")
@@ -137,26 +136,11 @@ object ConfigData {
      * @param data 键值数据模板
      * @param value 键值内容
      */
-    private fun putBoolean(data: PrefsData<Boolean>, value: Boolean) {
+    internal fun putBoolean(data: PrefsData<Boolean>, value: Boolean) {
         when (instance) {
             is Context -> (instance as Context).modulePrefs.put(data, value)
             is PackageParam -> loggerW(msg = "Not support for this method")
             else -> error("Unknown type for put prefs data")
-        }
-    }
-
-    /**
-     * 绑定到 [CompoundButton] 自动设置选中状态
-     * @param data 键值数据模板
-     * @param onChange 当改变时回调
-     */
-    fun CompoundButton.bind(data: PrefsData<Boolean>, onChange: (Boolean) -> Unit = {}) {
-        isChecked = getBoolean(data).also(onChange)
-        setOnCheckedChangeListener { button, isChecked ->
-            if (button.isPressed) {
-                putBoolean(data, isChecked)
-                onChange(isChecked)
-            }
         }
     }
 

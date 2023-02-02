@@ -28,7 +28,7 @@ import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.BuildConfig
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.data.ConfigData
-import com.fankes.apperrorstracking.data.ConfigData.bind
+import com.fankes.apperrorstracking.data.factory.bind
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
@@ -62,21 +62,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 setOnClickListener { function() }
             }
         }
+        /** 显示开发者提示 */
+        if (ConfigData.isShowDeveloperNotice)
+            showDialog {
+                title = LocaleString.developerNotice
+                msg = LocaleString.developerNoticeTip
+                confirmButton(LocaleString.gotIt) { ConfigData.isShowDeveloperNotice = false }
+                noCancelable()
+            }
         binding.mainTextVersion.text = LocaleString.moduleVersion(BuildConfig.VERSION_NAME)
         binding.mainTextSystemVersion.text = LocaleString.systemVersion(systemVersion)
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.alwaysShowsReopenAppOptionsSwitch.bind(ConfigData.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
         binding.enableAppsConfigsTemplateSwitch.bind(ConfigData.ENABLE_APP_CONFIG_TEMPLATE) {
-            binding.mgrAppsConfigsTemplateButton.isVisible = it
+            onInitialize { binding.mgrAppsConfigsTemplateButton.isVisible = it }
+            onChanged { reinitialize() }
         }
         binding.enableMaterial3AppErrorsDialogSwitch.bind(ConfigData.ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
-        /** 设置桌面图标显示隐藏 */
-        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
-        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            hideOrShowLauncherIcon(b)
-        }
         /** 设置匿名统计 */
         binding.enableAnonymousStatisticsSwitch.bindAppAnalytics()
         /** 系统版本点击事件 */
@@ -98,14 +101,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/KitsunePie/AppErrorsTracking") }
-        /** 显示开发者提示 */
-        if (ConfigData.isShowDeveloperNotice)
-            showDialog {
-                title = LocaleString.developerNotice
-                msg = LocaleString.developerNoticeTip
-                confirmButton(LocaleString.gotIt) { ConfigData.isShowDeveloperNotice = false }
-                noCancelable()
-            }
+        /** 设置桌面图标显示隐藏 */
+        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
+        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            hideOrShowLauncherIcon(b)
+        }
     }
 
     /** 刷新模块状态 */
