@@ -38,8 +38,8 @@ fun CompoundButton.bind(data: PrefsData<Boolean>, initiate: CompoundButtonDataBi
     binder.applyChangesCallback = { ConfigData.putBoolean(data, it) }
     setOnCheckedChangeListener { button, isChecked ->
         if (button.isPressed) {
-            binder.changedCallback?.invoke(isChecked)
             if (binder.isAutoApplyChanges) binder.applyChangesCallback?.invoke(isChecked)
+            binder.changedCallback?.invoke(isChecked)
         }
     }
 }
