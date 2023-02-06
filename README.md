@@ -68,7 +68,7 @@ Contributions to this project are welcome to translate it into your country's la
 
 The above update is automatically triggered after the code `commit`.
 
-The specific update content can be viewed by clicking the text above and going to **Github Actions**.
+The specific update content can be viewed by clicking the text above and going to **GitHub Actions**.
 
 This update is automatically compiled and released by the open source process, **no guarantee of its stability**, so the released version is
 **for testing only**, and there is no special explanation or even the version may change or remain the same as the current stable version.
