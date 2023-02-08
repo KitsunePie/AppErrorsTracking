@@ -46,17 +46,31 @@ jobs:
             gradle-builds
       - name: Build with Gradle
         run: |
+          ./gradlew :app:assembleDebug
           ./gradlew :app:assembleRelease
+          ./gradlew :demo-app:assembleDebug
           ./gradlew :demo-app:assembleRelease
-          echo "APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
-          echo "DEMO_APK_FILE=$(find demo-app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
-      - name: Upload Artifacts(module)
+          echo "MODULE_DEBUG_APK_FILE=$(find app/build/outputs/apk/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "DEMO_DEBUG_APK_FILE=$(find demo-app/build/outputs/apk/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_RELEASE_APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
+          echo "DEMO_RELEASE_APK_FILE=$(find demo-app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
+      - name: Upload Artifacts(module-debug)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.APK_FILE }}
+          path: ${{ env.MODULE_DEBUG_APK_FILE }}
+          name: module-debug
+      - name: Upload Artifacts(demo-debug)
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.DEMO_DEBUG_APK_FILE }}
+          name: demo-debug
+      - name: Upload Artifacts(module-release)
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.MODULE_RELEASE_APK_FILE }}
           name: module-release
-      - name: Upload Artifacts(demo-app)
+      - name: Upload Artifacts(demo-release)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.DEMO_APK_FILE }}
+          path: ${{ env.DEMO_RELEASE_APK_FILE }}
           name: demo-release
