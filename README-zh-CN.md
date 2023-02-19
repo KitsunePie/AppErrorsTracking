@@ -80,6 +80,10 @@
 
 上述状态为当前发行的稳定版可能存在严重问题但并未及时进行修复且并未发布稳定版。
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
+
 ## 许可证
 
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)

@@ -99,6 +99,10 @@ in a pre-release state.
 The above status is that the currently released stable version may have serious problems but have not been fixed in time and the stable version
 has not been released.
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
+
 ## License
 
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)
