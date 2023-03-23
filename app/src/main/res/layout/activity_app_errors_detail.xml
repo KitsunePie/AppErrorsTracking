@@ -246,8 +246,11 @@
 
                         <TextView
                             android:id="@+id/error_info_text"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:lineSpacingExtra="5dp"
                             android:textColor="@color/colorTextGray"
                             android:textSize="12sp"
@@ -282,9 +285,12 @@
 
                             <TextView
                                 android:id="@+id/error_type_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:ellipsize="end"
+                                android:focusable="true"
                                 android:singleLine="true"
                                 android:textColor="#FFEF5350"
                                 android:textSize="12sp"
@@ -311,9 +317,12 @@
 
                             <TextView
                                 android:id="@+id/error_file_name_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:ellipsize="end"
+                                android:focusable="true"
                                 android:singleLine="true"
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="12sp"
@@ -340,9 +349,12 @@
 
                             <TextView
                                 android:id="@+id/error_throw_class_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:ellipsize="end"
+                                android:focusable="true"
                                 android:singleLine="true"
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="12sp"
@@ -369,9 +381,12 @@
 
                             <TextView
                                 android:id="@+id/error_throw_method_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:ellipsize="end"
+                                android:focusable="true"
                                 android:singleLine="true"
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="12sp"
@@ -397,9 +412,12 @@
 
                             <TextView
                                 android:id="@+id/error_line_number_text"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
                                 android:ellipsize="end"
+                                android:focusable="true"
                                 android:singleLine="true"
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="12sp"
@@ -426,9 +444,12 @@
 
                         <TextView
                             android:id="@+id/error_record_time_text"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
                             android:ellipsize="end"
+                            android:focusable="true"
                             android:singleLine="true"
                             android:textColor="@color/colorTextGray"
                             android:textSize="12sp"

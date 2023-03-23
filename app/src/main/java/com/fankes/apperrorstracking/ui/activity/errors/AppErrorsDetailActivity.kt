@@ -136,6 +136,21 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
         }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
+        val list = listOf(
+            binding.errorInfoText,
+            binding.errorTypeText,
+            binding.errorFileNameText,
+            binding.errorThrowClassText,
+            binding.errorThrowMethodText,
+            binding.errorLineNumberText,
+            binding.errorRecordTimeText
+        )
+        list.forEach { i ->
+            i.setOnLongClickListener {
+                copyToClipboard(i.text as String)
+                true
+            }
+        }
         resetScrollView()
     }
 
