@@ -31,9 +31,9 @@ import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorsdemo.R
 import com.fankes.apperrorsdemo.utils.factory.isNotSystemInDarkMode
-import com.highcapable.yukihookapi.hook.factory.current
-import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
+import com.highcapable.yukireflection.factory.current
+import com.highcapable.yukireflection.factory.method
+import com.highcapable.yukireflection.type.android.LayoutInflaterClass
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
