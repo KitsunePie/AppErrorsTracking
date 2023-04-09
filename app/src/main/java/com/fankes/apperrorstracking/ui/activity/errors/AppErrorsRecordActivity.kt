@@ -152,14 +152,16 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     /** 更新列表数据 */
     private fun refreshData() {
         FrameworkTool.fetchAppErrorsInfoData(context = this) {
+            binding.titleCountText.text = LocaleString.recordCount(it.size)
+            binding.listProgressView.isVisible = false
+            binding.appErrorSisIcon.isVisible = it.size >= 5
+            binding.clearAllIcon.isVisible = it.isNotEmpty()
+            binding.exportAllIcon.isVisible = it.isNotEmpty()
+            binding.listView.isVisible = it.isNotEmpty()
+            binding.listNoDataView.isVisible = it.isEmpty()
             listData.clear()
             it.takeIf { e -> e.isNotEmpty() }?.forEach { e -> listData.add(e) }
             onChanged?.invoke()
-            binding.appErrorSisIcon.isVisible = listData.size >= 5
-            binding.clearAllIcon.isVisible = listData.isNotEmpty()
-            binding.exportAllIcon.isVisible = listData.isNotEmpty()
-            binding.listView.isVisible = listData.isNotEmpty()
-            binding.listNoDataView.isVisible = listData.isEmpty()
         }
     }
 
