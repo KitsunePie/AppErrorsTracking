@@ -87,7 +87,7 @@ object AppErrorsRecordData {
                 ?.toEntityOrNull<CopyOnWriteArrayList<AppErrorsInfoBean>>()
                 ?.onEach { e ->
                     e.cpuAbi = it.appCpuAbiOf(e.packageName)
-                    e.versionName = it.appVersionNameOf(e.packageName)
+                    e.versionName = it.appVersionNameOf(e.packageName).ifBlank { "unknown" }
                     e.versionCode = it.appVersionCodeOf(e.packageName)
                     e.toJsonOrNull()?.also { json -> File(errorsInfoDataFolder.absolutePath, e.jsonFileName).writeText(json) }
                 }.let { result ->

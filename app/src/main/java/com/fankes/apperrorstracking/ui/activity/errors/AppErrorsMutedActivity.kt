@@ -59,7 +59,7 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
             onBindViews<AdapterAppErrorsMutedBinding> { binding, position ->
                 listData[position].also { bean ->
                     binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
-                    binding.appNameText.text = appNameOf(bean.packageName)
+                    binding.appNameText.text = appNameOf(bean.packageName).ifBlank { bean.packageName }
                     binding.muteTypeText.text = when (bean.type) {
                         MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> LocaleString.muteIfUnlock
                         MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> LocaleString.muteIfRestart

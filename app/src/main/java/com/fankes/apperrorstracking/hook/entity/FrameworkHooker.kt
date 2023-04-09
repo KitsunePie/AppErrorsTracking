@@ -274,7 +274,7 @@ object FrameworkHooker : YukiBaseHooker() {
      */
     private fun AppErrorsProcessData.handleShowAppErrorUi(context: Context) {
         /** 当前 APP 名称 */
-        val appName = appInfo?.let { context.appNameOf(it.packageName) } ?: packageName
+        val appName = appInfo?.let { context.appNameOf(it.packageName).ifBlank { it.packageName } } ?: packageName
 
         /** 当前 APP 名称 (包含用户 ID) */
         val appNameWithUserId = if (userId != 0) "$appName (${LocaleString.userId(userId)})" else appName
