@@ -145,4 +145,5 @@
     <string name="latest_version">最新版本 %1$s</string>
     <string name="latest_version_tip">發佈於 %1$s\n\n更新日誌\n\n%2$s</string>
     <string name="update_now">升級</string>
+    <string name="record_count">共 %1$s 條紀錄</string>
 </resources>

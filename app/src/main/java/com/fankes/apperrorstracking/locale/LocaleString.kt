@@ -556,4 +556,10 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun updateNow(vararg objArrs: Any) = R.string.update_now.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val recordCount get() = recordCount()
+
+    /** @string Automatic generated */
+    fun recordCount(vararg objArrs: Any) = R.string.record_count.bind(*objArrs)
 }

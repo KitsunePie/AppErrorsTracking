@@ -146,4 +146,5 @@
     <string name="latest_version">Latest Version %1$s</string>
     <string name="latest_version_tip">Released on %1$s\n\nChangelog\n\n%2$s</string>
     <string name="update_now">Update</string>
+    <string name="record_count">%1$s records found</string>
 </resources>
