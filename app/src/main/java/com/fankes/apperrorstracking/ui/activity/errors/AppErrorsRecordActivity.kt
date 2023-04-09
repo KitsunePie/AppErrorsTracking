@@ -96,7 +96,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                                 binding.totalErrorsUnitText.text = LocaleString.totalErrorsUnit(listData.size)
                                 binding.totalAppsUnitText.text = LocaleString.totalAppsUnit(it.size)
                                 binding.mostErrorsAppIcon.setImageDrawable(appIconOf(mostAppPackageName))
-                                binding.mostErrorsAppText.text = appNameOf(mostAppPackageName)
+                                binding.mostErrorsAppText.text = appNameOf(mostAppPackageName).ifBlank { mostAppPackageName }
                                 binding.mostErrorsTypeText.text = mostErrorsType
                                 binding.totalPptOfErrorsText.text = "$pptCount%"
                                 confirmButton(LocaleString.gotIt)
@@ -134,7 +134,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 onBindViews<AdapterAppErrorsRecordBinding> { binding, position ->
                     listData[position].also { bean ->
                         binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
-                        binding.appNameText.text = appNameOf(bean.packageName)
+                        binding.appNameText.text = appNameOf(bean.packageName).ifBlank { bean.packageName }
                         binding.appUserIdText.isVisible = bean.userId > 0
                         binding.appUserIdText.text = LocaleString.userId(bean.userId)
                         binding.errorsTimeText.text = bean.crossTime

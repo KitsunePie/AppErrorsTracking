@@ -106,7 +106,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             }, LocaleString.shareErrorStack))
         }
         binding.appIcon.setImageDrawable(appIconOf(appErrorsInfo.packageName))
-        binding.appNameText.text = appNameOf(appErrorsInfo.packageName)
+        binding.appNameText.text = appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
         binding.appVersionText.text = appErrorsInfo.versionBrand
         binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
         binding.appUserIdText.text = LocaleString.userId(appErrorsInfo.userId)
@@ -133,7 +133,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             }
         }
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
-            binding.detailTitleText.text = if (y >= 30.dp(context = this)) appNameOf(appErrorsInfo.packageName) else LocaleString.appName
+            binding.detailTitleText.text = if (y >= 30.dp(context = this))
+                appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
+            else LocaleString.appName
         }
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
         resetScrollView()

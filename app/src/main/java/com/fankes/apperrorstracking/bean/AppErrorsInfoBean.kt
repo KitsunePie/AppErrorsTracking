@@ -100,7 +100,7 @@ data class AppErrorsInfoBean(
                     userId = userId,
                     cpuAbi = packageName?.let { context.appCpuAbiOf(it) } ?: "",
                     packageName = packageName ?: "unknown",
-                    versionName = packageName?.let { context.appVersionNameOf(it) } ?: "",
+                    versionName = packageName?.let { context.appVersionNameOf(it).ifBlank { "unknown" } } ?: "",
                     versionCode = packageName?.let { context.appVersionCodeOf(it) } ?: -1L,
                     isNativeCrash = isNativeCrash,
                     exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
