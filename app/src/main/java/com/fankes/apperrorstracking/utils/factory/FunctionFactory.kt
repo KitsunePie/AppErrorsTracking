@@ -133,24 +133,25 @@ fun Context.listOfPackages() = runCatching {
 /**
  * 得到 APP 名称
  * @param packageName APP 包名 - 默认为当前 APP
- * @return [String]
+ * @return [String] 无法获取时返回 ""
  */
 fun Context.appNameOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: "unknown"
+    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
 
 /**
  * 得到 APP 版本信息与版本号
  * @param packageName APP 包名 - 默认为当前 APP
- * @return [String] 无法获取时返回 "unknown(-1)"
+ * @return [String] 无法获取时返回 ""
  */
-fun Context.appVersionBrandOf(packageName: String = getPackageName()) = "${appVersionNameOf(packageName)}(${appVersionCodeOf(packageName)})"
+fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
+    if (appVersionNameOf(packageName).isNotBlank()) "${appVersionNameOf(packageName)}(${appVersionCodeOf(packageName)})" else ""
 
 /**
  * 得到 APP 版本名称
  * @param packageName APP 包名 - 默认为当前 APP
- * @return [String] 无法获取时返回 "unknown"
+ * @return [String] 无法获取时返回 ""
  */
-fun Context.appVersionNameOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.versionName ?: "unknown"
+fun Context.appVersionNameOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.versionName ?: ""
 
 /**
  * 得到 APP 版本号
@@ -162,7 +163,7 @@ fun Context.appVersionCodeOf(packageName: String = getPackageName()) = getPackag
 /**
  * 获取 APP CPU ABI 名称
  * @param packageName APP 包名 - 默认为当前 APP
- * @return [String]
+ * @return [String] 无法获取时返回 ""
  */
 fun Context.appCpuAbiOf(packageName: String = getPackageName()) = runCatching {
     ApplicationInfoClass.field { name = "primaryCpuAbi" }.get(getPackageInfoCompat(packageName)?.applicationInfo).string()
