@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -5,39 +7,44 @@ plugins {
 
 android {
     namespace 'com.fankes.apperrorsdemo'
-    compileSdk 33
-    ndkVersion '24.0.8215888'
+    compileSdk rootProject.ext.android.compileSdk
+    ndkVersion rootProject.ext.android.ndkVersion
 
     signingConfigs {
-        debug {
-            storeFile file('../keystore/public')
-            storePassword '123456'
-            keyAlias 'public'
-            keyPassword '123456'
+        universal {
+            def dirPath = rootProject.ext.app.signingConfigs.secretConfigsDirPath
+            def fileName = rootProject.ext.app.signingConfigs.secretConfigsFileName
+            def configs = new JsonSlurper().parse(file("${dirPath}/${fileName}"))
+            keyAlias configs.keyAlias
+            keyPassword configs.keyPassword
+            storeFile file("${dirPath}/${configs.storeFileName}")
+            storePassword configs.storePassword
             v1SigningEnabled true
             v2SigningEnabled true
         }
     }
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        applicationId 'com.fankes.apperrorsdemo'
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
+        minSdk rootProject.ext.android.minSdk
+        targetSdk rootProject.ext.android.targetSdk
+
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.universal
+        }
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.universal
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
