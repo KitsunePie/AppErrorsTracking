@@ -1,43 +1,54 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp' version '1.8.20-1.0.10'
+    id 'com.google.devtools.ksp'
 }
 
 android {
-    namespace 'com.fankes.apperrorstracking'
-    compileSdk 33
-
     signingConfigs {
-        debug {
-            storeFile file('../keystore/public')
-            storePassword '123456'
-            keyAlias 'public'
-            keyPassword '123456'
+        universal {
+            def dirPath = rootProject.ext.app.signingConfigs.secretConfigsDirPath
+            def fileName = rootProject.ext.app.signingConfigs.secretConfigsFileName
+            def configs = new JsonSlurper().parse(file("${dirPath}/${fileName}"))
+            keyAlias configs.keyAlias
+            keyPassword configs.keyPassword
+            storeFile file("${dirPath}/${configs.storeFileName}")
+            storePassword configs.storePassword
             v1SigningEnabled true
             v2SigningEnabled true
         }
     }
 
-    defaultConfig {
-        applicationId "com.fankes.apperrorstracking"
-        minSdk 24
-        targetSdk 33
-        versionCode rootProject.ext.appVersionCode
-        versionName rootProject.ext.appVersionName
+    namespace 'com.fankes.apperrorstracking'
+    compileSdk rootProject.ext.android.compileSdk
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    defaultConfig {
+        applicationId 'com.fankes.apperrorstracking'
+
+        minSdk rootProject.ext.android.minSdk
+        targetSdk rootProject.ext.android.targetSdk
+
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         /** 添加 App Center Secret 到 BuildConfig */
-        buildConfigField("String", "APP_CENTER_SECRET", "\"${getAppCenterSecret()}\"")
+        buildConfigField('String', 'APP_CENTER_SECRET', "\"${getAppCenterSecret()}\"")
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.universal
+        }
         release {
-            minifyEnabled rootProject.ext.enableR8
-            shrinkResources rootProject.ext.enableR8
-            zipAlignEnabled rootProject.ext.enableR8
-            signingConfig signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            signingConfig signingConfigs.universal
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
