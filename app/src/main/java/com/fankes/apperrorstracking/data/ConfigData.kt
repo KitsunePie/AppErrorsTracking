@@ -25,7 +25,7 @@ package com.fankes.apperrorstracking.data
 
 import android.content.Context
 import android.os.Build
-import com.highcapable.yukihookapi.hook.factory.modulePrefs
+import com.highcapable.yukihookapi.hook.factory.prefs
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
@@ -78,7 +78,7 @@ object ConfigData {
      * @return [Set]<[String]>
      */
     internal fun getStringSet(key: String) = when (instance) {
-        is Context -> (instance as Context).modulePrefs.getStringSet(key, setOf())
+        is Context -> (instance as Context).prefs().getStringSet(key, setOf())
         is PackageParam -> (instance as PackageParam).prefs.getStringSet(key, setOf())
         else -> error("Unknown type for get prefs data")
     }
@@ -90,7 +90,7 @@ object ConfigData {
      */
     internal fun putStringSet(key: String, value: Set<String>) {
         when (instance) {
-            is Context -> (instance as Context).modulePrefs.putStringSet(key, value)
+            is Context -> (instance as Context).prefs().edit { putStringSet(key, value) }
             is PackageParam -> loggerW(msg = "Not support for this method")
             else -> error("Unknown type for put prefs data")
         }
@@ -102,7 +102,7 @@ object ConfigData {
      * @return [Int]
      */
     internal fun getInt(data: PrefsData<Int>) = when (instance) {
-        is Context -> (instance as Context).modulePrefs.get(data)
+        is Context -> (instance as Context).prefs().get(data)
         is PackageParam -> (instance as PackageParam).prefs.get(data)
         else -> error("Unknown type for get prefs data")
     }
@@ -114,7 +114,7 @@ object ConfigData {
      */
     internal fun putInt(data: PrefsData<Int>, value: Int) {
         when (instance) {
-            is Context -> (instance as Context).modulePrefs.put(data, value)
+            is Context -> (instance as Context).prefs().edit { put(data, value) }
             is PackageParam -> loggerW(msg = "Not support for this method")
             else -> error("Unknown type for put prefs data")
         }
@@ -126,7 +126,7 @@ object ConfigData {
      * @return [Boolean]
      */
     internal fun getBoolean(data: PrefsData<Boolean>) = when (instance) {
-        is Context -> (instance as Context).modulePrefs.get(data)
+        is Context -> (instance as Context).prefs().get(data)
         is PackageParam -> (instance as PackageParam).prefs.get(data)
         else -> error("Unknown type for get prefs data")
     }
@@ -138,7 +138,7 @@ object ConfigData {
      */
     internal fun putBoolean(data: PrefsData<Boolean>, value: Boolean) {
         when (instance) {
-            is Context -> (instance as Context).modulePrefs.put(data, value)
+            is Context -> (instance as Context).prefs().edit { put(data, value) }
             is PackageParam -> loggerW(msg = "Not support for this method")
             else -> error("Unknown type for put prefs data")
         }
