@@ -13,8 +13,8 @@ ext {
             ndkVersion: '24.0.8215888'
     ]
     app = [
-            versionName   : '1.2',
-            versionCode   : 4,
+            versionName   : '1.25',
+            versionCode   : 5,
             signingConfigs: [
                     secretConfigsDirPath : "${projectDir.getAbsolutePath()}/.secret",
                     secretConfigsFileName: "key_store_secret.json"
