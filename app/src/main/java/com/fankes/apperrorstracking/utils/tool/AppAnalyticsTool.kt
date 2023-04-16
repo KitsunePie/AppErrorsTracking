@@ -26,7 +26,7 @@ package com.fankes.apperrorstracking.utils.tool
 import android.app.Application
 import android.widget.CompoundButton
 import com.fankes.apperrorstracking.BuildConfig
-import com.highcapable.yukihookapi.hook.factory.modulePrefs
+import com.highcapable.yukihookapi.hook.factory.prefs
 import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
@@ -51,9 +51,9 @@ object AppAnalyticsTool {
      * @return [Boolean]
      */
     private var isEnableAppCenterAnalytics
-        get() = instance?.modulePrefs?.get(ENABLE_APP_CENTER_ANALYTICS) ?: true
+        get() = instance?.prefs()?.get(ENABLE_APP_CENTER_ANALYTICS) ?: true
         set(value) {
-            instance?.modulePrefs?.put(ENABLE_APP_CENTER_ANALYTICS, value)
+            instance?.prefs()?.edit { put(ENABLE_APP_CENTER_ANALYTICS, value) }
         }
 
     /** 绑定到 [CompoundButton] 自动设置选中状态 */
