@@ -37,6 +37,8 @@ android {
 
         /** 添加 App Center Secret 到 BuildConfig */
         buildConfigField('String', 'APP_CENTER_SECRET', "\"${getAppCenterSecret()}\"")
+
+        resourceConfigurations += ["en", "ja", "zh_CN", "zh_HK", "zh_MO", "zh_TW"]
     }
 
     buildTypes {
