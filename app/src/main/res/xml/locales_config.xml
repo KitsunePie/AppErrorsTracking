@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
-    <locale android:name="en"/> <!-- English -->
-    <locale android:name="ja"/> <!-- Japanese -->
-    <locale android:name="zh-Hans-CN"/> <!-- Chinese (Simplified) -->
-    <locale android:name="zh-Hant-HK"/> <!-- Chinese (Hong Kong) -->
-    <locale android:name="zh-Hant-MO"/> <!-- Chinese (Macau) -->
-    <locale android:name="zh-Hant-TW"/> <!-- Chinese (Taiwan) -->
+    <locale android:name="en" />
+    <locale android:name="ja" />
+    <locale android:name="zh-Hans-CN" />
+    <locale android:name="zh-Hant-HK" />
+    <locale android:name="zh-Hant-MO" />
+    <locale android:name="zh-Hant-TW" />
 </locale-config>
