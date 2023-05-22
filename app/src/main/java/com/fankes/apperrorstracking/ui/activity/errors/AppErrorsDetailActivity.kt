@@ -77,6 +77,21 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             }
         }
 
+        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
+        listOf(
+            binding.errorInfoText,
+            binding.errorTypeText,
+            binding.errorFileNameText,
+            binding.errorThrowClassText,
+            binding.errorThrowMethodText,
+            binding.errorLineNumberText,
+            binding.errorRecordTimeText
+        ).forEach { i ->
+            i.setOnLongClickListener {
+                copyToClipboard(i.text as String)
+                true
+            }
+        }
         resetScrollView()
     }
 
