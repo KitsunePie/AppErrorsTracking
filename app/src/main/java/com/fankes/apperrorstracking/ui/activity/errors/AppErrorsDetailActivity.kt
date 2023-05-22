@@ -62,7 +62,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
-        parseIntent(intent)
+        if (!parseIntent(intent)) return
 
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
 
@@ -77,6 +77,21 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             }
         }
 
+        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
+        listOf(
+            binding.errorInfoText,
+            binding.errorTypeText,
+            binding.errorFileNameText,
+            binding.errorThrowClassText,
+            binding.errorThrowMethodText,
+            binding.errorLineNumberText,
+            binding.errorRecordTimeText
+        ).forEach { i ->
+            i.setOnLongClickListener {
+                copyToClipboard(i.text as String)
+                true
+            }
+        }
         resetScrollView()
     }
 
@@ -105,11 +120,17 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        parseIntent(intent)
+        if (parseIntent(intent)) {
+            binding.appPanelScrollView.scrollTo(0, 0)
+        }
     }
-    private fun parseIntent(intent: Intent?) {
+
+    private fun parseIntent(intent: Intent?): Boolean {
         val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
-            ?: return toastAndFinish(name = "AppErrorsInfo")
+        if (appErrorsInfo == null) {
+            toastAndFinish(name = "AppErrorsInfo")
+            return false
+        }
         if (appErrorsInfo.isEmpty) {
             binding.appPanelScrollView.isVisible = false
             showDialog {
@@ -126,7 +147,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 }
                 noCancelable()
             }
-            return
+            return false
         }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.printIcon.setOnClickListener {
@@ -173,7 +194,6 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
             else LocaleString.appName
         }
-
-        binding.appPanelScrollView.scrollTo(0, 0)
+        return true
     }
 }
