@@ -62,6 +62,52 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
+        parseIntent(intent)
+
+        binding.titleBackIcon.setOnClickListener { onBackPressed() }
+
+        binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
+            onInitialize {
+                binding.errorStackTraceScrollView.isVisible = it
+                binding.errorStackTraceFixedText.isGone = it
+            }
+            onChanged {
+                reinitialize()
+                resetScrollView()
+            }
+        }
+
+        resetScrollView()
+    }
+
+    /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
+    private fun resetScrollView() {
+        binding.rootView.post {
+            binding.appPanelScrollView.scrollTo(0, 0)
+            binding.errorStackTraceScrollView.scrollTo(0, 0)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
+            data?.data?.let {
+                contentResolver?.openOutputStream(it)?.apply { write(stackTrace.toByteArray()) }?.close()
+                toast(LocaleString.outputStackSuccess)
+            } ?: toast(LocaleString.outputStackFail)
+        }.onFailure { toast(LocaleString.outputStackFail) }
+    }
+
+    override fun onBackPressed() {
+        intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
+        finish()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        parseIntent(intent)
+    }
+    private fun parseIntent(intent: Intent?) {
         val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsInfo")
         if (appErrorsInfo.isEmpty) {
@@ -83,7 +129,6 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             return
         }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
-        binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
             loggerE(msg = appErrorsInfo.stackTrace)
             toast(LocaleString.printToLogcatSuccess)
@@ -122,45 +167,13 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorRecordTimeText.text = appErrorsInfo.dateTime
         binding.errorStackTraceMovableText.text = appErrorsInfo.stackTrace
         binding.errorStackTraceFixedText.text = appErrorsInfo.stackTrace
-        binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
-            onInitialize {
-                binding.errorStackTraceScrollView.isVisible = it
-                binding.errorStackTraceFixedText.isGone = it
-            }
-            onChanged {
-                reinitialize()
-                resetScrollView()
-            }
-        }
+
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this))
                 appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
             else LocaleString.appName
         }
-        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
-        resetScrollView()
-    }
 
-    /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
-    private fun resetScrollView() {
-        binding.rootView.post {
-            binding.appPanelScrollView.scrollTo(0, 0)
-            binding.errorStackTraceScrollView.scrollTo(0, 0)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
-            data?.data?.let {
-                contentResolver?.openOutputStream(it)?.apply { write(stackTrace.toByteArray()) }?.close()
-                toast(LocaleString.outputStackSuccess)
-            } ?: toast(LocaleString.outputStackFail)
-        }.onFailure { toast(LocaleString.outputStackFail) }
-    }
-
-    override fun onBackPressed() {
-        intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
-        finish()
+        binding.appPanelScrollView.scrollTo(0, 0)
     }
 }
