@@ -81,6 +81,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     /**
      * 从 [Intent] 中解析 [AppErrorsInfoBean] 并加载至界面
      *
+     * @param intent 用于获取并解析 [AppErrorsInfoBean] 的 [Intent] 实例
      * @return [Boolean] 是否解析成功：true 为成功；false 为失败，可能是 [Intent] 为空或者 [AppErrorsInfoBean] 为空
      */
     private fun initUi(intent: Intent?): Boolean {
