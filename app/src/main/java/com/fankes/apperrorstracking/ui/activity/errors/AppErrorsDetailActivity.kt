@@ -62,10 +62,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
-        if (!parseIntent(intent)) return
+        if (intent.parseAppErrorsInfo().not()) return
 
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
-
         binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
             onInitialize {
                 binding.errorStackTraceScrollView.isVisible = it
@@ -76,14 +75,19 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 resetScrollView()
             }
         }
-
         binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
-
         resetScrollView()
     }
 
-    private fun parseIntent(intent: Intent?): Boolean {
-        val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
+    /**
+     * 从 [Intent] 中解析 [AppErrorsInfoBean] 并加载至界面
+     *
+     * @receiver [Intent] 待解析的 [Intent] 实例
+     *
+     * @return [Boolean] 是否解析成功：true为成功；false为失败，可能是 [Intent] 为空或者 [AppErrorsInfoBean] 为空
+     */
+    private fun Intent?.parseAppErrorsInfo(): Boolean {
+        val appErrorsInfo = runCatching { this?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
         if (appErrorsInfo == null) {
             toastAndFinish(name = "AppErrorsInfo")
             return false
@@ -146,7 +150,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorStackTraceMovableText.text = appErrorsInfo.stackTrace
         binding.errorStackTraceFixedText.text = appErrorsInfo.stackTrace
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
-            binding.detailTitleText.text = if (y >= 30.dp(context = this))
+            binding.detailTitleText.text = if (y >= 30.dp(context = this@AppErrorsDetailActivity))
                 appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
             else LocaleString.appName
         }
@@ -177,9 +181,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (parseIntent(intent)) {
-            binding.appPanelScrollView.scrollTo(0, 0)
-        }
+        if (intent.parseAppErrorsInfo()) binding.appPanelScrollView.scrollTo(0, 0)
     }
 
 }
