@@ -62,8 +62,34 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     private var stackTrace = ""
 
     override fun onCreate() {
+        if (initUi(intent).not()) return
+        binding.titleBackIcon.setOnClickListener { onBackPressed() }
+        binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
+            onInitialize {
+                binding.errorStackTraceScrollView.isVisible = it
+                binding.errorStackTraceFixedText.isGone = it
+            }
+            onChanged {
+                reinitialize()
+                resetScrollView()
+            }
+        }
+        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
+        resetScrollView()
+    }
+
+    /**
+     * 从 [Intent] 中解析 [AppErrorsInfoBean] 并加载至界面
+     *
+     * @param intent 用于获取并解析 [AppErrorsInfoBean] 的 [Intent] 实例
+     * @return [Boolean] 是否解析成功：true 为成功；false 为失败，可能是 [Intent] 为空或者 [AppErrorsInfoBean] 为空
+     */
+    private fun initUi(intent: Intent?): Boolean {
         val appErrorsInfo = runCatching { intent?.getSerializableExtraCompat<AppErrorsInfoBean>(EXTRA_APP_ERRORS_INFO) }.getOrNull()
-            ?: return toastAndFinish(name = "AppErrorsInfo")
+        if (appErrorsInfo == null) {
+            toastAndFinish(name = "AppErrorsInfo")
+            return false
+        }
         if (appErrorsInfo.isEmpty) {
             binding.appPanelScrollView.isVisible = false
             showDialog {
@@ -80,10 +106,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
                 }
                 noCancelable()
             }
-            return
+            return false
         }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
-        binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.printIcon.setOnClickListener {
             loggerE(msg = appErrorsInfo.stackTrace)
             toast(LocaleString.printToLogcatSuccess)
@@ -122,23 +147,12 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.errorRecordTimeText.text = appErrorsInfo.dateTime
         binding.errorStackTraceMovableText.text = appErrorsInfo.stackTrace
         binding.errorStackTraceFixedText.text = appErrorsInfo.stackTrace
-        binding.disableAutoWrapErrorStackTraceSwitch.bind(ConfigData.DISABLE_AUTO_WRAP_ERROR_STACK_TRACE) {
-            onInitialize {
-                binding.errorStackTraceScrollView.isVisible = it
-                binding.errorStackTraceFixedText.isGone = it
-            }
-            onChanged {
-                reinitialize()
-                resetScrollView()
-            }
-        }
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
-            binding.detailTitleText.text = if (y >= 30.dp(context = this))
+            binding.detailTitleText.text = if (y >= 30.dp(context = this@AppErrorsDetailActivity))
                 appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
             else LocaleString.appName
         }
-        binding.detailTitleText.setOnClickListener { binding.appPanelScrollView.smoothScrollTo(0, 0) }
-        resetScrollView()
+        return true
     }
 
     /** 修复在一些小屏设备上设置了 [TextView.setTextIsSelectable] 后布局自动上滑问题 */
@@ -162,5 +176,10 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     override fun onBackPressed() {
         intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
         finish()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (initUi(intent)) binding.appPanelScrollView.scrollTo(0, 0)
     }
 }
