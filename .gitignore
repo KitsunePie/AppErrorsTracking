@@ -1,7 +1,6 @@
 # Project exclude paths
 *.iml
 .gradle
-.secret/APP_CENTER_SECRET
 /local.properties
 /.idea/caches
 /.idea/libraries
