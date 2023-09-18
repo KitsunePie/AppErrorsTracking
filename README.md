@@ -1,21 +1,28 @@
 # AppErrorsTracking
 
-[![Blank](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/KitsunePie/AppErrorsTracking)
-[![Blank](https://img.shields.io/badge/license-AGPL3.0-blue)](https://github.com/KitsunePie/AppErrorsTracking/blob/master/LICENSE)
-[![Blank](https://img.shields.io/badge/version-v1.25-green)](https://github.com/KitsunePie/AppErrorsTracking/releases)
-[![Blank](https://img.shields.io/github/downloads/KitsunePie/AppErrorsTracking/total?label=Release)](https://github.com/KitsunePie/AppErrorsTracking/releases)
-[![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.apperrorstracking/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
-<br/><br/>
+[![GitHub license](https://img.shields.io/github/license/KitsunePie/AppErrorsTracking?color=blue)](https://github.com/KitsunePie/AppErrorsTracking/blob/master/LICENSE)
+[![GitHub CI](https://img.shields.io/github/actions/workflow/status/KitsunePie/AppErrorsTracking/commit_ci.yml?label=CI%20builds)](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml)
+[![GitHub release](https://img.shields.io/github/v/release/KitsunePie/AppErrorsTracking?display_name=release&logo=github&color=green)](https://github.com/KitsunePie/AppErrorsTracking/releases)
+![GitHub all releases](https://img.shields.io/github/downloads/KitsunePie/AppErrorsTracking/total?label=downloads)
+![GitHub all releases](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.apperrorstracking/total?label=LSPosed%20downloads&labelColor=F48FB1)
+
+[![Telegram CI](https://img.shields.io/badge/CI%20builds-Telegram-blue.svg?logo=telegram)](https://t.me/AppErrorsTracking_CI)
+[![Telegram](https://img.shields.io/badge/discussion-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
+[![QQ](https://img.shields.io/badge/discussion-QQ-blue.svg?logo=tencent-qq&logoColor=red)](https://qm.qq.com/cgi-bin/qm/qr?k=dp2h5YhWiga9WWb_Oh7kSHmx01X8I8ii&jump_from=webapi&authKey=Za5CaFP0lk7+Zgsk2KpoBD7sSaYbeXbsDgFjiWelOeH4VSionpxFJ7V0qQBSqvFM)
+[![QQ 频道](https://img.shields.io/badge/discussion-QQ%20频道-blue.svg?logo=tencent-qq&logoColor=red)](https://pd.qq.com/s/44gcy28h)
+
+<img src="https://github.com/KitsunePie/AppErrorsTracking/blob/master/img-src/icon.png?raw=true" width = "100" height = "100" alt="LOGO"/>
+
 English | [简体中文](https://github.com/KitsunePie/AppErrorsTracking/blob/master/README-zh-CN.md)
 
 Added more features to app's errors dialog, fixed custom rom deleted dialog, the best experience to Android developer.
 
-This project is an Xposed module that can be used in any Android system, currently only tested in **LSPosed**.
+This project is a Xposed Module that can be used in any Android system, currently only tested in **LSPosed**.
 
-This module is specially designed for Android developers.
+This Xposed Module is specially designed for Android developers.
 
 When it is possible that the computer cannot be connected and ADB cannot be performed, this module can be used to quickly capture any errors of
-any installed apps, so as to quickly locate the problem.
+any installed apps, to quickly locate the problem.
 
 The error log of apps crashing is an invaluable asset for developers. If you are not a developer, you can still install this module to provide
 developers with more exception information to quickly solve problems.
@@ -45,18 +52,18 @@ Similar to **Bugly** to automatically collect errors, the system cannot obtain w
 
 ## Features List
 
-- Completely replaces the system's apps errors dialog
+- [x] Completely replaces the system's apps errors dialog
 
-- Logs exceptions for each apps and persists until restart
+- [x] Logs exceptions for each app and persists until restart
 
-- Copy, share, export errors stack trace functions
+- [x] Copy, share, export errors stack trace functions
 
-- Errors history record function, which can be entered through the notification bar tile "errors history record" and the main interface of the
-  module
+- [x] Errors history record function,
+  which can be entered through the notification bar tile "errors history record" and the main interface of the module
 
-- Apps errors statistics function
+- [x] Apps errors statistics function
 
-- Errors display function for multi-process apps
+- [x] Errors display function for multi-process apps
 
 ## Translation Contribution
 
@@ -73,6 +80,9 @@ The specific update content can be viewed by clicking the text above and going t
 This update is automatically compiled and released by the open source process, **no guarantee of its stability**, so the released version is
 **for testing only**, and there is no special explanation or even the version may change or remain the same as the current stable version.
 
+If you need to download the CI installation packages,
+please click the `CI builds | Telegram` tag at the top to join the Telegram CI automatic build channel.
+
 - [Release](https://github.com/KitsunePie/AppErrorsTracking/releases)
 - [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
 
@@ -82,22 +92,19 @@ For the specific update content, you can click the text above to go to the desig
 
 The update of the stable version will be released to the above address at the same time and updated synchronously.
 
-## Release Status Description
+The releases of this Xposed Module is limited to the urls listed above.
 
-![Blank](https://img.shields.io/badge/build-passing-brightgreen)
+We have nothing to do with versions downloaded from other informal channels or any impact on you.
 
-The above status is that the current stable version is consistent with the automatic build version or the current code changes and the stable
-version have no functional difference.
+## Promotion
 
-![Blank](https://img.shields.io/badge/build-pending-dbab09)
+If you are looking for a Gradle plugin that can automatically manage Gradle project dependencies,
+you can check out the [SweetDependency](https://github.com/HighCapable/SweetDependency) project.
 
-The above state is that there are automatic build versions and updates with new features but no stable version is currently released, and it is
-in a pre-release state.
+If you are looking for a Gradle plugin that can automatically generate properties key-values,
+you can check out the [SweetProperty](https://github.com/HighCapable/SweetProperty) project.
 
-![Blank](https://img.shields.io/badge/build-problem-red)
-
-The above status is that the currently released stable version may have serious problems but have not been fixed in time and the stable version
-has not been released.
+This project also uses **SweetDependency** and **SweetProperty**.
 
 ## Star History
 
@@ -121,9 +128,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-Powered by [YukiHookAPI](https://github.com/fankes/YukiHookAPI)
+Powered by [YukiHookAPI](https://github.com/KitsunePie/YukiHookAPI)
 
 Copyright © 2017-2023 Fankes Studio(qzmmcn@163.com)
