@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">異常追綜</string>
+    <string name="app_name">異常跟踪</string>
     <string name="xposed_desc">為原生 FC 對話框增加更多功能並修復中國大陸定制 ROM 刪除 FC 對話框的問題，給 Android 開發者帶來更好的體驗。 \n開發者：酷安 @星夜不薈</string>
-    <string name="app_info">程式情報</string>
+    <string name="app_info">程式詳情</string>
     <string name="reopen_app">重新開啟</string>
     <string name="error_detail">異常詳解</string>
     <string name="mute_if_unlock">忽略（直到設備重新開屏）</string>
@@ -115,7 +115,7 @@
     <string name="errors_dialog_always_show_reopen">錯誤對話框始終展示“重新開啟”選項</string>
     <string name="errors_dialog_always_show_reopen_tip">啟用後，在使用對話框展示程式異常時，非首次異常時也將展示“重新開啟”選項，若當前異常非主進程或程式無法打開則依然不會展示此選項。</string>
     <string name="developer_notice">使用說明</string>
-    <string name="developer_notice_tip">此模組專為 Android 開發者而打造。\n\n在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便快速定位問題。 \n\n程式發生崩潰的錯誤日誌對開發者來說是無價的財富，若你不是開發者，你依然可以安裝此模組，以便給開發者提供更多異常信息快速解決問題。</string>
+    <string name="developer_notice_tip">此模組專為 Android 開發者而打造。 \n\n在可能的無法連接電腦，不能進行 ADB 調試的時候，可通過此模組來快速捕獲任意已安裝程式的任意異常，以便快速定位問題。 \n\n程式發生崩潰的錯誤日誌對開發者來說是無價的財富，若你不是開發者，你依然可以安裝此模組，以便給開發者提供更多異常信息快速解決問題。</string>
     <string name="warning">警告</string>
     <string name="fast_restart_problem">部分定制系統使用急速重開後可能會發生錯誤，仍然要繼續嗎？</string>
     <string name="theme_settings">主題設置</string>
@@ -146,4 +146,6 @@
     <string name="latest_version_tip">發佈於 %1$s\n\n更新日誌\n\n%2$s</string>
     <string name="update_now">升級</string>
     <string name="record_count">共 %1$s 條紀錄</string>
+    <string name="ci_notice_dialog_title">CI 自動建置說明</string>
+    <string name="ci_notice_dialog_content">你正在使用的是 CI 自動建置版本，Commit ID 為 %1$s。\n\n它是由程式碼提交後自動觸發並建置、自動編譯發布的，並未經任何穩定性測試，使用風險自負。</string>
 </resources>

@@ -147,4 +147,6 @@
     <string name="latest_version_tip">Released on %1$s\n\nChangelog\n\n%2$s</string>
     <string name="update_now">Update</string>
     <string name="record_count">%1$s records found</string>
+    <string name="ci_notice_dialog_title">CI Auto Build Instruction</string>
+    <string name="ci_notice_dialog_content">You are using a CI automated build with Commit ID %1$s.\n\nIt is automatically triggered and built after the code is committed, automatically compiled and released, and has not been tested for stability, use it at your own risk.</string>
 </resources>
