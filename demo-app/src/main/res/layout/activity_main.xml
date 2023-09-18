@@ -30,6 +30,7 @@
             android:tooltipText="@string/back" />
 
         <TextView
+            android:id="@+id/title_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2.5dp"

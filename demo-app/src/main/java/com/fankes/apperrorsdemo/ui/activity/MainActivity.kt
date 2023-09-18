@@ -19,19 +19,25 @@
  *
  * This file is Created by fankes on 2022/5/10.
  */
+@file:Suppress("SetTextI18n")
+
 package com.fankes.apperrorsdemo.ui.activity
 
 import android.content.Intent
 import android.os.SystemClock
+import com.fankes.apperrorsdemo.R
 import com.fankes.apperrorsdemo.databinding.ActivityMainBinding
 import com.fankes.apperrorsdemo.databinding.ActivityMultiProcessBinding
+import com.fankes.apperrorsdemo.generated.DemoAppProperties
 import com.fankes.apperrorsdemo.native.Channel
 import com.fankes.apperrorsdemo.ui.activity.base.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate() {
-        binding.titleBackIcon.setOnClickListener { finish() }
+        DemoAppProperties.GITHUB_CI_COMMIT_ID.takeIf(String::isNotBlank)?.also {
+            binding.titleText.text = "${getString(R.string.app_name)} ($it)"
+        }; binding.titleBackIcon.setOnClickListener { finish() }
         binding.throwRuntimeButton.setOnClickListener { Channel.throwRuntimeException() }
         binding.throwIllegalStateButton.setOnClickListener { Channel.throwIllegalStateException() }
         binding.throwNullPointerButton.setOnClickListener { Channel.throwNullPointerException() }
