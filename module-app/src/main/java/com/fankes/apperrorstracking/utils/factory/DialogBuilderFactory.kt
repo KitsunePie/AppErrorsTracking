@@ -17,7 +17,7 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/5/12.
+ * This file is created by fankes on 2022/5/12.
  */
 @file:Suppress("unused", "OPT_IN_USAGE", "EXPERIMENTAL_API_USAGE")
 

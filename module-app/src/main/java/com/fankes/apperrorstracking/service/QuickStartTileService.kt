@@ -17,7 +17,7 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/5/11.
+ * This file is created by fankes on 2022/5/11.
  */
 package com.fankes.apperrorstracking.service
 
