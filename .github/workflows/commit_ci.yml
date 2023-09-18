@@ -96,13 +96,13 @@ jobs:
           name: AppErrorsTracking-demo-release-${{ github.event.head_commit.id }}
       - name: Post Artifacts to Telegram
         run: |
-          export module-debug=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/debug -name "*.apk")
-          export module-release=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/release -name "*.apk")
-          export demo-debug=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/debug -name "*.apk")
-          export demo-release=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/release -name "*.apk")
+          export module_debug=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/debug -name "*.apk")
+          export module_release=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/release -name "*.apk")
+          export demo_debug=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/debug -name "*.apk")
+          export demo_release=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/release -name "*.apk")
           ESCAPED=`python3 -c 'import json,os,urllib.parse; msg = json.dumps(os.environ["COMMIT_MESSAGE"]); print(urllib.parse.quote(msg if len(msg) <= 1024 else json.dumps(os.environ["COMMIT_URL"])))'`
-          curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodule-debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodule-release%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fdemo-debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fdemo-release%22%2C%22parse_mode%22%3A%22MarkdownV2%22%2C%22caption%22:${ESCAPED}%7D%5D" \
-           -F module-debug="@$module-debug" \
-           -F module-release="@$module-release" \
-           -F demo-debug="@$demo-debug" \
-           -F demo-release="@$demo-release"
+          curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodule_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodule_release%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fdemo_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fdemo_release%22%2C%22parse_mode%22%3A%22MarkdownV2%22%2C%22caption%22:${ESCAPED}%7D%5D" \
+           -F module_debug="@$module_debug" \
+           -F module_release="@$module_release" \
+           -F demo_debug="@$demo_debug" \
+           -F demo_release="@$demo_release"
