@@ -40,7 +40,15 @@ import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsStatisticsBinding
 import com.fankes.apperrorstracking.locale.LocaleString
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
-import com.fankes.apperrorstracking.utils.factory.*
+import com.fankes.apperrorstracking.utils.factory.appIconOf
+import com.fankes.apperrorstracking.utils.factory.appNameOf
+import com.fankes.apperrorstracking.utils.factory.bindAdapter
+import com.fankes.apperrorstracking.utils.factory.decimal
+import com.fankes.apperrorstracking.utils.factory.newThread
+import com.fankes.apperrorstracking.utils.factory.openSelfSetting
+import com.fankes.apperrorstracking.utils.factory.showDialog
+import com.fankes.apperrorstracking.utils.factory.toUtcTime
+import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.fankes.apperrorstracking.utils.tool.ZipFileTool
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
