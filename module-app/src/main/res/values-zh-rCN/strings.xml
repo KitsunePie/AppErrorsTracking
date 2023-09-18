@@ -146,4 +146,6 @@
     <string name="latest_version_tip">发布于 %1$s\n\n更新日志\n\n%2$s</string>
     <string name="update_now">更新</string>
     <string name="record_count">共 %1$s 条记录</string>
+    <string name="ci_notice_dialog_title">CI 自动构建说明</string>
+    <string name="ci_notice_dialog_content">你正在使用的是 CI 自动构建版本，Commit ID 为 %1$s。\n\n它是由代码提交后自动触发并构建、自动编译发布的，并未经任何稳定性测试，使用风险自负。</string>
 </resources>

@@ -49,7 +49,7 @@ object LocaleString {
      */
     private val resources
         get() = baseContext?.resources ?: basePackageParam?.moduleAppResources ?: baseResources
-        ?: error("LocaleString must bind an instance first")
+            ?: error("LocaleString must bind an instance first")
 
     /**
      * 绑定并初始化
@@ -562,4 +562,16 @@ object LocaleString {
 
     /** @string Automatic generated */
     fun recordCount(vararg objArrs: Any) = R.string.record_count.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val ciNoticeDialogTitle get() = ciNoticeDialogTitle()
+
+    /** @string Automatic generated */
+    fun ciNoticeDialogTitle(vararg objArrs: Any) = R.string.ci_notice_dialog_title.bind(*objArrs)
+
+    /** @string Automatic generated */
+    val ciNoticeDialogContent get() = ciNoticeDialogContent()
+
+    /** @string Automatic generated */
+    fun ciNoticeDialogContent(vararg objArrs: Any) = R.string.ci_notice_dialog_content.bind(*objArrs)
 }

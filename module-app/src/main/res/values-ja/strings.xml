@@ -146,4 +146,6 @@
     <string name="latest_version_tip">%1$s に投稿\n\n変更ログ\n\n%2$s</string>
     <string name="update_now">更新</string>
     <string name="record_count">%1$s の合計紀錄</string>
+    <string name="ci_notice_dialog_title">CI 自動ビルド手順</string>
+    <string name="ci_notice_dialog_content">コミット ID %1$s の CI 自動ビルドを使用しています。\n\nコードが送信された後、自動的にトリガーされてビルドされ、自動的にコンパイルされてリリースされますが、安定性についてはテストされていません。ご自身の責任で使用してください。</string>
 </resources>
