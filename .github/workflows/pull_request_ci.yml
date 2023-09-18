@@ -11,18 +11,27 @@ on:
 
 jobs:
   build:
-    name: Pull request check
+    name: Pull Request Check
+    if: ${{ success() }}
     runs-on: ubuntu-latest
+    env:
+      MODULE_APK_OUTPUT_PATH: 'module-app/build/outputs/apk'
+      DEMO_APK_OUTPUT_PATH: 'demo-app/build/outputs/apk'
     steps:
       - uses: actions/checkout@v3
+      - name: Prepare GitHub Env
+        run: |
+          GITHUB_SHA=${{ github.sha }}
+          GITHUB_CI_COMMIT_ID=${GITHUB_SHA:0:7}
+          echo "GITHUB_CI_COMMIT_ID=$GITHUB_CI_COMMIT_ID" >> $GITHUB_ENV
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1
         with:
           cmake-version: '3.22.1'
-      - name: Prepare Java 11
+      - name: Prepare Java 17
         uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17
           java-package: jdk
           distribution: 'temurin'
           cache: 'gradle'
@@ -33,7 +42,7 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             !~/.gradle/caches/build-cache-*
-          key: gradle-deps-core-${{ hashFiles('**/build.gradle') }}
+          key: gradle-deps-core-${{ hashFiles('**/build.gradle.kts') }}
           restore-keys: |
             gradle-deps
       - name: Cache Gradle Build
@@ -46,31 +55,31 @@ jobs:
             gradle-builds
       - name: Build with Gradle
         run: |
-          ./gradlew :app:assembleDebug
-          ./gradlew :app:assembleRelease
+          ./gradlew :module-app:assembleDebug
+          ./gradlew :module-app:assembleRelease
           ./gradlew :demo-app:assembleDebug
           ./gradlew :demo-app:assembleRelease
-          echo "MODULE_DEBUG_APK_FILE=$(find app/build/outputs/apk/debug -name '*.apk')" >> $GITHUB_ENV
-          echo "DEMO_DEBUG_APK_FILE=$(find demo-app/build/outputs/apk/debug -name '*.apk')" >> $GITHUB_ENV
-          echo "MODULE_RELEASE_APK_FILE=$(find app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
-          echo "DEMO_RELEASE_APK_FILE=$(find demo-app/build/outputs/apk/release -name '*.apk')" >> $GITHUB_ENV
-      - name: Upload Artifacts(module-debug)
+          echo "MODULE_DEBUG_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_RELEASE_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
+          echo "DEMO_DEBUG_APK_PATH=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "DEMO_RELEASE_APK_PATH=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
+      - name: Upload Artifacts (Module-Debug)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.MODULE_DEBUG_APK_FILE }}
-          name: module-debug
-      - name: Upload Artifacts(demo-debug)
+          path: ${{ env.MODULE_DEBUG_APK_PATH }}
+          name: AppErrorsTracking-module-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Module-Release)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.DEMO_DEBUG_APK_FILE }}
-          name: demo-debug
-      - name: Upload Artifacts(module-release)
+          path: ${{ env.MODULE_RELEASE_APK_PATH }}
+          name: AppErrorsTracking-module-release-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Demo-Debug)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.MODULE_RELEASE_APK_FILE }}
-          name: module-release
-      - name: Upload Artifacts(demo-release)
+          path: ${{ env.DEMO_DEBUG_APK_PATH }}
+          name: AppErrorsTracking-demo-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Demo-Release)
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.DEMO_RELEASE_APK_FILE }}
-          name: demo-release
+          path: ${{ env.DEMO_RELEASE_APK_PATH }}
+          name: AppErrorsTracking-demo-release-${{ github.event.head_commit.id }}
