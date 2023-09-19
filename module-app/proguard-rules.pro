@@ -32,30 +32,35 @@
 -adaptresourcefilecontents
 
 -renamesourcefileattribute P
--keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,Signature,LineNumberTable
 
 ## ---------------Begin: proguard configuration for Gson  ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
 
+# Explicitly preserve all serialization members. The Serializable interface
+# is only a marker interface, so it wouldn't save them.
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
 # Gson specific classes
--dontwarn sun.misc**
--keep class com.google.gson.stream**{*;}
-
-# Application classes that will be serialized/deserialized over Gson
--keep class com.google.gson.examples.android.model** { <fields>; }
-
-# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
--keep class * implements com.google.gson.TypeAdapter
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
+-dontwarn sun.misc.**
+-keep class com.google.gson.stream.** { *; }
 
 # Prevent R8 from leaving Data object members always null
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+
+# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 ## ---------------End: proguard configuration for Gson  ----------
 
@@ -65,6 +70,7 @@
 }
 
 -keep class * extends android.app.Activity
--keepclassmembers class * implements androidx.viewbinding.ViewBinding {
+-keep class * implements androidx.viewbinding.ViewBinding {
+    <init>();
     *** inflate(android.view.LayoutInflater);
 }
