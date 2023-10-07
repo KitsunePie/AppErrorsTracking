@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2022/5/12.
  */
-@file:Suppress("unused", "OPT_IN_USAGE", "EXPERIMENTAL_API_USAGE")
+@file:Suppress("unused")
 
 package com.fankes.apperrorstracking.utils.factory
 
@@ -38,7 +38,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.annotation.CauseProblemsApi
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
@@ -184,7 +183,6 @@ class DialogBuilder<VB : ViewBinding>(
     fun cancel() = dialogInstance?.cancel()
 
     /** 显示对话框 */
-    @CauseProblemsApi
     fun show() {
         /** 若当前自定义 View 的对话框没有调用 [binding] 将会对其手动调用一次以确保显示布局 */
         if (bindingClass != null) binding

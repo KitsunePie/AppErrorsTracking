@@ -63,37 +63,39 @@ import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.log.loggerE
-import com.highcapable.yukihookapi.hook.log.loggerI
-import com.highcapable.yukihookapi.hook.log.loggerW
+import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.MessageClass
 import com.highcapable.yukihookapi.hook.type.java.BooleanType
 
 object FrameworkHooker : YukiBaseHooker() {
 
-    private const val ActivityManagerServiceClass = "com.android.server.am.ActivityManagerService"
-    private const val UserControllerClass = "com.android.server.am.UserController"
-    private const val AppErrorsClass = "com.android.server.am.AppErrors"
-    private const val AppErrorDialogClass = "com.android.server.am.AppErrorDialog"
-    private const val AppErrorDialog_DataClass = "com.android.server.am.AppErrorDialog\$Data"
-    private const val ProcessRecordClass = "com.android.server.am.ProcessRecord"
-    private const val ActivityTaskManagerService_LocalServiceClass = "com.android.server.wm.ActivityTaskManagerService\$LocalService"
+    private val UserControllerClass by lazyClass("com.android.server.am.UserController")
+    private val AppErrorsClass by lazyClass("com.android.server.am.AppErrors")
+    private val AppErrorDialogClass by lazyClass("com.android.server.am.AppErrorDialog")
+    private val AppErrorDialog_DataClass by lazyClass("com.android.server.am.AppErrorDialog\$Data")
+    private val ProcessRecordClass by lazyClass("com.android.server.am.ProcessRecord")
+    private val ActivityManagerServiceClass by lazyClassOrNull("com.android.server.am.ActivityManagerService")
+    private val ActivityTaskManagerService_LocalServiceClass by lazyClassOrNull("com.android.server.wm.ActivityTaskManagerService\$LocalService")
 
-    private val PackageListClass = VariousClass(
-        "com.android.server.am.ProcessRecord\$PackageList",
-        "com.android.server.am.PackageList"
+    private val PackageListClass by lazyClassOrNull(
+        VariousClass(
+            "com.android.server.am.ProcessRecord\$PackageList",
+            "com.android.server.am.PackageList"
+        )
     )
-    private val ErrorDialogControllerClass = VariousClass(
-        "com.android.server.am.ProcessRecord\$ErrorDialogController",
-        "com.android.server.am.ErrorDialogController"
+    private val ErrorDialogControllerClass by lazyClassOrNull(
+        VariousClass(
+            "com.android.server.am.ProcessRecord\$ErrorDialogController",
+            "com.android.server.am.ErrorDialogController"
+        )
     )
 
     /** 已忽略错误的 APP 数组 - 直到重新解锁 */
-    private var mutedErrorsIfUnlockApps = HashSet<String>()
+    private var mutedErrorsIfUnlockApps = mutableSetOf<String>()
 
     /** 已忽略错误的 APP 数组 - 直到重新启动 */
-    private var mutedErrorsIfRestartApps = HashSet<String>()
+    private var mutedErrorsIfRestartApps = mutableSetOf<String>()
 
     /**
      * APP 进程异常数据定义类
@@ -107,40 +109,40 @@ object FrameworkHooker : YukiBaseHooker() {
          * 获取当前包列表实例
          * @return [Any] or null
          */
-        private val pkgList = if (ProcessRecordClass.toClass().hasMethod { name = "getPkgList"; emptyParam() })
-            ProcessRecordClass.toClass().method { name = "getPkgList"; emptyParam() }.get(proc).call()
-        else ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).any()
+        private val pkgList = if (ProcessRecordClass.hasMethod { name = "getPkgList"; emptyParam() })
+            ProcessRecordClass.method { name = "getPkgList"; emptyParam() }.get(proc).call()
+        else ProcessRecordClass.field { name = "pkgList" }.get(proc).any()
 
         /**
          * 获取当前包列表数组大小
          * @return [Int]
          */
-        private val pkgListSize = PackageListClass.toClassOrNull()?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
-            ?: ProcessRecordClass.toClass().field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
+        private val pkgListSize = PackageListClass?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
+            ?: ProcessRecordClass.field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
 
         /**
          * 获取当前 pid 信息
          * @return [Int]
          */
-        val pid = ProcessRecordClass.toClass().field { name { it == "mPid" || it == "pid" } }.get(proc).int()
+        val pid = ProcessRecordClass.field { name { it == "mPid" || it == "pid" } }.get(proc).int()
 
         /**
          * 获取当前用户 ID 信息
          * @return [Int]
          */
-        val userId = ProcessRecordClass.toClass().field { name = "userId" }.get(proc).int()
+        val userId = ProcessRecordClass.field { name = "userId" }.get(proc).int()
 
         /**
          * 获取当前 APP 信息
          * @return [ApplicationInfo] or null
          */
-        val appInfo = ProcessRecordClass.toClass().field { name = "info" }.get(proc).cast<ApplicationInfo>()
+        val appInfo = ProcessRecordClass.field { name = "info" }.get(proc).cast<ApplicationInfo>()
 
         /**
          * 获取当前进程名称
          * @return [String]
          */
-        val processName = ProcessRecordClass.toClass().field { name = "processName" }.get(proc).string()
+        val processName = ProcessRecordClass.field { name = "processName" }.get(proc).string()
 
         /**
          * 获取当前 APP、进程 包名
@@ -164,17 +166,17 @@ object FrameworkHooker : YukiBaseHooker() {
          * 获取当前进程是否为后台进程
          * @return [Boolean]
          */
-        val isBackgroundProcess = UserControllerClass.toClass()
+        val isBackgroundProcess = UserControllerClass
             .method { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
-            .get(ActivityManagerServiceClass.toClass().field { name = "mUserController" }
-                .get(AppErrorsClass.toClass().field { name = "mService" }.get(errors).any()).any())
+            .get(ActivityManagerServiceClass?.field { name = "mUserController" }
+                ?.get(AppErrorsClass.field { name = "mService" }.get(errors).any())?.any())
             .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
 
         /**
          * 获取当前进程是否短时内重复崩溃
          * @return [Boolean]
          */
-        val isRepeatingCrash = resultData?.let { AppErrorDialog_DataClass.toClass().field { name = "repeating" }.get(it).boolean() } ?: false
+        val isRepeatingCrash = resultData?.let { AppErrorDialog_DataClass.field { name = "repeating" }.get(it).boolean() } ?: false
     }
 
     /** 注册生命周期 */
@@ -193,34 +195,34 @@ object FrameworkHooker : YukiBaseHooker() {
                 SystemClock.sleep(100)
                 /** 刷新存储类 */
                 AppErrorsConfigData.refresh()
-                if (prefs.isPreferencesAvailable.not()) loggerW(msg = "Cannot refreshing app errors config data, preferences is not available")
+                if (prefs.isPreferencesAvailable.not()) YLog.warn("Cannot refreshing app errors config data, preferences is not available")
             }
             onOpenAppUsedFramework {
                 appContext?.openApp(it.first, it.second)
-                loggerI(msg = "Opened \"${it.first}\"${it.second.takeIf { e -> e > 0 }?.let { e -> " --user $e" } ?: ""}")
+                YLog.info("Opened \"${it.first}\"${it.second.takeIf { e -> e > 0 }?.let { e -> " --user $e" } ?: ""}")
             }
             onPushAppErrorInfoData {
                 AppErrorsRecordData.allData.firstOrNull { e -> e.pid == it } ?: run {
-                    loggerW(msg = "Cannot received crash application data --pid $it")
+                    YLog.warn("Cannot received crash application data --pid $it")
                     AppErrorsInfoBean()
                 }
             }
             onPushAppErrorsInfoData { AppErrorsRecordData.allData.toArrayList() }
             onRemoveAppErrorsInfoData {
-                loggerI(msg = "Removed app errors info data for package \"${it.packageName}\"")
+                YLog.info("Removed app errors info data for package \"${it.packageName}\"")
                 AppErrorsRecordData.remove(it)
             }
             onClearAppErrorsInfoData {
-                loggerI(msg = "Cleared all app errors info data, size ${AppErrorsRecordData.allData.size}")
+                YLog.info("Cleared all app errors info data, size ${AppErrorsRecordData.allData.size}")
                 AppErrorsRecordData.clearAll()
             }
             onMutedErrorsIfUnlock {
                 mutedErrorsIfUnlockApps.add(it)
-                loggerI(msg = "Muted \"$it\" until unlocks")
+                YLog.info("Muted \"$it\" until unlocks")
             }
             onMutedErrorsIfRestart {
                 mutedErrorsIfRestartApps.add(it)
-                loggerI(msg = "Muted \"$it\" until restarts")
+                YLog.info("Muted \"$it\" until restarts")
             }
             onPushMutedErrorsAppsData {
                 arrayListOf<MutedErrorsAppBean>().apply {
@@ -233,17 +235,17 @@ object FrameworkHooker : YukiBaseHooker() {
             onUnmuteErrorsApp {
                 when (it.type) {
                     MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> {
-                        loggerI(msg = "Unmuted if unlocks errors app \"${it.packageName}\"")
+                        YLog.info("Unmuted if unlocks errors app \"${it.packageName}\"")
                         mutedErrorsIfUnlockApps.remove(it.packageName)
                     }
                     MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> {
-                        loggerI(msg = "Unmuted if restarts errors app \"${it.packageName}\"")
+                        YLog.info("Unmuted if restarts errors app \"${it.packageName}\"")
                         mutedErrorsIfRestartApps.remove(it.packageName)
                     }
                 }
             }
             onUnmuteAllErrorsApps {
-                loggerI(msg = "Unmute all errors apps --unlocks ${mutedErrorsIfUnlockApps.size} --restarts ${mutedErrorsIfRestartApps.size}")
+                YLog.info("Unmute all errors apps --unlocks ${mutedErrorsIfUnlockApps.size} --restarts ${mutedErrorsIfRestartApps.size}")
                 mutedErrorsIfUnlockApps.clear()
                 mutedErrorsIfRestartApps.clear()
             }
@@ -269,7 +271,7 @@ object FrameworkHooker : YukiBaseHooker() {
                                         }
                                     }.sortedByDescending { it.lastUpdateTime }
                                         .forEach { add(AppInfoBean(name = context.appNameOf(it.packageName), packageName = it.packageName)) }
-                                else loggerW(msg = "Fetched installed packages but got empty list")
+                                else YLog.warn("Fetched installed packages but got empty list")
                             }
                         }
                 } ?: arrayListOf()
@@ -333,7 +335,7 @@ object FrameworkHooker : YukiBaseHooker() {
         when {
             packageName == BuildConfigWrapper.APPLICATION_ID -> {
                 context.toast(msg = "AppErrorsTracking has crashed, please see the log in console")
-                loggerE(msg = "AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
+                YLog.error("AppErrorsTracking has crashed itself, please see the Android Runtime Exception in console")
             }
             ConfigData.isEnableAppConfigTemplate -> when {
                 AppErrorsConfigData.isAppShowingType(AppErrorsConfigType.GLOBAL, packageName) -> when {
@@ -350,11 +352,11 @@ object FrameworkHooker : YukiBaseHooker() {
             else -> showAppErrorsWithDialog()
         }
         /** 打印错误日志 */
-        if (isActualApp) loggerE(
+        if (isActualApp) YLog.error(
             msg = "Application \"$packageName\" ${if (isRepeatingCrash) "keeps stopping" else "has stopped"}" +
                 (if (packageName != processName) " --process \"$processName\"" else "") +
                 "${if (userId != 0) " --user $userId" else ""} --pid $pid"
-        ) else loggerE(msg = "Process \"$processName\" ${if (isRepeatingCrash) "keeps stopping" else "has stopped"} --pid $pid")
+        ) else YLog.error("Process \"$processName\" ${if (isRepeatingCrash) "keeps stopping" else "has stopped"} --pid $pid")
     }
 
     /**
@@ -364,101 +366,73 @@ object FrameworkHooker : YukiBaseHooker() {
      */
     private fun AppErrorsProcessData.handleAppErrorsInfo(context: Context, info: ApplicationErrorReport.CrashInfo?) {
         AppErrorsRecordData.add(AppErrorsInfoBean.clone(context, pid, userId, appInfo?.packageName, info))
-        loggerI(msg = "Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
+        YLog.info("Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
     }
 
     override fun onHook() {
         /** 注册生命周期 */
         registerLifecycle()
         /** 干掉原生错误对话框 - 如果有 */
-        ErrorDialogControllerClass.hook {
-            injectMember {
-                method {
-                    name = "hasCrashDialogs"
-                    emptyParam()
-                }
-                replaceToTrue()
-            }
-            injectMember {
-                method {
-                    name = "showCrashDialogs"
-                    paramCount = 1
-                }
-                intercept()
-            }
-        }.ignoredHookClassNotFoundFailure()
+        ErrorDialogControllerClass?.apply {
+            method {
+                name = "hasCrashDialogs"
+                emptyParam()
+            }.hook().replaceToTrue()
+            method {
+                name = "showCrashDialogs"
+                paramCount = 1
+            }.hook().intercept()
+        }
         /** 干掉原生错误对话框 - API 30 以下 */
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            ActivityTaskManagerService_LocalServiceClass.hook {
-                injectMember {
-                    method {
-                        name = "canShowErrorDialogs"
-                        emptyParam()
-                    }
-                    replaceToFalse()
-                }.ignoredNoSuchMemberFailure()
-            }.ignoredHookClassNotFoundFailure()
-            ActivityManagerServiceClass.hook {
-                injectMember {
-                    method {
-                        name = "canShowErrorDialogs"
-                        emptyParam()
-                    }
-                    replaceToFalse()
-                }.ignoredNoSuchMemberFailure()
-            }.ignoredHookClassNotFoundFailure()
+            ActivityTaskManagerService_LocalServiceClass?.method {
+                name = "canShowErrorDialogs"
+                emptyParam()
+            }?.ignored()?.hook()?.replaceToFalse()
+            ActivityManagerServiceClass?.method {
+                name = "canShowErrorDialogs"
+                emptyParam()
+            }?.ignored()?.hook()?.replaceToFalse()
         }
         /** 干掉原生错误对话框 - 如果上述方法全部失效则直接结束对话框 */
-        AppErrorDialogClass.hook {
-            injectMember {
-                method {
-                    name = "onCreate"
-                    param(BundleClass)
-                }
-                afterHook { instance<Dialog>().cancel() }
-            }.ignoredNoSuchMemberFailure()
-            injectMember {
-                method {
-                    name = "onStart"
-                    emptyParam()
-                }
-                afterHook { instance<Dialog>().cancel() }
-            }.ignoredNoSuchMemberFailure()
+        AppErrorDialogClass.apply {
+            method {
+                name = "onCreate"
+                param(BundleClass)
+            }.ignored().hook().after { instance<Dialog>().cancel() }
+            method {
+                name = "onStart"
+                emptyParam()
+            }.ignored().hook().after { instance<Dialog>().cancel() }
         }
         /** 注入自定义错误对话框 */
-        AppErrorsClass.hook {
-            injectMember {
-                method {
-                    name = "handleShowAppErrorUi"
-                    param(MessageClass)
-                }
-                afterHook {
-                    /** 当前实例 */
-                    val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
+        AppErrorsClass.apply {
+            method {
+                name = "handleShowAppErrorUi"
+                param(MessageClass)
+            }.hook().after {
+                /** 当前实例 */
+                val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
 
-                    /** 当前错误数据 */
-                    val resultData = args().first().cast<Message>()?.obj
+                /** 当前错误数据 */
+                val resultData = args().first().cast<Message>()?.obj
 
-                    /** 当前进程信息 */
-                    val proc = AppErrorDialog_DataClass.toClass().field { name = "proc" }.get(resultData).any()
-                    /** 创建 APP 进程异常数据类 */
-                    AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
-                }
+                /** 当前进程信息 */
+                val proc = AppErrorDialog_DataClass.field { name = "proc" }.get(resultData).any()
+                /** 创建 APP 进程异常数据类 */
+                AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
             }
-            injectMember {
-                method {
-                    name = "handleAppCrashInActivityController"
-                    returnType = BooleanType
-                }
-                afterHook {
-                    /** 当前实例 */
-                    val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@afterHook
+            method {
+                name = "handleAppCrashInActivityController"
+                returnType = BooleanType
+            }.hook().after {
+                /** 当前实例 */
+                val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
 
-                    /** 当前进程信息 */
-                    val proc = args().first().any() ?: return@afterHook loggerW(msg = "Received but got null ProcessRecord")
-                    /** 创建 APP 进程异常数据类 */
-                    AppErrorsProcessData(instance, proc).handleAppErrorsInfo(context, args(index = 1).cast())
-                }
+                /** 当前进程信息 */
+                val proc = args().first().any() ?: return@after YLog.warn("Received but got null ProcessRecord")
+                /** 创建 APP 进程异常数据类 */
+                AppErrorsProcessData(instance, proc).handleAppErrorsInfo(context, args(index = 1).cast())
             }
         }
     }
