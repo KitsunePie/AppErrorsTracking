@@ -22,7 +22,7 @@ repositories:
 plugins:
   com.android.application:
     alias: android-application
-    version: 8.1.1
+    version: 8.1.2
   org.jetbrains.kotlin.android:
     alias: kotlin-android
     version: 1.9.10
@@ -43,20 +43,20 @@ libraries:
         rovo89-xposed-api
   com.highcapable.yukihookapi:
     api:
-      version: 1.1.11
+      version: 1.2.0
     ksp-xposed:
       version-ref: <this>::api
   com.highcapable.yukireflection:
     api:
-      version: 1.0.2
+      version: 1.0.3
   com.microsoft.appcenter:
     appcenter-analytics:
-      version: 5.0.0
+      version: 5.0.2
     appcenter-crashes:
       version-ref: <this>::appcenter-analytics
   com.github.topjohnwu.libsu:
     core:
-      version: 5.0.5
+      version: 5.2.1
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7
@@ -74,7 +74,7 @@ libraries:
       version: 1.6.1
   com.google.android.material:
     material:
-      version: 1.9.0
+      version: 1.10.0
   androidx.constraintlayout:
     constraintlayout:
       version: 2.1.4
