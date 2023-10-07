@@ -31,7 +31,7 @@ import com.fankes.apperrorstracking.utils.factory.appVersionCodeOf
 import com.fankes.apperrorstracking.utils.factory.appVersionNameOf
 import com.fankes.apperrorstracking.utils.factory.toEntityOrNull
 import com.fankes.apperrorstracking.utils.factory.toJsonOrNull
-import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.log.YLog
 import java.io.File
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -76,7 +76,7 @@ object AppErrorsRecordData {
         runCatching {
             errorsInfoDataFolder.also { if (it.exists().not() || it.isFile) it.apply { delete(); mkdirs() } }
         }.onFailure {
-            loggerE(msg = "Can't create directory \"$FOLDER_PATH\", there will be problems with the app errors records function", e = it)
+            YLog.error("Can't create directory \"$FOLDER_PATH\", there will be problems with the app errors records function", it)
         }
     }
 

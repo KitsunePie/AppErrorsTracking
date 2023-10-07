@@ -43,8 +43,8 @@ import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.highcapable.yukihookapi.hook.factory.dataChannel
-import com.highcapable.yukihookapi.hook.log.YukiHookLogger
-import com.highcapable.yukihookapi.hook.log.YukiLoggerData
+import com.highcapable.yukihookapi.hook.log.YLog
+import com.highcapable.yukihookapi.hook.log.data.YLogData
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.text.SimpleDateFormat
@@ -65,7 +65,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
     private var filters = arrayListOf("D", "I", "W", "E")
 
     /** 全部的调试日志数据 */
-    private val listData = ArrayList<YukiLoggerData>()
+    private val listData = mutableListOf<YLogData>()
 
     override fun onCreate() {
         binding.titleBackIcon.setOnClickListener { finish() }
@@ -176,7 +176,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
             data?.data?.let {
-                contentResolver?.openOutputStream(it)?.apply { write(YukiHookLogger.contents(listData).toByteArray()) }?.close()
+                contentResolver?.openOutputStream(it)?.apply { write(YLog.contents(listData).toByteArray()) }?.close()
                 toast(LocaleString.exportAllLogsSuccess)
             } ?: toast(LocaleString.exportAllLogsFail)
         }.onFailure { toast(LocaleString.exportAllLogsFail) }
