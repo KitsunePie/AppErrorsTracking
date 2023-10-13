@@ -17,28 +17,13 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is created by fankes on 2022/5/10.
+ * This file is created by fankes on 2023/10/13.
  */
-package com.fankes.apperrorstracking.application
+@file:Suppress("StaticFieldLeak")
 
-import androidx.appcompat.app.AppCompatDelegate
-import com.fankes.apperrorstracking.data.ConfigData
+package com.fankes.apperrorstracking.locale
+
 import com.fankes.apperrorstracking.generated.locale.ModuleAppLocale
-import com.fankes.apperrorstracking.locale.locale
-import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool
-import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
-class AppErrorsApplication : ModuleApplication() {
-
-    override fun onCreate() {
-        super.onCreate()
-        /** 绑定 I18n */
-        locale = ModuleAppLocale.attach(this)
-        /** 跟随系统夜间模式 */
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        /** 装载存储控制类 */
-        ConfigData.init(this)
-        /** 装载 App Center */
-        AppAnalyticsTool.init(this)
-    }
-}
+/** I18ns 实例 */
+lateinit var locale: ModuleAppLocale

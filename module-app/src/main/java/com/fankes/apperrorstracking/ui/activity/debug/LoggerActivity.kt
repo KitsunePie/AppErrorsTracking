@@ -35,7 +35,7 @@ import com.fankes.apperrorstracking.const.PackageName
 import com.fankes.apperrorstracking.databinding.ActivitiyLoggerBinding
 import com.fankes.apperrorstracking.databinding.AdapterLoggerBinding
 import com.fankes.apperrorstracking.databinding.DiaLoggerFilterBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.bindAdapter
 import com.fankes.apperrorstracking.utils.factory.copyToClipboard
@@ -72,7 +72,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
         binding.refreshIcon.setOnClickListener { refreshData() }
         binding.filterIcon.setOnClickListener {
             showDialog<DiaLoggerFilterBinding> {
-                title = LocaleString.filterByCondition
+                title = locale.filterByCondition
                 binding.configCheck0.isChecked = filters.any { it == "D" }
                 binding.configCheck1.isChecked = filters.any { it == "I" }
                 binding.configCheck2.isChecked = filters.any { it == "W" }
@@ -136,7 +136,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
             binding.exportAllIcon.isVisible = listData.isNotEmpty()
             binding.listView.isVisible = listData.isNotEmpty()
             binding.listNoDataView.isVisible = listData.isEmpty()
-            binding.listNoDataView.text = if (filters.size < 4) LocaleString.noListResult else LocaleString.noListData
+            binding.listNoDataView.text = if (filters.size < 4) locale.noListResult else locale.noListData
         }
     }
 
@@ -177,9 +177,9 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
         if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
             data?.data?.let {
                 contentResolver?.openOutputStream(it)?.apply { write(YLog.contents(listData).toByteArray()) }?.close()
-                toast(LocaleString.exportAllLogsSuccess)
-            } ?: toast(LocaleString.exportAllLogsFail)
-        }.onFailure { toast(LocaleString.exportAllLogsFail) }
+                toast(locale.exportAllLogsSuccess)
+            } ?: toast(locale.exportAllLogsFail)
+        }.onFailure { toast(locale.exportAllLogsFail) }
     }
 
     override fun onResume() {

@@ -26,7 +26,7 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.utils.factory.openBrowser
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import okhttp3.Call
@@ -74,9 +74,9 @@ object GithubReleaseTool {
                         date = getString("published_at").localTime()
                     ).apply {
                         fun showUpdate() = context.showDialog {
-                            title = LocaleString.latestVersion(name)
-                            msg = LocaleString.latestVersionTip(date, content)
-                            confirmButton(LocaleString.updateNow) { context.openBrowser(htmlUrl) }
+                            title = locale.latestVersion(name)
+                            msg = locale.latestVersionTip(date, content)
+                            confirmButton(locale.updateNow) { context.openBrowser(htmlUrl) }
                             cancelButton()
                         }
                         if (name != version) (context as? Activity?)?.runOnUiThread {

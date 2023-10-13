@@ -22,8 +22,9 @@
 package com.fankes.apperrorstracking.hook
 
 import com.fankes.apperrorstracking.data.ConfigData
+import com.fankes.apperrorstracking.generated.locale.ModuleAppLocale
 import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
@@ -42,8 +43,8 @@ object HookEntry : IYukiHookXposedInit {
 
     override fun onHook() = encase {
         loadSystem {
-            LocaleString.bind(instance = this)
-            ConfigData.init(instance = this)
+            locale = ModuleAppLocale.attach { moduleAppResources }
+            ConfigData.init(this)
             loadHooker(FrameworkHooker)
         }
     }

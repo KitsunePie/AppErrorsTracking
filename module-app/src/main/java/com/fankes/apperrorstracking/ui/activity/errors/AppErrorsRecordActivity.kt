@@ -38,7 +38,7 @@ import com.fankes.apperrorstracking.bean.enum.AppFiltersType
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsRecordBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsStatisticsBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.appNameOf
@@ -82,8 +82,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.appErrorSisIcon.setOnClickListener {
             showDialog {
-                title = LocaleString.notice
-                progressContent = LocaleString.generatingStatistics
+                title = locale.notice
+                progressContent = locale.generatingStatistics
                 noCancelable()
                 FrameworkTool.fetchAppListData(context, AppFiltersBean(type = AppFiltersType.ALL)) {
                     newThread {
@@ -100,14 +100,14 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                         runOnUiThread {
                             cancel()
                             showDialog<DiaAppErrorsStatisticsBinding> {
-                                title = LocaleString.appErrorsStatistics
-                                binding.totalErrorsUnitText.text = LocaleString.totalErrorsUnit(listData.size)
-                                binding.totalAppsUnitText.text = LocaleString.totalAppsUnit(it.size)
+                                title = locale.appErrorsStatistics
+                                binding.totalErrorsUnitText.text = locale.totalErrorsUnit(listData.size)
+                                binding.totalAppsUnitText.text = locale.totalAppsUnit(it.size)
                                 binding.mostErrorsAppIcon.setImageDrawable(appIconOf(mostAppPackageName))
                                 binding.mostErrorsAppText.text = appNameOf(mostAppPackageName).ifBlank { mostAppPackageName }
                                 binding.mostErrorsTypeText.text = mostErrorsType
                                 binding.totalPptOfErrorsText.text = "$pptCount%"
-                                confirmButton(LocaleString.gotIt)
+                                confirmButton(locale.gotIt)
                             }
                         }
                     }
@@ -116,12 +116,12 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         }
         binding.clearAllIcon.setOnClickListener {
             showDialog {
-                title = LocaleString.notice
-                msg = LocaleString.areYouSureClearErrors
+                title = locale.notice
+                msg = locale.areYouSureClearErrors
                 confirmButton {
                     FrameworkTool.clearAppErrorsInfoData(context) {
                         refreshData()
-                        toast(LocaleString.allErrorsClearSuccess)
+                        toast(locale.allErrorsClearSuccess)
                     }
                 }
                 cancelButton()
@@ -129,8 +129,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
         }
         binding.exportAllIcon.setOnClickListener {
             showDialog {
-                title = LocaleString.notice
-                msg = LocaleString.areYouSureExportAllErrors
+                title = locale.notice
+                msg = locale.areYouSureExportAllErrors
                 confirmButton { exportAll() }
                 cancelButton()
             }
@@ -144,7 +144,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                         binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
                         binding.appNameText.text = appNameOf(bean.packageName).ifBlank { bean.packageName }
                         binding.appUserIdText.isVisible = bean.userId > 0
-                        binding.appUserIdText.text = LocaleString.userId(bean.userId)
+                        binding.appUserIdText.text = locale.userId(bean.userId)
                         binding.errorsTimeText.text = bean.crossTime
                         binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.simpleThwName()
@@ -160,7 +160,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     /** 更新列表数据 */
     private fun refreshData() {
         FrameworkTool.fetchAppErrorsInfoData(context = this) {
-            binding.titleCountText.text = LocaleString.recordCount(it.size)
+            binding.titleCountText.text = locale.recordCount(it.size)
             binding.listProgressView.isVisible = false
             binding.appErrorSisIcon.isVisible = it.size >= 5
             binding.clearAllIcon.isVisible = it.isNotEmpty()
@@ -219,8 +219,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                     R.id.aerrors_app_info -> openSelfSetting(listData[it.position].packageName)
                     R.id.aerrors_remove_record ->
                         showDialog {
-                            title = LocaleString.notice
-                            msg = LocaleString.areYouSureRemoveRecord
+                            title = locale.notice
+                            msg = locale.areYouSureRemoveRecord
                             confirmButton { FrameworkTool.removeAppErrorsInfoData(context, listData[it.position]) { refreshData() } }
                             cancelButton()
                         }
@@ -235,9 +235,9 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
             data?.data?.let {
                 contentResolver?.openOutputStream(it)?.apply { write(FileInputStream(outPutFilePath).readBytes()) }?.close()
                 clearAllExportTemp()
-                toast(LocaleString.exportAllErrorsSuccess)
-            } ?: toast(LocaleString.exportAllErrorsFail)
-        }.onFailure { toast(LocaleString.exportAllErrorsFail) }
+                toast(locale.exportAllErrorsSuccess)
+            } ?: toast(locale.exportAllErrorsFail)
+        }.onFailure { toast(locale.exportAllErrorsFail) }
     }
 
     override fun onResume() {

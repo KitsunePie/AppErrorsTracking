@@ -25,7 +25,7 @@ import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsMutedBinding
 import com.fankes.apperrorstracking.databinding.AdapterAppErrorsMutedBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.appNameOf
@@ -45,8 +45,8 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
         binding.titleBackIcon.setOnClickListener { onBackPressed() }
         binding.unmuteAllIcon.setOnClickListener {
             showDialog {
-                title = LocaleString.notice
-                msg = LocaleString.areYouSureUnmuteAll
+                title = locale.notice
+                msg = locale.areYouSureUnmuteAll
                 confirmButton { FrameworkTool.unmuteAllErrorsApps(context) { refreshData() } }
                 cancelButton()
             }
@@ -59,8 +59,8 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
                     binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
                     binding.appNameText.text = appNameOf(bean.packageName).ifBlank { bean.packageName }
                     binding.muteTypeText.text = when (bean.type) {
-                        MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> LocaleString.muteIfUnlock
-                        MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> LocaleString.muteIfRestart
+                        MutedErrorsAppBean.MuteType.UNTIL_UNLOCKS -> locale.muteIfUnlock
+                        MutedErrorsAppBean.MuteType.UNTIL_REBOOTS -> locale.muteIfRestart
                     }
                     binding.unmuteButton.setOnClickListener { FrameworkTool.unmuteErrorsApp(context, bean) { refreshData() } }
                 }
