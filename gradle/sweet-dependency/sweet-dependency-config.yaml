@@ -28,7 +28,7 @@ plugins:
     version: 1.9.10
   com.highcapable.flexilocale:
     alias: flexi-locale
-    version: 1.0.0
+    version: 1.0.1
   com.google.devtools.ksp:
     alias: kotlin-ksp
     version: 1.9.10-1.0.13
