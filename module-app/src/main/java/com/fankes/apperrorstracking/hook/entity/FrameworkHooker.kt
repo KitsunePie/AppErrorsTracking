@@ -45,7 +45,7 @@ import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.enum.AppErrorsConfigType
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsDisplayActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
 import com.fankes.apperrorstracking.utils.factory.appNameOf
@@ -288,18 +288,18 @@ object FrameworkHooker : YukiBaseHooker() {
         val appName = appInfo?.let { context.appNameOf(it.packageName).ifBlank { it.packageName } } ?: packageName
 
         /** 当前 APP 名称 (包含用户 ID) */
-        val appNameWithUserId = if (userId != 0) "$appName (${LocaleString.userId(userId)})" else appName
+        val appNameWithUserId = if (userId != 0) "$appName (${locale.userId(userId)})" else appName
 
         /** 崩溃标题 */
-        val errorTitle = if (isRepeatingCrash) LocaleString.aerrRepeatedTitle(appNameWithUserId) else LocaleString.aerrTitle(appNameWithUserId)
+        val errorTitle = if (isRepeatingCrash) locale.aerrRepeatedTitle(appNameWithUserId) else locale.aerrTitle(appNameWithUserId)
 
         /** 使用通知推送异常信息 */
         fun showAppErrorsWithNotify() =
             context.pushNotify(
                 channelId = "APPS_ERRORS",
-                channelName = LocaleString.appName,
+                channelName = locale.appName,
                 title = errorTitle,
-                content = LocaleString.appErrorsTip,
+                content = locale.appErrorsTip,
                 icon = IconCompat.createWithBitmap(moduleAppResources.drawableOf(R.drawable.ic_notify).toBitmap()),
                 color = 0xFFFF6200.toInt(),
                 intent = AppErrorsRecordActivity.intent()

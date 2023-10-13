@@ -27,7 +27,7 @@ import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.const.PackageName
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.utils.factory.execShell
 import com.fankes.apperrorstracking.utils.factory.isRootAccess
 import com.fankes.apperrorstracking.utils.factory.showDialog
@@ -211,22 +211,22 @@ object FrameworkTool {
         /** 当 Root 权限获取失败时显示对话框 */
         fun showWhenAccessRootFail() =
             context.showDialog {
-                title = LocaleString.accessRootFail
-                msg = LocaleString.accessRootFailTip
-                confirmButton(LocaleString.gotIt)
+                title = locale.accessRootFail
+                msg = locale.accessRootFailTip
+                confirmButton(locale.gotIt)
             }
         context.showDialog {
-            title = LocaleString.notice
-            msg = LocaleString.areYouSureRestartSystem
+            title = locale.notice
+            msg = locale.areYourSureRestartSystem
             confirmButton {
                 if (isRootAccess)
                     execShell(cmd = "reboot")
                 else showWhenAccessRootFail()
             }
-            neutralButton(LocaleString.fastRestart) {
+            neutralButton(locale.fastRestart) {
                 context.showDialog {
-                    title = LocaleString.warning
-                    msg = LocaleString.fastRestartProblem
+                    title = locale.warning
+                    msg = locale.fastRestartProblem
                     confirmButton {
                         if (isRootAccess)
                             execShell(cmd = "killall zygote")

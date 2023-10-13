@@ -34,7 +34,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.factory.bind
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.appNameOf
@@ -101,13 +101,13 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         if (appErrorsInfo.isEmpty) {
             binding.appPanelScrollView.isVisible = false
             showDialog {
-                title = LocaleString.notice
-                msg = LocaleString.unableGetAppErrorsRecordTip
-                confirmButton(LocaleString.gotIt) {
+                title = locale.notice
+                msg = locale.unableGetAppErrorsRecordTip
+                confirmButton(locale.gotIt) {
                     cancel()
                     finish()
                 }
-                cancelButton(LocaleString.goItNow) {
+                cancelButton(locale.goItNow) {
                     cancel()
                     finish()
                     navigate<AppErrorsRecordActivity>()
@@ -119,7 +119,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.printIcon.setOnClickListener {
             loggerE(msg = appErrorsInfo.stackTrace)
-            toast(LocaleString.printToLogcatSuccess)
+            toast(locale.printToLogcatSuccess)
         }
         binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackOutputShareContent) }
         binding.exportIcon.setOnClickListener {
@@ -136,14 +136,14 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent)
-            }, LocaleString.shareErrorStack))
+            }, locale.shareErrorStack))
         }
         binding.appIcon.setImageDrawable(appIconOf(appErrorsInfo.packageName))
         binding.appNameText.text = appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
         binding.appVersionText.text = appErrorsInfo.versionBrand
         binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
-        binding.appUserIdText.text = LocaleString.userId(appErrorsInfo.userId)
-        binding.appCpuAbiText.text = appErrorsInfo.cpuAbi.ifBlank { LocaleString.noCpuAbi }
+        binding.appUserIdText.text = locale.userId(appErrorsInfo.userId)
+        binding.appCpuAbiText.text = appErrorsInfo.cpuAbi.ifBlank { locale.noCpuAbi }
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage
@@ -158,7 +158,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appPanelScrollView.setOnScrollChangeListener { _, _, y, _, _ ->
             binding.detailTitleText.text = if (y >= 30.dp(context = this@AppErrorsDetailActivity))
                 appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
-            else LocaleString.appName
+            else locale.appName
         }
         return true
     }
@@ -176,9 +176,9 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         if (requestCode == WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) runCatching {
             data?.data?.let {
                 contentResolver?.openOutputStream(it)?.apply { write(stackTrace.toByteArray()) }?.close()
-                toast(LocaleString.outputStackSuccess)
-            } ?: toast(LocaleString.outputStackFail)
-        }.onFailure { toast(LocaleString.outputStackFail) }
+                toast(locale.outputStackSuccess)
+            } ?: toast(locale.outputStackFail)
+        }.onFailure { toast(locale.outputStackFail) }
     }
 
     override fun onBackPressed() {

@@ -29,7 +29,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDisplayBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsDisplayBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.colorOf
 import com.fankes.apperrorstracking.utils.factory.getSerializableExtraCompat
@@ -78,7 +78,7 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
             binding.appInfoItem.isVisible = appErrorsDisplay.isShowAppInfoButton
             binding.closeAppItem.isVisible = appErrorsDisplay.isShowReopenButton.not() && appErrorsDisplay.isShowCloseAppButton
             binding.reopenAppItem.isVisible = appErrorsDisplay.isShowReopenButton
-            binding.processNameText.text = LocaleString.crashProcess(appErrorsDisplay.processName)
+            binding.processNameText.text = locale.crashProcess(appErrorsDisplay.processName)
             binding.appInfoItem.setOnClickListener {
                 cancel()
                 openSelfSetting(appErrorsDisplay.packageName)
@@ -96,13 +96,13 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
             }
             binding.mutedIfUnlockItem.setOnClickListener {
                 FrameworkTool.mutedErrorsIfUnlock(context, appErrorsDisplay.packageName) {
-                    toast(LocaleString.muteIfUnlockTip(appErrorsDisplay.appName))
+                    toast(locale.muteIfUnlockTip(appErrorsDisplay.appName))
                     cancel()
                 }
             }
             binding.mutedIfRestartItem.setOnClickListener {
                 FrameworkTool.mutedErrorsIfRestart(context, appErrorsDisplay.packageName) {
-                    toast(LocaleString.muteIfRestartTip(appErrorsDisplay.appName))
+                    toast(locale.muteIfRestartTip(appErrorsDisplay.appName))
                     cancel()
                 }
             }

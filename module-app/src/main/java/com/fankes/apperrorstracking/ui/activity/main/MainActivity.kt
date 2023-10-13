@@ -30,7 +30,7 @@ import com.fankes.apperrorstracking.const.ModuleVersion
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.factory.bind
 import com.fankes.apperrorstracking.databinding.ActivityMainBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.ui.activity.debug.LoggerActivity
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsMutedActivity
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 检查更新 */
         GithubReleaseTool.checkingForUpdate(context = this, ModuleVersion.NAME) { version, function ->
             binding.mainTextReleaseVersion.apply {
-                text = LocaleString.clickToUpdate(version)
+                text = locale.clickToUpdate(version)
                 isVisible = true
                 setOnClickListener { function() }
             }
@@ -75,9 +75,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 显示开发者提示 */
         if (ConfigData.isShowDeveloperNotice)
             showDialog {
-                title = LocaleString.developerNotice
-                msg = LocaleString.developerNoticeTip
-                confirmButton(LocaleString.gotIt) { ConfigData.isShowDeveloperNotice = false }
+                title = locale.developerNotice
+                msg = locale.developerNoticeTip
+                confirmButton(locale.gotIt) { ConfigData.isShowDeveloperNotice = false }
                 noCancelable()
             }
         /** 设置 CI 自动构建标识 */
@@ -87,15 +87,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 isVisible = true
                 setOnClickListener {
                     showDialog {
-                        title = LocaleString.ciNoticeDialogTitle
-                        msg = LocaleString.ciNoticeDialogContent(ModuleVersion.GITHUB_COMMIT_ID)
-                        confirmButton(LocaleString.gotIt)
+                        title = locale.ciNoticeDialogTitle
+                        msg = locale.ciNoticeDialogContent(ModuleVersion.GITHUB_COMMIT_ID)
+                        confirmButton(locale.gotIt)
                         noCancelable()
                     }
                 }
             }
-        binding.mainTextVersion.text = LocaleString.moduleVersion(ModuleVersion.NAME)
-        binding.mainTextSystemVersion.text = LocaleString.systemVersion(systemVersion)
+        binding.mainTextVersion.text = locale.moduleVersion(ModuleVersion.NAME)
+        binding.mainTextSystemVersion.text = locale.systemVersion(systemVersion)
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.alwaysShowsReopenAppOptionsSwitch.bind(ConfigData.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
@@ -110,9 +110,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 系统版本点击事件 */
         binding.mainTextSystemVersion.setOnClickListener {
             showDialog {
-                title = LocaleString.notice
+                title = locale.notice
                 msg = systemVersion
-                confirmButton(LocaleString.gotIt)
+                confirmButton(locale.gotIt)
             }
         }
         /** 管理应用配置模板按钮点击事件 */
@@ -155,9 +155,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         )
         binding.mainTextStatus.text = when {
-            YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> LocaleString.moduleNotFullyActivated
-            YukiHookAPI.Status.isXposedModuleActive -> LocaleString.moduleIsActivated
-            else -> LocaleString.moduleNotActivated
+            YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> locale.moduleNotFullyActivated
+            YukiHookAPI.Status.isXposedModuleActive -> locale.moduleIsActivated
+            else -> locale.moduleNotActivated
         }
         binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
         binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
@@ -168,7 +168,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      * @param callback 激活后回调
      */
     private inline fun whenActivated(callback: () -> Unit) {
-        if (YukiHookAPI.Status.isXposedModuleActive) callback() else toast(LocaleString.moduleNotActivated)
+        if (YukiHookAPI.Status.isXposedModuleActive) callback() else toast(locale.moduleNotActivated)
     }
 
     override fun onResume() {

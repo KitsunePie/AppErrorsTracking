@@ -24,7 +24,7 @@ package com.fankes.apperrorstracking.bean
 import android.app.ApplicationErrorReport
 import android.content.Context
 import android.os.Build
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.utils.factory.appCpuAbiOf
 import com.fankes.apperrorstracking.utils.factory.appVersionCodeOf
 import com.fankes.apperrorstracking.utils.factory.appVersionNameOf
@@ -155,13 +155,13 @@ data class AppErrorsInfoBean(
      */
     val crossTime
         get() = timestamp.difference(
-            now = LocaleString.momentAgo,
-            second = LocaleString.secondAgo,
-            minute = LocaleString.minuteAgo,
-            hour = LocaleString.hourAgo,
-            day = LocaleString.dayAgo,
-            month = LocaleString.monthAgo,
-            year = LocaleString.yearAgo
+            now = locale.momentAgo,
+            second = locale.secondAgo,
+            minute = locale.minuteAgo,
+            hour = locale.hourAgo,
+            day = locale.dayAgo,
+            month = locale.monthAgo,
+            year = locale.yearAgo
         )
 
     /**

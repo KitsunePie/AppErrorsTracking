@@ -33,7 +33,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.viewbinding.ViewBinding
-import com.fankes.apperrorstracking.locale.LocaleString
+import com.fankes.apperrorstracking.locale.locale
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -149,7 +149,7 @@ class DialogBuilder<VB : ViewBinding>(
      * @param text 按钮文本内容
      * @param callback 点击事件
      */
-    fun confirmButton(text: String = LocaleString.confirm, callback: () -> Unit = {}) {
+    fun confirmButton(text: String = locale.confirm, callback: () -> Unit = {}) {
         instance?.setPositiveButton(text) { _, _ -> callback() }
     }
 
@@ -158,7 +158,7 @@ class DialogBuilder<VB : ViewBinding>(
      * @param text 按钮文本内容
      * @param callback 点击事件
      */
-    fun cancelButton(text: String = LocaleString.cancel, callback: () -> Unit = {}) {
+    fun cancelButton(text: String = locale.cancel, callback: () -> Unit = {}) {
         instance?.setNegativeButton(text) { _, _ -> callback() }
     }
 
@@ -167,7 +167,7 @@ class DialogBuilder<VB : ViewBinding>(
      * @param text 按钮文本内容
      * @param callback 点击事件
      */
-    fun neutralButton(text: String = LocaleString.more, callback: () -> Unit = {}) {
+    fun neutralButton(text: String = locale.more, callback: () -> Unit = {}) {
         instance?.setNeutralButton(text) { _, _ -> callback() }
     }
 
