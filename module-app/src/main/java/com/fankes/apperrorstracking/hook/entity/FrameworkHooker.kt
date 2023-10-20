@@ -407,20 +407,41 @@ object FrameworkHooker : YukiBaseHooker() {
         }
         /** 注入自定义错误对话框 */
         AppErrorsClass.apply {
-            method {
-                name = "handleShowAppErrorUi"
-                param(MessageClass)
-            }.hook().after {
-                /** 当前实例 */
-                val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
+            when {
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.R -> {
+                    method {
+                        name = "handleAppCrashLSPB"
+                        paramCount = 6
+                    }.hook().after {
+                        /** 当前实例 */
+                        val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
 
-                /** 当前错误数据 */
-                val resultData = args().first().cast<Message>()?.obj
+                        /** 当前进程信息 */
+                        val proc = args().first().any() ?: return@after YLog.warn("Received but got null ProcessRecord (Show UI failed)")
 
-                /** 当前进程信息 */
-                val proc = AppErrorDialog_DataClass.field { name = "proc" }.get(resultData).any()
-                /** 创建 APP 进程异常数据类 */
-                AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
+                        /** 当前错误数据 */
+                        val resultData = args().last().any()
+                        /** 创建 APP 进程异常数据类 */
+                        AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
+                    }
+                }
+                else -> {
+                    method {
+                        name = "handleShowAppErrorUi"
+                        param(MessageClass)
+                    }.hook().after {
+                        /** 当前实例 */
+                        val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
+
+                        /** 当前错误数据 */
+                        val resultData = args().first().cast<Message>()?.obj
+
+                        /** 当前进程信息 */
+                        val proc = AppErrorDialog_DataClass.field { name = "proc" }.get(resultData).any()
+                        /** 创建 APP 进程异常数据类 */
+                        AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
+                    }
+                }
             }
             method {
                 name = "handleAppCrashInActivityController"
