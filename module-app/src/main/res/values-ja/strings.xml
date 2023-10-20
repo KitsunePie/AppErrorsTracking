@@ -56,7 +56,7 @@
     <string name="hide_app_icon_on_launcher">ﾗﾝﾁｬｰ上のｱﾌﾟﾘｱｲｺﾝを非表示</string>
     <string name="hide_app_icon_on_launcher_tip">モジュールアイコンを非表示にすると、インターフェイスが閉じてランチャーに表示されなくなります。モジュール設定は、EdXposedまたはLSPosedで検索して開くことができます。</string>
     <string name="hide_app_icon_on_launcher_notice">注：LSPosedの「ランチャーアイコンを強制的に表示」機能を必ずオフにしてください</string>
-    <string name="about_module">このモジュールは、YukiHookAPIを使用して構築できます。 \n詳細 https://github.com/fankes/YukiHookAPI</string>
+    <string name="about_module">このモジュールは、YukiHookAPIを使用して構築できます。 \n詳細 https://github.com/HighCapable/YukiHookAPI</string>
     <string name="module_not_fully_activated">ﾓｼﾞｭｰﾙが不完全に有効化でした</string>
     <string name="are_your_sure_restart_system">リスタートシステムしてもよろしいですか</string>
     <string name="fast_restart">高速リスタート</string>

@@ -56,7 +56,7 @@
     <string name="hide_app_icon_on_launcher">在桌面隱藏模組圖標</string>
     <string name="hide_app_icon_on_launcher_tip">隱藏模組圖標後界面可能會被關閉，將不會再在桌面展示，你可以在 EdXposed、LSPosed 中找到模組設置並打開。</string>
     <string name="hide_app_icon_on_launcher_notice">注意：請務必在 LSPosed 中關閉“強制展示桌面圖標”功能</string>
-    <string name="about_module">此模組使用 YukiHookAPI 構建。 \n了解更多 https://github.com/fankes/YukiHookAPI</string>
+    <string name="about_module">此模組使用 YukiHookAPI 構建。 \n了解更多 https://github.com/HighCapable/YukiHookAPI</string>
     <string name="module_not_fully_activated">模組未完全激活，請重新開機</string>
     <string name="are_your_sure_restart_system">你確定要重新開機嗎？</string>
     <string name="fast_restart">急速重開</string>
