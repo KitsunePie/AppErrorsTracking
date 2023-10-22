@@ -181,6 +181,20 @@ fun Context.appVersionNameOf(packageName: String = getPackageName()) = getPackag
 fun Context.appVersionCodeOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.versionCodeCompat ?: -1L
 
 /**
+ * 得到 APP 目标 SDK 版本
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [Int] 无法获取时返回 -1
+ */
+fun Context.appTargetSdkOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.applicationInfo?.targetSdkVersion ?: -1
+
+/**
+ * 得到 APP 最低 SDK 版本
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [Int] 无法获取时返回 -1
+ */
+fun Context.appMinSdkOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.applicationInfo?.minSdkVersion ?: -1
+
+/**
  * 获取 APP CPU ABI 名称
  * @param packageName APP 包名 - 默认为当前 APP
  * @return [String] 无法获取时返回 ""

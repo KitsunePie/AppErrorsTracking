@@ -27,6 +27,8 @@ import android.os.Build
 import com.fankes.apperrorstracking.const.ModuleVersion
 import com.fankes.apperrorstracking.locale.locale
 import com.fankes.apperrorstracking.utils.factory.appCpuAbiOf
+import com.fankes.apperrorstracking.utils.factory.appMinSdkOf
+import com.fankes.apperrorstracking.utils.factory.appTargetSdkOf
 import com.fankes.apperrorstracking.utils.factory.appVersionCodeOf
 import com.fankes.apperrorstracking.utils.factory.appVersionNameOf
 import com.fankes.apperrorstracking.utils.factory.difference
@@ -45,6 +47,8 @@ import java.util.Locale
  * @param packageName 包名
  * @param versionName 版本名称
  * @param versionCode 版本号
+ * @param targetSdk 目标 SDK 版本
+ * @param minSdk 最低 SDK 版本
  * @param isNativeCrash 是否为原生层异常
  * @param exceptionClassName 异常类名
  * @param exceptionMessage 异常信息
@@ -68,6 +72,10 @@ data class AppErrorsInfoBean(
     var versionName: String = "",
     @SerializedName("versionCode")
     var versionCode: Long = -1L,
+    @SerializedName("targetSdk")
+    var targetSdk: Int = -1,
+    @SerializedName("minSdk")
+    var minSdk: Int = -1,
     @SerializedName("isNativeCrash")
     var isNativeCrash: Boolean = false,
     @SerializedName("exceptionClassName")
@@ -108,6 +116,8 @@ data class AppErrorsInfoBean(
                     packageName = packageName ?: "unknown",
                     versionName = packageName?.let { context.appVersionNameOf(it).ifBlank { "unknown" } } ?: "",
                     versionCode = packageName?.let { context.appVersionCodeOf(it) } ?: -1L,
+                    targetSdk = packageName?.let { context.appTargetSdkOf(it) } ?: -1,
+                    minSdk = packageName?.let { context.appMinSdkOf(it) } ?: -1,
                     isNativeCrash = isNativeCrash,
                     exceptionClassName = crashInfo?.exceptionClassName ?: "unknown",
                     exceptionMessage = if (isNativeCrash) crashInfo?.stackTrace.let {
@@ -212,6 +222,8 @@ data class AppErrorsInfoBean(
           [Package Name]: $packageName
           [Version Name]: ${versionName.ifBlank { "unknown" }}
           [Version Code]: ${versionCode.takeIf { it != -1L } ?: "unknown"}
+          [Target SDK]: ${targetSdk.takeIf { it != -1 } ?: "unknown"}
+          [Min SDK]: ${minSdk.takeIf { it != -1 } ?: "unknown"}
           [Error Type]: ${if (isNativeCrash) "Native" else "JVM"}
           [Crash Time]: $utcTime
           [Stack Trace]:
