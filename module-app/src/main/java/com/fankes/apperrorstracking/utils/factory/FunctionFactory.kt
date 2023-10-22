@@ -57,6 +57,7 @@ import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.method
+import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
 import com.highcapable.yukihookapi.hook.type.android.ContextClass
 import com.highcapable.yukihookapi.hook.type.android.IntentClass
@@ -273,7 +274,11 @@ fun Long.toUtcTime() = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ROOT
  * 弹出 [Toast]
  * @param msg 提示内容
  */
-fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+fun Context.toast(msg: String) {
+    runCatching {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }.onFailure { YLog.warn(msg) }
+}
 
 /**
  * 弹出 [Snackbar]
