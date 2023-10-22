@@ -198,6 +198,36 @@
                                 android:textSize="9sp" />
 
                             <TextView
+                                android:id="@+id/app_target_sdk_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bg_blue_round"
+                                android:ellipsize="end"
+                                android:paddingLeft="3dp"
+                                android:paddingTop="0.5dp"
+                                android:paddingRight="3dp"
+                                android:paddingBottom="0.5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/white"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/app_min_sdk_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bg_blue_round"
+                                android:ellipsize="end"
+                                android:paddingLeft="3dp"
+                                android:paddingTop="0.5dp"
+                                android:paddingRight="3dp"
+                                android:paddingBottom="0.5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/white"
+                                android:textSize="9sp" />
+
+                            <TextView
                                 android:id="@+id/app_version_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

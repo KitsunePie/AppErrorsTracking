@@ -144,6 +144,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
         binding.appUserIdText.text = locale.userId(appErrorsInfo.userId)
         binding.appCpuAbiText.text = appErrorsInfo.cpuAbi.ifBlank { locale.noCpuAbi }
+        binding.appTargetSdkText.text = locale.appTargetSdk(appErrorsInfo.targetSdk)
+        binding.appMinSdkText.text = locale.appMinSdk(appErrorsInfo.minSdk)
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage
