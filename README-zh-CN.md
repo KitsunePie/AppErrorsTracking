@@ -62,19 +62,19 @@
 
 欢迎为此项目做出贡献，将其翻译为您国家的语言。
 
-## 发行渠道说明
+## 发行渠道
 
-- [Automatic Build on Commit](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml)
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub CI](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml) | CI 自动构建 (测试版) |
+|------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|---------------|
 
-上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **GitHub Actions** 进行查看，本更新由开源的流程自动编译发布，
-**不保证其稳定性**，所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+| <img src="https://github.com/peter-iakovlev/Telegram/blob/public/Icon.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [Telegram CI 频道](https://t.me/AppErrorsTracking_CI) | CI 自动构建 (测试版) |
+|-----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|---------------|
 
-如果你需要直接下载 CI 自动构建打包的安装包，请点击顶部的 `CI builds | Telegram` 标签加入 Telegram CI 自动构建频道。
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub Releases](https://github.com/KitsunePie/AppErrorsTracking/releases) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|-----------|
 
-- [Release](https://github.com/KitsunePie/AppErrorsTracking/releases)
-- [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
-
-上述更新为手动发布的稳定版，具体更新内容可点击上方的文字前往指定的发布页面查看，稳定版的更新将会同时发布到上述地址中，同步更新。
+| <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|-----------|
 
 本模块发布地址仅限于上述所列出的地址，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
 
