@@ -69,28 +69,19 @@ Similar to **Bugly** to automatically collect errors, the system cannot obtain w
 
 Contributions to this project are welcome to translate it into your country's language.
 
-## Release Channel Description
+## Release Channel
 
-- [Automatic Build on Commit](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml)
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub CI](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml) | CI automatic build (test version) |
+|------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-----------------------------------|
 
-The above update is automatically triggered after the code `commit`.
+| <img src="https://github.com/peter-iakovlev/Telegram/blob/public/Icon.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [Telegram CI Channel](https://t.me/AppErrorsTracking_CI) | CI automatic build (test version) |
+|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|-----------------------------------|
 
-The specific update content can be viewed by clicking the text above and going to **GitHub Actions**.
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub Releases](https://github.com/KitsunePie/AppErrorsTracking/releases) | Formal edition (stable version) |
+|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------|
 
-This update is automatically compiled and released by the open source process, **no guarantee of its stability**, so the released version is
-**for testing only**, and there is no special explanation or even the version may change or remain the same as the current stable version.
-
-If you need to download the CI installation packages,
-please click the `CI builds | Telegram` tag at the top to join the Telegram CI automatic build channel.
-
-- [Release](https://github.com/KitsunePie/AppErrorsTracking/releases)
-- [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases)
-
-The above update is a manually released stable version.
-
-For the specific update content, you can click the text above to go to the designated release page to view.
-
-The update of the stable version will be released to the above address at the same time and updated synchronously.
+| <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases) | Formal edition (stable version) |
+|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------|
 
 The releases of this Xposed Module is limited to the urls listed above.
 
