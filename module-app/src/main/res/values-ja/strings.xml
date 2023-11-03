@@ -148,4 +148,11 @@
     <string name="record_count">%1$s の合計紀錄</string>
     <string name="ci_notice_dialog_title">CI 自動ビルド手順</string>
     <string name="ci_notice_dialog_content">コミット ID %1$s の CI 自動ビルドを使用しています。\n\nコードが送信された後、自動的にトリガーされてビルドされ、自動的にコンパイルされてリリースされますが、安定性についてはテストされていません。ご自身の責任で使用してください。</string>
+    <string name="stack_trace_share_top_tip">共有したいコンテンツを選択すると、表示したくないコンテンツの一部を非表示にすることができます。</string>
+    <string name="stack_trace_share_bottom_tip">システム言語地域、バージョン、アプリケーションのバージョン、およびエラー ログは、非表示にしてはいけないコンテンツとして共有する必要があります。これらのコンテンツは、開発者が問題を特定するのに役立ちます。</string>
+    <string name="stack_trace_share_device_brand">デバイスのブランド</string>
+    <string name="stack_trace_share_device_model">デバイスモデル</string>
+    <string name="stack_trace_share_system_build_id">システムビルドID</string>
+    <string name="stack_trace_share_package_name">アプリのパッケージ名</string>
+    <string name="stack_trace_share_other">その他の要件</string>
 </resources>

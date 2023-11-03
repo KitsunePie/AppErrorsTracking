@@ -151,4 +151,11 @@
     <string name="ci_notice_dialog_content">You are using a CI automated build with Commit ID %1$s.\n\nIt is automatically triggered and built after the code is committed, automatically compiled and released, and has not been tested for stability, use it at your own risk.</string>
     <string name="app_target_sdk" translatable="false">Target %1$s</string>
     <string name="app_min_sdk" translatable="false">Min %1$s</string>
+    <string name="stack_trace_share_top_tip">Select the content you want to share, and you can hide some of the content you don\'t want to show.</string>
+    <string name="stack_trace_share_bottom_tip">System language region, version, application version and error logs must be shared as content that must not be hidden, these content will help developers locate problems.</string>
+    <string name="stack_trace_share_device_brand">Device Brand</string>
+    <string name="stack_trace_share_device_model">Device Model</string>
+    <string name="stack_trace_share_system_build_id">System Build ID</string>
+    <string name="stack_trace_share_package_name">App Package Name</string>
+    <string name="stack_trace_share_other">Other Requirement</string>
 </resources>

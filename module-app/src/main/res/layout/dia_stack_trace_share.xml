@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8.5dp"
+        android:layout_marginRight="8.5dp"
+        android:layout_marginBottom="15dp"
+        android:lineSpacingExtra="6dp"
+        android:text="@string/stack_trace_share_top_tip"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8.5dp"
+        android:layout_marginRight="8.5dp"
+        android:layout_marginBottom="10dp"
+        android:lineSpacingExtra="6dp"
+        android:text="@string/stack_trace_share_bottom_tip"
+        android:textColor="#FFFF5722"
+        android:textSize="13sp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/stack_trace_share_device_brand"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/stack_trace_share_device_model"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/stack_trace_share_system_build_id"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/config_check_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/stack_trace_share_package_name"
+        app:buttonTint="@color/colorPrimaryAccent" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:enabled="false"
+        android:text="@string/stack_trace_share_other"
+        app:buttonTint="@color/colorPrimaryAccent" />
+</LinearLayout>

@@ -45,6 +45,7 @@ import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openSelfSetting
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
+import com.fankes.apperrorstracking.utils.tool.StackTraceShareHelper
 import com.highcapable.yukihookapi.hook.log.loggerE
 
 class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
@@ -121,22 +122,31 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
             loggerE(msg = appErrorsInfo.stackTrace)
             toast(locale.printToLogcatSuccess)
         }
-        binding.copyIcon.setOnClickListener { copyToClipboard(appErrorsInfo.stackOutputShareContent) }
+        binding.copyIcon.setOnClickListener {
+            StackTraceShareHelper.showChoose(context = this, locale.copyErrorStack) { sDeviceBrand, sDeviceModel, sDisplay, sPackageName ->
+                copyToClipboard(appErrorsInfo.stackOutputShareContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName))
+            }
+        }
         binding.exportIcon.setOnClickListener {
-            stackTrace = appErrorsInfo.stackOutputFileContent
-            runCatching {
-                startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "*/application"
-                    putExtra(Intent.EXTRA_TITLE, "${appErrorsInfo.packageName}_${appErrorsInfo.utcTime}.log")
-                }, WRITE_REQUEST_CODE)
-            }.onFailure { toast(msg = "Start Android SAF failed") }
+            StackTraceShareHelper.showChoose(context = this, locale.exportToFile) { sDeviceBrand, sDeviceModel, sDisplay, sPackageName ->
+                stackTrace = appErrorsInfo.stackOutputFileContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName)
+                runCatching {
+                    startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/application"
+                        val packageName = if (sPackageName) appErrorsInfo.packageName else "anonymous"
+                        putExtra(Intent.EXTRA_TITLE, "${packageName}_${appErrorsInfo.utcTime}.log")
+                    }, WRITE_REQUEST_CODE)
+                }.onFailure { toast(msg = "Start Android SAF failed") }
+            }
         }
         binding.shareIcon.setOnClickListener {
-            startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent)
-            }, locale.shareErrorStack))
+            StackTraceShareHelper.showChoose(context = this, locale.shareErrorStack) { sDeviceBrand, sDeviceModel, sDisplay, sPackageName ->
+                startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName))
+                }, locale.shareErrorStack))
+            }
         }
         binding.appIcon.setImageDrawable(appIconOf(appErrorsInfo.packageName))
         binding.appNameText.text = appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }

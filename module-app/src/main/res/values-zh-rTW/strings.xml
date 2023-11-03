@@ -148,4 +148,11 @@
     <string name="record_count">共 %1$s 條紀錄</string>
     <string name="ci_notice_dialog_title">CI 自動建置說明</string>
     <string name="ci_notice_dialog_content">你正在使用的是 CI 自動建置版本，Commit ID 為 %1$s。\n\n它是由程式碼提交後自動觸發並建置、自動編譯發布的，並未經任何穩定性測試，使用風險自負。</string>
+    <string name="stack_trace_share_top_tip">選擇您要分享的內容，您可以隱藏一些您不想顯示的內容。</string>
+    <string name="stack_trace_share_bottom_tip">系統語言區域、版本、應用程式版本和錯誤日誌必須作為內容共享，且不得隱藏，這些內容將幫助開發人員定位問題。</string>
+    <string name="stack_trace_share_device_brand">設備品牌</string>
+    <string name="stack_trace_share_device_model">設備型號</string>
+    <string name="stack_trace_share_system_build_id">系統建置 ID</string>
+    <string name="stack_trace_share_package_name">應用程式包名稱</string>
+    <string name="stack_trace_share_other">其它必要資訊</string>
 </resources>
