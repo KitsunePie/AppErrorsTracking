@@ -413,6 +413,8 @@ object FrameworkHooker : YukiBaseHooker() {
                         name = "handleAppCrashLSPB"
                         paramCount = 6
                     }.hook().after {
+                        /** 如果为用户终止则不展示异常 */
+                        if (args(index = 1).string() == "user-terminated") return@after
                         /** 当前实例 */
                         val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
 
