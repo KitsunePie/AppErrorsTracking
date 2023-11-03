@@ -50,6 +50,7 @@ import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
+import com.fankes.apperrorstracking.utils.tool.StackTraceShareHelper
 import com.fankes.apperrorstracking.utils.tool.ZipFileTool
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
 import java.io.File
@@ -176,20 +177,24 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     /** 打包导出全部 */
     private fun exportAll() {
         clearAllExportTemp()
-        ("${cacheDir.absolutePath}/temp").also { path ->
-            File(path).mkdirs()
-            listData.takeIf { it.isNotEmpty() }?.forEach {
-                File("$path/${it.packageName}_${it.utcTime}.log").writeText(it.stackOutputFileContent)
+        StackTraceShareHelper.showChoose(context = this, locale.exportAll) { sDeviceBrand, sDeviceModel, sDisplay, sPackageName ->
+            ("${cacheDir.absolutePath}/temp").also { path ->
+                File(path).mkdirs()
+                listData.takeIf { it.isNotEmpty() }?.forEachIndexed { index, bean ->
+                    val packageName = if (sPackageName) bean.packageName else "anonymous_$index"
+                    File("$path/${packageName}_${bean.utcTime}.log")
+                        .writeText(bean.stackOutputFileContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName))
+                }
+                outPutFilePath = "${cacheDir.absolutePath}/temp_${System.currentTimeMillis()}.zip"
+                ZipFileTool.zipMultiFile(path, outPutFilePath)
+                runCatching {
+                    startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/application"
+                        putExtra(Intent.EXTRA_TITLE, "app_errors_info_${System.currentTimeMillis().toUtcTime()}.zip")
+                    }, WRITE_REQUEST_CODE)
+                }.onFailure { toast(msg = "Start Android SAF failed") }
             }
-            outPutFilePath = "${cacheDir.absolutePath}/temp_${System.currentTimeMillis()}.zip"
-            ZipFileTool.zipMultiFile(path, outPutFilePath)
-            runCatching {
-                startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "*/application"
-                    putExtra(Intent.EXTRA_TITLE, "app_errors_info_${System.currentTimeMillis().toUtcTime()}.zip")
-                }, WRITE_REQUEST_CODE)
-            }.onFailure { toast(msg = "Start Android SAF failed") }
         }
     }
 

@@ -148,4 +148,11 @@
     <string name="record_count">共 %1$s 条记录</string>
     <string name="ci_notice_dialog_title">CI 自动构建说明</string>
     <string name="ci_notice_dialog_content">你正在使用的是 CI 自动构建版本，Commit ID 为 %1$s。\n\n它是由代码提交后自动触发并构建、自动编译发布的，并未经任何稳定性测试，使用风险自负。</string>
+    <string name="stack_trace_share_top_tip">选择你想要分享的内容，你可以隐藏部分你不想展示的内容。</string>
+    <string name="stack_trace_share_bottom_tip">系统语言区域、版本、应用版本和错误日志等作为必须分享的内容不能被隐藏，这些内容都有助于帮助开发者定位问题。</string>
+    <string name="stack_trace_share_device_brand">设备制造商</string>
+    <string name="stack_trace_share_device_model">设备型号</string>
+    <string name="stack_trace_share_system_build_id">系统构建 ID</string>
+    <string name="stack_trace_share_package_name">APP 包名</string>
+    <string name="stack_trace_share_other">其它必要信息</string>
 </resources>
