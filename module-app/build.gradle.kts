@@ -59,7 +59,7 @@ androidComponents {
     onVariants(selector().all()) {
         it.outputs.forEach { output ->
             val currentType = it.buildType
-            val currentSuffix = property.github.ci.commit.id.let { suffix -> if (suffix.isNotBlank()) "-$suffix" else "" }
+            val currentSuffix = property.github.ci.commit.id?.let { suffix -> if (suffix.isNotBlank()) "-$suffix" else "" } ?: ""
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
             if (output is com.android.build.api.variant.impl.VariantOutputImpl)
                 output.outputFileName.set("${property.project.name}-module-v$currentVersion-$currentType.apk")
