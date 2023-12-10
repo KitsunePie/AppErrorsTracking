@@ -22,16 +22,16 @@ repositories:
 plugins:
   com.android.application:
     alias: android-application
-    version: 8.1.2
+    version: 8.2.0
   org.jetbrains.kotlin.android:
     alias: kotlin-android
-    version: 1.9.20
+    version: 1.9.21
   com.highcapable.flexilocale:
     alias: flexi-locale
     version: 1.0.1
   com.google.devtools.ksp:
     alias: kotlin-ksp
-    version: 1.9.20-1.0.14
+    version: 1.9.21-1.0.15
 
 libraries:
   com.fankes.projectpromote:
@@ -54,12 +54,12 @@ libraries:
       version: 1.0.3
   com.microsoft.appcenter:
     appcenter-analytics:
-      version: 5.0.2
+      version: 5.0.3
     appcenter-crashes:
       version-ref: <this>::appcenter-analytics
   com.github.topjohnwu.libsu:
     core:
-      version: 5.2.1
+      version: 5.2.2
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7
