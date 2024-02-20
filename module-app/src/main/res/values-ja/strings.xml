@@ -57,7 +57,7 @@
   <string name="hide_app_icon_on_launcher">ランチャーからアプリアイコンを隠す</string>
   <string name="hide_app_icon_on_launcher_tip">アプリアイコンを隠すとインターフェースが閉じられ、ランチャーに表示されなくなります。モジュールの設定は、EdXposed または LSPosed から開く事ができます。</string>
   <string name="hide_app_icon_on_launcher_notice">注意: LSPosed の「ランチャーアイコンを強制的に表示」の機能は必ず OFF にしてください</string>
-  <string name="about_module">このモジュールは、YukiHookAPI によって作成されています。 \n詳細はこちら https://github.com/HighCapable/YukiHookAPI</string>
+  <string name="about_module">このモジュールは、YukiHookAPI で作成されています。\n詳細はこちら https://github.com/HighCapable/YukiHookAPI</string>
   <string name="module_not_fully_activated">一部アクティブ化されていません</string>
   <string name="are_your_sure_restart_system">本当にシステムを再起動しますか？</string>
   <string name="fast_restart">高速再起動</string>
