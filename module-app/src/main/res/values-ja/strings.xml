@@ -76,7 +76,7 @@
   <string name="only_show_errors_in_front">フォアグラウンドのみエラーを表示</string>
   <string name="only_show_errors_in_main_process">メインプロセスのみエラーを表示</string>
   <string name="enable_apps_config_template">アプリ構成のテンプレートを有効化</string>
-  <string name="mgr_apps_config_template">管理アプリ構成テンプレート</string>
+  <string name="mgr_apps_config_template">アプリ構成のテンプレートを管理</string>
   <string name="view_errors_record">アプリのエラー記録を表示</string>
   <string name="view_muted_errors_apps">ミュートされたエラーアプリを表示</string>
   <string name="only_show_errors_in_front_tip">有効化すると異常のあるアプリがフォアグラウンド(使用中)にある場合にのみ、エラー情報が表示されます。異常のあるバックグラウンドアプリは、エラー情報が表示されませんがエラー履歴には記録されます。</string>
@@ -87,7 +87,7 @@
   <string name="unmute">ミュートを解除</string>
   <string name="unmute_all">すべてのミュートを解除</string>
   <string name="are_you_sure_unmute_all">本当にすべてのアプリのミュートを解除しますか？</string>
-  <string name="apps_config_template">アプリ構成テンプレート</string>
+  <string name="apps_config_template">構成のテンプレート</string>
   <string name="filter_by_condition">条件で絞り込む</string>
   <string name="no_list_result">表示する結果がありません</string>
   <string name="typo_app_name_pkg_name">アプリ名またはパッケージ名のタイプミス</string>
