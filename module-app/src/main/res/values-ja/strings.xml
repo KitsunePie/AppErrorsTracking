@@ -74,7 +74,7 @@
   <string name="preference_settings">環境設定</string>
   <string name="function_mgr">機能の管理</string>
   <string name="only_show_errors_in_front">フォアグラウンドのみエラーを表示</string>
-  <string name="only_show_errors_in_main_process">メインプロセスエラーのみエラーを表示</string>
+  <string name="only_show_errors_in_main_process">メインプロセスのみエラーを表示</string>
   <string name="enable_apps_config_template">アプリ構成のテンプレートを有効化</string>
   <string name="mgr_apps_config_template">管理アプリ構成テンプレート</string>
   <string name="view_errors_record">アプリのエラー記録を表示</string>
@@ -121,7 +121,7 @@
   <string name="view_errors_record_tip">ここでは、モジュールが記録を開始してからのすべてのアプリの例外の記録を見つける事ができます。例外の履歴は、手動でクリアするかファクトリーリセットを実行するまで保持され続けます。記録の表示、エクスポート、共有、クリアができます。</string>
   <string name="theme_settings">テーマの設定</string>
   <string name="enable_md3_app_errors_dialog">Material 3スタイルのエラーダイアログ</string>
-  <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲットバージョンが 12 以降の場合にデフォルトで有効化され、テーマのダイナミックカラー機能は、Android 12 以降でのみ有効になります。</string>
+  <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲットバージョンが 12 以降の場合にデフォルトで有効化され、テーマのダイナミックカラー機能は Android 12 以降でのみ有効になります。</string>
   <string name="user_id">ユーザー %1$s</string>
   <string name="unable_get_app_errors_record_tip">現在、エラー記録を取得できません。後でエラー履歴の記録を確認する必要がある場合があります。\n\n問題が解決しない場合は、システムがエラーレポートの収集機能を OFF にしている可能性があります。</string>
   <string name="debug_logs">デバッグログ</string>
