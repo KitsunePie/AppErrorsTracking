@@ -129,7 +129,7 @@
   <string name="copy">コピー</string>
   <string name="export_all_logs_success">すべてのデバッグログをエクスポートしました</string>
   <string name="export_all_logs_fail">すべてのデバッグログのエクスポートに失敗しました</string>
-  <string name="this_contents_clear_when_restarts_tip">ここにある内容は、デバイスの再起動後にクリアされます</string>
+  <string name="this_contents_clear_when_restarts_tip">これは再起動後にクリアされます</string>
   <string name="when_logger_how_to_show_tip">現在のデバッグログ表示の優先順位の絞り込みを設定できます。</string>
   <string name="microsoft_app_center" translatable="false">Microsoft App Center</string>
   <string name="enable_anonymous_statistics">匿名の統計を有効化</string>
