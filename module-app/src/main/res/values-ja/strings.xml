@@ -50,8 +50,8 @@
   <string name="restart_system">システムを再起動</string>
   <string name="project_address">プロジェクトのアドレス</string>
   <string name="module_not_activated">アクティブ化されていません</string>
-  <string name="module_version">バージョン: %1$s</string>
-  <string name="system_version">システム: %1$s</string>
+  <string name="module_version">モジュールのバージョン: %1$s</string>
+  <string name="system_version">システムのバージョン: %1$s</string>
   <string name="module_is_activated">アクティブ化されています</string>
   <string name="display_settings">表示設定</string>
   <string name="hide_app_icon_on_launcher">ランチャーからアプリアイコンを隠す</string>
