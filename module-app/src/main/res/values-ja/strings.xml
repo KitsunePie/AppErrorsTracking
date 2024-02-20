@@ -36,7 +36,7 @@
   <string name="confirm">確認</string>
   <string name="cancel">キャンセル</string>
   <string name="more">詳細</string>
-  <string name="notice">お知らせ</string>
+  <string name="notice">通知</string>
   <string name="are_you_sure_clear_errors">すべてのエラー記録をクリアしてよろしいですか？</string>
   <string name="all_errors_clear_success">すべてのエラー記録をクリアしました</string>
   <string name="are_you_sure_export_all_errors">本当にログファイルをエクスポートしますか？パッケージングの処理には時間がかかるかもしれません。</string>
