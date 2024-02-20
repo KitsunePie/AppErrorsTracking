@@ -22,7 +22,7 @@
   <string name="error_throw_class">クラスをスロー</string>
   <string name="error_throw_method">スローの方式</string>
   <string name="error_line_number">ライン番号</string>
-  <string name="error_record_time">記録時間</string>
+  <string name="error_record_time">記録日時</string>
   <string name="copied">コピーしました</string>
   <string name="copy_fail">コピーに失敗しました</string>
   <string name="print_to_logcat">logcat に出力</string>
@@ -63,12 +63,12 @@
   <string name="fast_restart">高速再起動</string>
   <string name="access_root_fail">root のアクセスに失敗しました</string>
   <string name="moment_ago">ほんの少し前</string>
-  <string name="second_ago">数秒前</string>
-  <string name="minute_ago">数分前</string>
-  <string name="hour_ago">数時間前</string>
-  <string name="day_ago">数日前</string>
-  <string name="month_ago">数ヶ月前</string>
-  <string name="year_ago">数年前</string>
+  <string name="second_ago">秒前</string>
+  <string name="minute_ago">分前</string>
+  <string name="hour_ago">時間前</string>
+  <string name="day_ago">日前</string>
+  <string name="month_ago">ヶ月前</string>
+  <string name="year_ago">年前</string>
   <string name="crash_process">クラッシュしたプロセス「%1$s」</string>
   <string name="share_error_stack">エラースタックを共有</string>
   <string name="preference_settings">環境設定</string>
@@ -142,7 +142,7 @@
   <string name="user_apps">ユーザーアプリ</string>
   <string name="system_apps">システムアプリ</string>
   <string name="all_apps">すべてのアプリ</string>
-  <string name="disable_auto_wrap_error_stack_trace_content">エラースタックトレースの自動折り返しを無効化</string>
+  <string name="disable_auto_wrap_error_stack_trace_content">テキストの自動折り返しを無効化</string>
   <string name="click_to_update">タップをして更新 %1$s</string>
   <string name="latest_version">最新のバージョン %1$s</string>
   <string name="latest_version_tip">リリース日 %1$s\n\n更新履歴\n\n%2$s</string>
