@@ -42,7 +42,7 @@
 
 ## 注意事項
 
-システムによってネイティブにキャプチャされるエラーは、アプリ自体によって処理されないエラーのみです。アプリ自体にカスタムされた`Thread.UncaughtExceptionHandler`エラーを自動的に収集する**バグ** と同様にシステムはアプリが実際にクラッシュしたかどうかの **(FC)** を取得する事はできません。
+システムによってネイティブにキャプチャされるエラーは、アプリ自体によって処理されないエラーのみです。アプリ自体にカスタムされた`Thread.UncaughtExceptionHandler`エラーを自動的に収集する**バグ**と同様にシステムはアプリが実際にクラッシュしたかどうかの **(FC)** を取得する事はできません。
 
 ## 機能のリスト
 
@@ -64,16 +64,16 @@
 
 ## リリースチャンネル
 
-| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub CI](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml) | CI automatic build (test version) |
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub CI](https://github.com/KitsunePie/AppErrorsTracking/actions/workflows/commit_ci.yml) | CI 自動ビルド (テスト版) |
 |------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-----------------------------------|
 
-| <img src="https://github.com/peter-iakovlev/Telegram/blob/public/Icon.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [Telegram CI Channel](https://t.me/AppErrorsTracking_CI) | CI automatic build (test version) |
+| <img src="https://github.com/peter-iakovlev/Telegram/blob/public/Icon.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [Telegram CI チャンネル](https://t.me/AppErrorsTracking_CI) | CI 自動ビルド (テスト版) |
 |-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|-----------------------------------|
 
-| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub Releases](https://github.com/KitsunePie/AppErrorsTracking/releases) | Formal edition (stable version) |
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub リリース](https://github.com/KitsunePie/AppErrorsTracking/releases) | 正式版 (安定版) |
 |------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------|
 
-| <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases) | Formal edition (stable version) |
+| <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed モジュールのリポジトリ](https://github.com/Xposed-Modules-Repo/com.fankes.apperrorstracking/releases) | 正式版 (安定版) |
 |------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------|
 
 このXposedモジュールのリリースは上記のURLに限定されています。
