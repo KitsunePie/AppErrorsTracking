@@ -13,7 +13,7 @@
 
 <img src="img-src/icon.png" width = "100" height = "100" alt="LOGO"/>
 
-[English](README.md) | 简体中文 | 日本語(README-ja-JP.md)
+[English](README.md) | 简体中文 | [日本語](README-ja-JP.md)
 
 为原生 FC 对话框增加更多功能并修复国内定制 ROM 删除 FC 对话框的问题，给 Android 开发者带来更好的体验。
 
