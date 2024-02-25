@@ -13,7 +13,7 @@
 
 <img src="img-src/icon.png" width = "100" height = "100" alt="LOGO"/>
 
-English | [简体中文](README-zh-CN.md)
+English | [简体中文](README-zh-CN.md) | [日本語](README-ja-JP.md)
 
 Added more features to app's errors dialog, fixed custom rom deleted dialog, the best experience to Android developer.
 
