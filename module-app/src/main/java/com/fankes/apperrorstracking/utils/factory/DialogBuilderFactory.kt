@@ -37,6 +37,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.postDelayed
 import androidx.viewbinding.ViewBinding
+import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.locale.locale
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -197,11 +198,13 @@ class DialogBuilder<VB : ViewBinding>(
                 customLayoutView?.let { setView(it) }
                 dialogInstance = this
                 setOnCancelListener { onCancel?.invoke() }
-                setOnShowListener {
-                    window?.run {
-                        addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                        mainHandler.postDelayed(1000) {
-                            clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                if (ConfigData.isEnablePreventMisoperation) {
+                    setOnShowListener {
+                        window?.run {
+                            addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            mainHandler.postDelayed(1000) {
+                                clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            }
                         }
                     }
                 }
