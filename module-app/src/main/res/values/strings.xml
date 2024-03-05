@@ -113,8 +113,8 @@
     <string name="are_you_sure_apply_site_apps">Are you sure you want to apply settings to %1$s apps at once?</string>
     <string name="errors_dialog_always_show_reopen">Error dialog always shows \"Reopen App\"</string>
     <string name="errors_dialog_always_show_reopen_tip">After enabling, when using the dialog to display application exceptions, the \"Reopen App\" option will also be displayed when the errors is not the first time. If the current errors is not the main process or the application cannot be opened, this option will still not be displayed.</string>
-    <string name="errors_dialog_prevent_misoperation">errors_dialog_prevent_misoperation</string>
-    <string name="errors_dialog_prevent_misoperation_tip">errors_dialog_prevent_misoperation_tip</string>
+    <string name="errors_dialog_prevent_misoperation">Prevent misoperation of error dialog</string>
+    <string name="errors_dialog_prevent_misoperation_tip">After enabling, the error dialog will not respond to click events within 1s after popping up</string>
     <string name="developer_notice_tip">This module is specially designed for Android developers.\n\nWhen it is possible that the computer cannot be connected and ADB cannot be performed, this module can be used to quickly capture any exception of any installed apps, so as to quickly locate the problem.\n\nThe error log of apps crashing is an invaluable asset for developers. If you are not a developer, you can still install this module to provide developers with more exception information to quickly solve problems.</string>
     <string name="developer_notice">Instructions</string>
     <string name="warning">Warning</string>
