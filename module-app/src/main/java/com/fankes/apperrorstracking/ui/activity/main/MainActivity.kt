@@ -103,6 +103,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             onInitialize { binding.mgrAppsConfigsTemplateButton.isVisible = it }
             onChanged { reinitialize() }
         }
+        binding.errorsDialogPreventMisoperationSwitch.bind(ConfigData.ENABLE_PREVENT_MISOPERATION_FOR_DIALOG)
         binding.enableMaterial3AppErrorsDialogSwitch.bind(ConfigData.ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
         /** 设置匿名统计 */
         binding.appAnalyticsConfigItem.isVisible = AppAnalyticsTool.isAvailable
