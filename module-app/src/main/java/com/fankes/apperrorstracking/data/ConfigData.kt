@@ -53,6 +53,9 @@ object ConfigData {
     /** 启用应用配置模板 */
     val ENABLE_APP_CONFIG_TEMPLATE = PrefsData("_enable_app_config_template", false)
 
+    /** 启用对话框防误触 */
+    val ENABLE_PREVENT_MISOPERATION_FOR_DIALOG = PrefsData("_enable_prevent_misoperation_for_dialog", false)
+
     /** 禁止异常堆栈内容自动换行 */
     val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PrefsData("_disable_auto_wrap_error_stack_trace", false)
 
@@ -192,6 +195,16 @@ object ConfigData {
         get() = getBoolean(ENABLE_APP_CONFIG_TEMPLATE)
         set(value) {
             putBoolean(ENABLE_APP_CONFIG_TEMPLATE, value)
+        }
+
+    /**
+     * 是否启用对话框防误触
+     * @return [Boolean]
+     */
+    var isEnablePreventMisoperation
+        get() = getBoolean(ENABLE_PREVENT_MISOPERATION_FOR_DIALOG)
+        set(value) {
+            putBoolean(ENABLE_PREVENT_MISOPERATION_FOR_DIALOG, value)
         }
 
     /**

@@ -338,6 +338,30 @@
                     android:text="@string/apps_config_template_tip"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
+
+                <com.fankes.apperrorstracking.ui.widget.MaterialSwitch
+                    android:id="@+id/errors_dialog_prevent_misoperation_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/errors_dialog_prevent_misoperation"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="@string/errors_dialog_prevent_misoperation_tip"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
