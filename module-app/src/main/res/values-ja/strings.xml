@@ -114,13 +114,15 @@
   <string name="are_you_sure_apply_site_apps">%1$s のアプリに設定を一度に適用してもよろしいですか？</string>
   <string name="errors_dialog_always_show_reopen">「アプリを再び開く」を表示</string>
   <string name="errors_dialog_always_show_reopen_tip">有効化後にダイアログを使用してアプリの例外を表示する場合、エラーが初めてではない場合に「アプリを再び開く」のオプションが表示されます。現在のエラーがメインプロセスではない場合、またはアプリを開く事ができない場合はこのオプションは表示されません。</string>
+  <string name="errors_dialog_prevent_misoperation">エラーダイアログの誤操作を防止</string>
+  <string name="errors_dialog_prevent_misoperation_tip">有効化するとエラーダイアログがポップアップ表示後の 1 秒以内はクリックイベントに応答しなくなります。</string>
   <string name="developer_notice_tip">このモジュールは、Android 開発者のために特別に設計されています。\n\nコンピューターが接続できず、ADB が実行できない可能性がある場合にこのモジュールを使用する事でインストールされているアプリの例外を素早くキャプチャし、問題を素早く特定する事ができます。\n\nアプリがクラッシュしたときのエラーログは、開発者にとって貴重な財産です。開発者でなくても、このモジュールをインストールする事で開発者に問題を素早く解決させるための例外情報を提供する事ができます。</string>
   <string name="developer_notice">使用方法</string>
   <string name="warning">警告</string>
   <string name="fast_restart_problem">カスタムされたシステムによっては、高速再起動の使用後にエラーが発生する場合があります。\n\n続行しますか？</string>
   <string name="view_errors_record_tip">ここでは、モジュールが記録を開始してからのすべてのアプリの例外の記録を見つける事ができます。例外の履歴は、手動でクリアするかファクトリーリセットを実行するまで保持され続けます。記録の表示、エクスポート、共有、クリアができます。</string>
   <string name="theme_settings">テーマの設定</string>
-  <string name="enable_md3_app_errors_dialog">Material 3スタイルのエラーダイアログ</string>
+  <string name="enable_md3_app_errors_dialog">Material 3 スタイルのエラーダイアログ</string>
   <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲットバージョンが 12 以降の場合にデフォルトで有効化され、テーマのダイナミックカラー機能は Android 12 以降でのみ有効になります。</string>
   <string name="user_id">ユーザー %1$s</string>
   <string name="unable_get_app_errors_record_tip">現在、エラー記録を取得できません。後でエラー履歴の記録を確認する必要がある場合があります。\n\n問題が解決しない場合は、システムがエラーレポートの収集機能を OFF にしている可能性があります。</string>
