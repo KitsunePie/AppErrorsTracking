@@ -25,14 +25,19 @@ package com.fankes.apperrorstracking.utils.factory
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.postDelayed
 import androidx.viewbinding.ViewBinding
+import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.locale.locale
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -81,6 +86,8 @@ class DialogBuilder<VB : ViewBinding>(
 
     /** 自定义布局 */
     private var customLayoutView: View? = null
+
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     /**
      * 获取 [DialogBuilder] 绑定布局对象
@@ -191,6 +198,16 @@ class DialogBuilder<VB : ViewBinding>(
                 customLayoutView?.let { setView(it) }
                 dialogInstance = this
                 setOnCancelListener { onCancel?.invoke() }
+                if (ConfigData.isEnablePreventMisoperation) {
+                    setOnShowListener {
+                        window?.run {
+                            addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            mainHandler.postDelayed(1000) {
+                                clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            }
+                        }
+                    }
+                }
             }?.show()
         }
     }
