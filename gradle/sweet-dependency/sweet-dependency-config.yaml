@@ -22,16 +22,16 @@ repositories:
 plugins:
   com.android.application:
     alias: android-application
-    version: 8.2.2
+    version: 8.5.0
   org.jetbrains.kotlin.android:
     alias: kotlin-android
-    version: 1.9.22
+    version: 2.0.0
   com.highcapable.flexilocale:
     alias: flexi-locale
     version: 1.0.1
   com.google.devtools.ksp:
     alias: kotlin-ksp
-    version: 1.9.22-1.0.17
+    version: 2.0.0-1.0.22
 
 libraries:
   com.fankes.projectpromote:
@@ -46,7 +46,7 @@ libraries:
         rovo89-xposed-api
   com.highcapable.yukihookapi:
     api:
-      version: 1.2.0
+      version: 1.2.1
     ksp-xposed:
       version-ref: <this>::api
   com.highcapable.yukireflection:
@@ -65,19 +65,19 @@ libraries:
       version: 1.0.7
   com.google.code.gson:
     gson:
-      version: 2.10.1
+      version: 2.11.0
   com.squareup.okhttp3:
     okhttp:
-      version: 5.0.0-alpha.12
+      version: 5.0.0-alpha.14
   androidx.core:
     core-ktx:
-      version: 1.12.0
+      version: 1.13.1
   androidx.appcompat:
     appcompat:
-      version: 1.6.1
+      version: 1.7.0
   com.google.android.material:
     material:
-      version: 1.11.0
+      version: 1.12.0
   androidx.constraintlayout:
     constraintlayout:
       version: 2.1.4
