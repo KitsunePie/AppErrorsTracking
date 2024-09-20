@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">AppErrorsTracking</string>
-  <string name="xposed_desc">アプリのエラーダイアログに機能を追加、カスタム ROM の削除されたダイアログを修正で Android の開発者に最高の体験を提供します。</string>
-  <string name="empty_lable" translatable="false" />
+  <string name="xposed_desc">アプリのエラーダイアログに機能を追加、カスタム ROM の削除されたダイアログを修正し、 Android 開発者に最高の体験を提供します。</string>
   <string name="app_info">アプリ情報</string>
   <string name="reopen_app">アプリを再び開く</string>
   <string name="error_detail">エラーの詳細</string>
@@ -10,7 +9,7 @@
   <string name="mute_if_restart">デバイスが再起動するまでミュート</string>
   <string name="close_app">アプリを閉じる</string>
   <string name="aerr_title">%1$s が停止しました</string>
-  <string name="aerr_repeated_title">%1$s の停止を維持する</string>
+  <string name="aerr_repeated_title">%1$s が繰り返し停止しています</string>
   <string name="mute_if_unlock_tip">デバイスのロックが解除されるまで「%1$s」のエラーをミュートにします</string>
   <string name="mute_if_restart_tip">デバイスが再起動されるまで「%1$s」のエラーをミュートにします</string>
   <string name="back">戻る</string>
@@ -19,9 +18,9 @@
   <string name="error_info">エラーの情報</string>
   <string name="error_type">エラーの種類</string>
   <string name="error_file_name">ファイル名</string>
-  <string name="error_throw_class">クラスをスロー</string>
-  <string name="error_throw_method">スローの方式</string>
-  <string name="error_line_number">ライン番号</string>
+  <string name="error_throw_class">スローしたクラス</string>
+  <string name="error_throw_method">スローしたメソッド</string>
+  <string name="error_line_number">行番号</string>
   <string name="error_record_time">記録日時</string>
   <string name="copied">コピーしました</string>
   <string name="copy_fail">コピーに失敗しました</string>
@@ -50,8 +49,8 @@
   <string name="restart_system">システムを再起動</string>
   <string name="project_address">プロジェクトのアドレス</string>
   <string name="module_not_activated">アクティブ化されていません</string>
-  <string name="module_version">モジュールのバージョン: %1$s</string>
-  <string name="system_version">システムのバージョン: %1$s</string>
+  <string name="module_version">モジュールバージョン: %1$s</string>
+  <string name="system_version">システムバージョン: %1$s</string>
   <string name="module_is_activated">アクティブ化されています</string>
   <string name="display_settings">表示設定</string>
   <string name="hide_app_icon_on_launcher">ランチャーからアプリアイコンを隠す</string>
@@ -125,18 +124,17 @@
   <string name="enable_md3_app_errors_dialog">Material 3 スタイルのエラーダイアログ</string>
   <string name="enable_md3_app_errors_dialog_tip">この機能は、Android のターゲットバージョンが 12 以降の場合にデフォルトで有効化され、テーマのダイナミックカラー機能は Android 12 以降でのみ有効になります。</string>
   <string name="user_id">ユーザー %1$s</string>
-  <string name="unable_get_app_errors_record_tip">現在、エラー記録を取得できません。後でエラー履歴の記録を確認する必要がある場合があります。\n\n問題が解決しない場合は、システムがエラーレポートの収集機能を OFF にしている可能性があります。</string>
+  <string name="unable_get_app_errors_record_tip">現在、エラー記録を取得できません。後でエラー履歴の記録を確認する必要がある場合があります。\n\n問題が解決しない場合は、システムがエラーレポートの収集機能を無効にしている可能性があります。</string>
   <string name="debug_logs">デバッグログ</string>
   <string name="refresh">更新</string>
   <string name="copy">コピー</string>
   <string name="export_all_logs_success">すべてのデバッグログをエクスポートしました</string>
   <string name="export_all_logs_fail">すべてのデバッグログのエクスポートに失敗しました</string>
   <string name="this_contents_clear_when_restarts_tip">これは再起動後にクリアされます</string>
-  <string name="when_logger_how_to_show_tip">現在のデバッグログ表示の優先順位の絞り込みを設定できます。</string>
-  <string name="microsoft_app_center" translatable="false">Microsoft App Center</string>
+  <string name="when_logger_how_to_show_tip">現在のデバッグログ表示の優先度のフィルタ条件を設定できます。</string>
   <string name="enable_anonymous_statistics">匿名の統計を有効化</string>
   <string name="enable_anonymous_statistics_tip">この機能を有効化すると、Microsoft App Center を使用してアプリ関連の診断データを匿名で送信し、アプリの機能を向上させる事ができます。\nこの機能を有効化、無効化するにはアプリを再起動する必要があります。</string>
-  <string name="go_it_now">了解</string>
+  <string name="go_it_now">今すぐ確認</string>
   <string name="access_root_fail_tip">現在、root 権限を取得できません。デバイスが root 化されている事を確認し、root 権限を付与している事を確認して root 権限の付与に同意してください。\nMagisk と Shamiko モジュールをインストールしている場合は、ホワイトリストモードになっているかどうか確認をしてください。(ホワイトリストモードでは root 権限の許可ができなくなります)</string>
   <string name="global_config">グローバル構成</string>
   <string name="follow_global_config">グローバル構成に従う</string>
@@ -145,17 +143,15 @@
   <string name="system_apps">システムアプリ</string>
   <string name="all_apps">すべてのアプリ</string>
   <string name="disable_auto_wrap_error_stack_trace_content">テキストの自動折り返しを無効化</string>
-  <string name="click_to_update">タップをして更新 %1$s</string>
-  <string name="latest_version">最新のバージョン %1$s</string>
+  <string name="click_to_update">タップして更新 %1$s</string>
+  <string name="latest_version">最新バージョン %1$s</string>
   <string name="latest_version_tip">リリース日 %1$s\n\n更新履歴\n\n%2$s</string>
   <string name="update_now">更新</string>
   <string name="record_count">%1$s 件の記録が見つかりました</string>
-  <string name="ci_notice_dialog_title">CI 自動ビルドの手順</string>
-  <string name="ci_notice_dialog_content">コミット ID %1$s の CI 自動ビルドを使用しています。\n\nこれはコードがコミットされた後に自動的にトリガー後にビルドされ、自動的にコンパイル後にリリースされます。</string>
-  <string name="app_target_sdk" translatable="false">ターゲット %1$s</string>
-  <string name="app_min_sdk" translatable="false">最小 %1$s</string>
-  <string name="stack_trace_share_top_tip">共有するコンテンツを選択し、見せたくないコンテンツの一部を非表示にする事ができます。</string>
-  <string name="stack_trace_share_bottom_tip">システムの言語地域、バージョン、アプリのバージョン、およびエラーログは非表示にしてはいけないコンテンツとして共有する必要があります。これらのコンテンツは、開発者が問題を特定するのに役立ちます。</string>
+  <string name="ci_notice_dialog_title">CI 自動ビルドの説明</string>
+  <string name="ci_notice_dialog_content">あなたはコミット ID %1$s の CI 自動ビルドを使用しています。\n\nこれはコードがコミットされた後に自動的にトリガーおよびビルドされ、自動的にコンパイルおよびリリースされるものであり、安定性はテストされていないため、自己責任で使用してください。</string>
+  <string name="stack_trace_share_top_tip">共有する情報を選択し、見せたくない情報の一部を非表示にする事ができます。</string>
+  <string name="stack_trace_share_bottom_tip">システムの言語地域、バージョン、アプリのバージョン、およびエラーログは隠してはいけない情報として共有する必要があります。これらの情報は、開発者が問題を特定するのに役立ちます。</string>
   <string name="stack_trace_share_device_brand">デバイスのブランド</string>
   <string name="stack_trace_share_device_model">デバイスのモデル</string>
   <string name="stack_trace_share_system_build_id">システムビルド ID</string>

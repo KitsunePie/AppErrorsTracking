@@ -32,7 +32,7 @@ developers with more exception information to quickly solve problems.
 ## Project Reason
 
 I really can't understand, except for MIUI (except stable version), Android ROMs in mainland China have chosen to delete the dialog box (FC
-dialog) of apps crashes. I thought this was always a feature until I decompiled the system. frame, only to confirm that it was indeed deleted.
+dialog) of apps crashes. I thought this was always a feature until I decompiled the system framework, only to confirm that it was indeed deleted.
 
 Does the product manager think that it is the best solution to let the user not see the error, and the apps will crash and exit directly, or is
 there another **hidden secret**?

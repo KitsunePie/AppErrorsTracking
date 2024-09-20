@@ -135,7 +135,7 @@
     <string name="microsoft_app_center" translatable="false">Microsoft App Center</string>
     <string name="enable_anonymous_statistics">Enable anonymous statistics</string>
     <string name="enable_anonymous_statistics_tip">After enabling, we will use the Microsoft App Center to anonymously send application-related diagnostic data to help the application function better.\nThe information collected is anonymous, and we cannot trace it back to an independent device or user.\nEnabling or disabling this feature requires restarting the app to take effect.</string>
-    <string name="go_it_now">Got It Now</string>
+    <string name="go_it_now">Go It Now</string>
     <string name="access_root_fail_tip">Root permission cannot be obtained currently, please confirm that your device has been rooted and agree to grant Root permission.\nIf you are using Magisk and installed the Shamiko module, please confirm whether it is currently in whitelist mode. (Whitelist mode will make it impossible to apply for Root permission)</string>
     <string name="global_config">Global Config</string>
     <string name="follow_global_config">Follow global config</string>
