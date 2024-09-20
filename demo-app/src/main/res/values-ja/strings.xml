@@ -6,7 +6,7 @@
   <string name="throw_runtime">RuntimeException をスロー</string>
   <string name="throw_illegalstate">IllegalStateException をスロー</string>
   <string name="throw_nullpointer">NullPointerException をスロー</string>
-  <string name="throw_exception">例外をスロー</string>
+  <string name="throw_exception">Exception をスロー</string>
   <string name="throw_native_error">ネイティブエラーをスロー</string>
   <string name="throw_multi_process_error">マルチプロセスの例外をスロー</string>
   <string name="suicide_in_progress">プロセスを強制停止中</string>
