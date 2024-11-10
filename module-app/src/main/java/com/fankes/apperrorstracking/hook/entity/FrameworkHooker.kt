@@ -263,7 +263,9 @@ object FrameworkHooker : YukiBaseHooker() {
                                          * 是否为系统应用
                                          * @return [Boolean]
                                          */
-                                        fun PackageInfo.isSystemApp() = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                                        fun PackageInfo.isSystemApp() = applicationInfo?.let {
+                                            (it.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                                        } ?: false
                                         when (filters.type) {
                                             AppFiltersType.USER -> result.filter { it.isSystemApp().not() }
                                             AppFiltersType.SYSTEM -> result.filter { it.isSystemApp() }
