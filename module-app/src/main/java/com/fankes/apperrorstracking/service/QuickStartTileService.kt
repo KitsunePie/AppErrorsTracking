@@ -1,6 +1,6 @@
 /*
  * AppErrorsTracking - Added more features to app's crash dialog, fixed custom rom deleted dialog, the best experience to Android developer.
- * Copyright (C) 2017-2024 Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2017 Fankes Studio(qzmmcn@163.com)
  * https://github.com/KitsunePie/AppErrorsTracking
  *
  * This software is non-free but opensource software: you can redistribute it
