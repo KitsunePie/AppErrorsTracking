@@ -99,6 +99,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.onlyShowErrorsInFrontSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_FRONT)
         binding.onlyShowErrorsInMainProcessSwitch.bind(ConfigData.ENABLE_ONLY_SHOW_ERRORS_IN_MAIN)
         binding.alwaysShowsReopenAppOptionsSwitch.bind(ConfigData.ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS)
+        binding.shareWithFile.bind(ConfigData.SHARE_WITH_FILE)
         binding.enableAppsConfigsTemplateSwitch.bind(ConfigData.ENABLE_APP_CONFIG_TEMPLATE) {
             onInitialize { binding.mgrAppsConfigsTemplateButton.isVisible = it }
             onChanged { reinitialize() }
