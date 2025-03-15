@@ -27,6 +27,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
@@ -47,6 +48,7 @@ import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.StackTraceShareHelper
 import com.highcapable.yukihookapi.hook.log.loggerE
+import java.io.File
 
 class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
 
@@ -143,8 +145,21 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.shareIcon.setOnClickListener {
             StackTraceShareHelper.showChoose(context = this, locale.shareErrorStack) { sDeviceBrand, sDeviceModel, sDisplay, sPackageName ->
                 startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, appErrorsInfo.stackOutputShareContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName))
+                    val content = appErrorsInfo.stackOutputShareContent(sDeviceBrand, sDeviceModel, sDisplay, sPackageName)
+                    if (ConfigData.isShareWithFile) {
+                        type = "application/octet-stream"
+                        runCatching {
+                            val file = File.createTempFile("app_errors_stacktrace_", ".log", cacheDir)
+                            file.deleteOnExit()
+                            file.writeText(content)
+                            putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this@AppErrorsDetailActivity, "$packageName.provider", file))
+                        }.onFailure {
+                            toast(msg = "Create temp file failed")
+                        }
+                    } else {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, content)
+                    }
                 }, locale.shareErrorStack))
             }
         }
@@ -194,6 +209,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
         finish()
     }

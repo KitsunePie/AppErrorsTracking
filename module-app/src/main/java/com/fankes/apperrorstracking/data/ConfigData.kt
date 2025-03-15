@@ -59,6 +59,9 @@ object ConfigData {
     /** 禁止异常堆栈内容自动换行 */
     val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PrefsData("_disable_auto_wrap_error_stack_trace", false)
 
+    /** 分享时使用文件 */
+    val SHARE_WITH_FILE = PrefsData("_share_with_file", false)
+
     /** 当前实例 - [Context] or [PackageParam] */
     private var instance: Any? = null
 
@@ -215,5 +218,14 @@ object ConfigData {
         get() = getBoolean(ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
         set(value) {
             putBoolean(ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG, value)
+        }
+
+    /**
+     * 是否以文件方式分享
+     */
+    var isShareWithFile
+        get() = getBoolean(SHARE_WITH_FILE)
+        set(value) {
+            putBoolean(SHARE_WITH_FILE, value)
         }
 }

@@ -157,4 +157,6 @@
     <string name="stack_trace_share_system_build_id">系统构建 ID</string>
     <string name="stack_trace_share_package_name">APP 包名</string>
     <string name="stack_trace_share_other">其它必要信息</string>
+    <string name="share_with_file">以文件方式分享异常堆栈</string>
+    <string name="share_with_file_tip">使用文件的方式代替文本分享异常堆栈</string>
 </resources>
