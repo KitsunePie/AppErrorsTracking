@@ -209,9 +209,8 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         intent?.removeExtra(EXTRA_APP_ERRORS_INFO)
-        finish()
+        super.onBackPressed()
     }
 
     override fun onNewIntent(intent: Intent?) {
