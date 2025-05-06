@@ -60,6 +60,7 @@ import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
+import com.highcapable.yukihookapi.hook.factory.constructor
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.hasMethod
 import com.highcapable.yukihookapi.hook.factory.method
@@ -111,7 +112,7 @@ object FrameworkHooker : YukiBaseHooker() {
          */
         private val pkgList = if (ProcessRecordClass.hasMethod { name = "getPkgList"; emptyParam() })
             ProcessRecordClass.method { name = "getPkgList"; emptyParam() }.get(proc).call()
-        else ProcessRecordClass.field { name = "pkgList" }.get(proc).any()
+        else ProcessRecordClass.field { name { it.endsWith("pkgList", true) } }.get(proc).any()
 
         /**
          * 获取当前包列表数组大小
@@ -376,10 +377,20 @@ object FrameworkHooker : YukiBaseHooker() {
         registerLifecycle()
         /** 干掉原生错误对话框 - 如果有 */
         ErrorDialogControllerClass?.apply {
-            method {
-                name = "hasCrashDialogs"
-                emptyParam()
-            }.hook().replaceToTrue()
+            if (hasMethod { name = "hasCrashDialogs"; emptyParam() }) {
+                method {
+                    name = "hasCrashDialogs"
+                    emptyParam()
+                }.hook().replaceToTrue()
+
+            } else {
+                constructor {
+                    paramCount = 1
+                }.hook().after {
+                    field { name = "mCrashDialogs" }.get(instance).set(emptyList<Any>())
+                }
+            }
+
             method {
                 name = "showCrashDialogs"
                 paramCount = 1
