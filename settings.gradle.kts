@@ -21,6 +21,8 @@ sweetProperty {
         sourcesCode {
             propertiesFileNames(".secret/secret.properties")
             includeKeys("GITHUB_CI_COMMIT_ID", "APP_CENTER_SECRET")
+            // 关闭类型自动转换功能，防止一些特殊 "COMMIT ID" 被生成为数值
+            isEnableTypeAutoConversion = false
         }
     }
     rootProject { all { isEnable = false } }
