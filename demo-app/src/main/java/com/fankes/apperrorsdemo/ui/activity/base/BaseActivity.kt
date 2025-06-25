@@ -19,21 +19,20 @@
  *
  * This file is created by fankes on 2022/5/10.
  */
-@file:Suppress("DEPRECATION")
-
 package com.fankes.apperrorsdemo.ui.activity.base
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorsdemo.R
 import com.fankes.apperrorsdemo.utils.factory.isNotSystemInDarkMode
-import com.highcapable.yukireflection.factory.current
-import com.highcapable.yukireflection.factory.method
-import com.highcapable.yukireflection.type.android.LayoutInflaterClass
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.extension.genericSuperclassTypeArguments
+import com.highcapable.kavaref.extension.toClassOrNull
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
@@ -42,10 +41,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = current().generic()?.argument()?.method {
+        val bindingClass = javaClass.genericSuperclassTypeArguments().firstOrNull()?.toClassOrNull()
+        binding = bindingClass?.resolve()?.optional()?.firstMethodOrNull {
             name = "inflate"
-            param(LayoutInflaterClass)
-        }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
+            parameters(LayoutInflater::class)
+        }?.invoke<VB>(layoutInflater) ?: error("binding failed")
         if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
         /** 隐藏系统的标题栏 */
@@ -55,6 +55,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             isAppearanceLightStatusBars = isNotSystemInDarkMode
             isAppearanceLightNavigationBars = isNotSystemInDarkMode
         }
+        @Suppress("DEPRECATION")
         ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
             window?.statusBarColor = it
             window?.navigationBarColor = it

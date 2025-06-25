@@ -19,6 +19,8 @@
  *
  * This file is created by fankes on 2022/6/3.
  */
+@file:Suppress("DEPRECATION")
+
 package com.fankes.apperrorstracking.utils.factory
 
 import android.content.Context

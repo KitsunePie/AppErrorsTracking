@@ -84,7 +84,8 @@ androidComponents {
 
 dependencies {
     implementation(com.fankes.projectpromote.project.promote)
-    implementation(com.highcapable.yukireflection.api)
+    implementation(com.highcapable.kavaref.kavaref.core)
+    implementation(com.highcapable.kavaref.kavaref.extension)
     implementation(androidx.core.core.ktx)
     implementation(androidx.appcompat.appcompat)
     implementation(com.google.android.material.material)

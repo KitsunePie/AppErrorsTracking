@@ -30,6 +30,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Build
+import android.os.Bundle
 import android.os.Message
 import android.os.SystemClock
 import android.util.ArrayMap
@@ -58,16 +59,10 @@ import com.fankes.apperrorstracking.utils.factory.toArrayList
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
-import com.highcapable.yukihookapi.hook.bean.VariousClass
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.extension.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.highcapable.yukihookapi.hook.factory.constructor
-import com.highcapable.yukihookapi.hook.factory.field
-import com.highcapable.yukihookapi.hook.factory.hasMethod
-import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.log.YLog
-import com.highcapable.yukihookapi.hook.type.android.BundleClass
-import com.highcapable.yukihookapi.hook.type.android.MessageClass
-import com.highcapable.yukihookapi.hook.type.java.BooleanType
 
 object FrameworkHooker : YukiBaseHooker() {
 
@@ -110,40 +105,73 @@ object FrameworkHooker : YukiBaseHooker() {
          * 获取当前包列表实例
          * @return [Any] or null
          */
-        private val pkgList = if (ProcessRecordClass.hasMethod { name = "getPkgList"; emptyParam() })
-            ProcessRecordClass.method { name = "getPkgList"; emptyParam() }.get(proc).call()
-        else ProcessRecordClass.field { name { it.endsWith("pkgList", true) } }.get(proc).any()
+        private val pkgList by lazy {
+            ProcessRecordClass.resolve().optional(silent = true)
+                .firstMethodOrNull {
+                    name = "getPkgList"
+                    emptyParameters()
+                }?.of(proc)?.invoke()
+                ?: ProcessRecordClass.resolve().optional(silent = true)
+                    .firstFieldOrNull {
+                        name { it.endsWith("pkgList", true) }
+                    }?.of(proc)?.get()
+        }
 
         /**
          * 获取当前包列表数组大小
          * @return [Int]
          */
-        private val pkgListSize = PackageListClass?.method { name = "size"; emptyParam() }?.get(pkgList)?.int()
-            ?: ProcessRecordClass.field { name = "pkgList" }.get(proc).cast<ArrayMap<*, *>>()?.size ?: -1
+        private val pkgListSize by lazy {
+            PackageListClass?.resolve()?.optional(silent = true)
+                ?.firstMethodOrNull {
+                    name = "size"
+                    emptyParameters()
+                }?.of(pkgList)?.invoke()
+                ?: ProcessRecordClass.resolve().optional(silent = true)
+                    .firstFieldOrNull { name = "pkgList" }
+                    ?.of(proc)?.get<ArrayMap<*, *>>()?.size ?: -1
+        }
 
         /**
          * 获取当前 pid 信息
          * @return [Int]
          */
-        val pid = ProcessRecordClass.field { name { it == "mPid" || it == "pid" } }.get(proc).int()
+        val pid by lazy {
+            ProcessRecordClass.resolve().optional()
+                .firstFieldOrNull {
+                    name { it == "mPid" || it == "pid" }
+                }?.of(proc)?.get<Int>() ?: 0
+        }
 
         /**
          * 获取当前用户 ID 信息
          * @return [Int]
          */
-        val userId = ProcessRecordClass.field { name = "userId" }.get(proc).int()
+        val userId by lazy {
+            ProcessRecordClass.resolve().optional()
+                .firstFieldOrNull { name = "userId" }
+                ?.of(proc)?.get<Int>() ?: 0
+        }
 
         /**
          * 获取当前 APP 信息
          * @return [ApplicationInfo] or null
          */
-        val appInfo = ProcessRecordClass.field { name = "info" }.get(proc).cast<ApplicationInfo>()
+        val appInfo by lazy {
+            ProcessRecordClass.resolve().optional()
+                .firstFieldOrNull { name = "info" }
+                ?.of(proc)?.get<ApplicationInfo>()
+        }
 
         /**
          * 获取当前进程名称
          * @return [String]
          */
-        val processName = ProcessRecordClass.field { name = "processName" }.get(proc).string()
+        val processName by lazy {
+            ProcessRecordClass.resolve().optional()
+                .firstFieldOrNull { name = "processName" }
+                ?.of(proc)?.get<String>() ?: ""
+        }
 
         /**
          * 获取当前 APP、进程 包名
@@ -167,17 +195,25 @@ object FrameworkHooker : YukiBaseHooker() {
          * 获取当前进程是否为后台进程
          * @return [Boolean]
          */
-        val isBackgroundProcess = UserControllerClass
-            .method { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
-            .get(ActivityManagerServiceClass?.field { name = "mUserController" }
-                ?.get(AppErrorsClass.field { name = "mService" }.get(errors).any())?.any())
-            .invoke<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
+        val isBackgroundProcess by lazy {
+            UserControllerClass.resolve().optional()
+                .firstMethodOrNull { name { it == "getCurrentProfileIds" || it == "getCurrentProfileIdsLocked" } }
+                ?.of(ActivityManagerServiceClass?.resolve()?.optional()?.firstFieldOrNull { name = "mUserController" }
+                    ?.of(AppErrorsClass.resolve().optional().firstFieldOrNull { name = "mService" }?.of(errors)?.get())?.getQuietly())
+                ?.invokeQuietly<IntArray>()?.takeIf { it.isNotEmpty() }?.any { it != userId } ?: false
+        }
 
         /**
          * 获取当前进程是否短时内重复崩溃
          * @return [Boolean]
          */
-        val isRepeatingCrash = resultData?.let { AppErrorDialog_DataClass.field { name = "repeating" }.get(it).boolean() } ?: false
+        val isRepeatingCrash by lazy {
+            resultData?.let {
+                AppErrorDialog_DataClass.resolve().optional()
+                    .firstFieldOrNull { name = "repeating" }
+                    ?.of(it)?.get<Boolean>() == true
+            } ?: false
+        }
     }
 
     /** 注册生命周期 */
@@ -376,60 +412,56 @@ object FrameworkHooker : YukiBaseHooker() {
         /** 注册生命周期 */
         registerLifecycle()
         /** 干掉原生错误对话框 - 如果有 */
-        ErrorDialogControllerClass?.apply {
-            if (hasMethod { name = "hasCrashDialogs"; emptyParam() }) {
-                method {
-                    name = "hasCrashDialogs"
-                    emptyParam()
-                }.hook().replaceToTrue()
-
-            } else {
-                constructor {
-                    paramCount = 1
-                }.hook().after {
-                    field { name = "mCrashDialogs" }.get(instance).set(emptyList<Any>())
+        ErrorDialogControllerClass?.resolve()?.optional(silent = true)?.apply {
+            val hasCrashDialogs = firstMethodOrNull {
+                name = "hasCrashDialogs"
+                emptyParameters()
+            }?.hook()?.replaceToTrue() != null
+            if (!hasCrashDialogs)
+                firstConstructorOrNull {
+                    parameterCount = 1
+                }?.hook()?.after {
+                    firstFieldOrNull { name = "mCrashDialogs" }?.of(instance)?.set(emptyList<Any>())
                 }
-            }
-
-            method {
+            firstMethodOrNull {
                 name = "showCrashDialogs"
-                paramCount = 1
-            }.hook().intercept()
+                parameterCount = 1
+            }?.hook()?.intercept()
         }
         /** 干掉原生错误对话框 - API 30 以下 */
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            ActivityTaskManagerService_LocalServiceClass?.method {
+            ActivityTaskManagerService_LocalServiceClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "canShowErrorDialogs"
-                emptyParam()
-            }?.ignored()?.hook()?.replaceToFalse()
-            ActivityManagerServiceClass?.method {
+                emptyParameters()
+            }?.hook()?.replaceToFalse()
+            ActivityManagerServiceClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "canShowErrorDialogs"
-                emptyParam()
-            }?.ignored()?.hook()?.replaceToFalse()
+                emptyParameters()
+            }?.hook()?.replaceToFalse()
         }
         /** 干掉原生错误对话框 - 如果上述方法全部失效则直接结束对话框 */
-        AppErrorDialogClass.apply {
-            method {
+        AppErrorDialogClass.resolve().optional(silent = true).apply {
+            firstMethodOrNull {
                 name = "onCreate"
-                param(BundleClass)
-            }.ignored().hook().after { instance<Dialog>().cancel() }
-            method {
+                parameters(Bundle::class)
+            }?.hook()?.after { instance<Dialog>().cancel() }
+            firstMethodOrNull {
                 name = "onStart"
-                emptyParam()
-            }.ignored().hook().after { instance<Dialog>().cancel() }
+                emptyParameters()
+            }?.hook()?.after { instance<Dialog>().cancel() }
         }
         /** 注入自定义错误对话框 */
-        AppErrorsClass.apply {
+        AppErrorsClass.resolve().optional().apply {
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.R -> {
-                    method {
+                    firstMethodOrNull {
                         name = "handleAppCrashLSPB"
-                        paramCount = 6
-                    }.hook().after {
+                        parameterCount = 6
+                    }?.hook()?.after {
                         /** 如果为用户终止则不展示异常 */
                         if (args(index = 1).string() == "user-terminated") return@after
                         /** 当前实例 */
-                        val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
+                        val context = appContext ?: firstFieldOrNull { name = "mContext" }?.of(instance)?.get<Context>() ?: return@after
 
                         /** 当前进程信息 */
                         val proc = args().first().any() ?: return@after YLog.warn("Received but got null ProcessRecord (Show UI failed)")
@@ -441,29 +473,29 @@ object FrameworkHooker : YukiBaseHooker() {
                     }
                 }
                 else -> {
-                    method {
+                    firstMethodOrNull {
                         name = "handleShowAppErrorUi"
-                        param(MessageClass)
-                    }.hook().after {
+                        parameters(Message::class)
+                    }?.hook()?.after {
                         /** 当前实例 */
-                        val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
+                        val context = appContext ?: firstFieldOrNull { name = "mContext" }?.of(instance)?.get<Context>() ?: return@after
 
                         /** 当前错误数据 */
                         val resultData = args().first().cast<Message>()?.obj
 
                         /** 当前进程信息 */
-                        val proc = AppErrorDialog_DataClass.field { name = "proc" }.get(resultData).any()
+                        val proc = AppErrorDialog_DataClass.resolve().optional().firstFieldOrNull { name = "proc" }?.of(resultData)?.get()
                         /** 创建 APP 进程异常数据类 */
                         AppErrorsProcessData(instance, proc, resultData).handleShowAppErrorUi(context)
                     }
                 }
             }
-            method {
+            firstMethodOrNull {
                 name = "handleAppCrashInActivityController"
-                returnType = BooleanType
-            }.hook().after {
+                returnType = Boolean::class
+            }?.hook()?.after {
                 /** 当前实例 */
-                val context = appContext ?: field { name = "mContext" }.get(instance).cast<Context>() ?: return@after
+                val context = appContext ?: firstFieldOrNull { name = "mContext" }?.of(instance)?.get<Context>() ?: return@after
 
                 /** 当前进程信息 */
                 val proc = args().first().any() ?: return@after YLog.warn("Received but got null ProcessRecord")

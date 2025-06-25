@@ -159,4 +159,5 @@
     <string name="stack_trace_share_other">其它必要信息</string>
     <string name="share_with_file">以文件方式分享异常堆栈</string>
     <string name="share_with_file_tip">使用文件的方式代替文本分享异常堆栈</string>
+    <string name="about_module_extension">此模块使用 KavaRef 强力驱动。\n了解更多 https://github.com/HighCapable/KavaRef</string>
 </resources>

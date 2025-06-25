@@ -162,4 +162,5 @@
     <string name="stack_trace_share_other">Other Requirement</string>
     <string name="share_with_file">Share errors stacktrace with file</string>
     <string name="share_with_file_tip">Share errors stacktrace using files instead of text</string>
+    <string name="about_module_extension">This Xposed Module is powered by KavaRef.\nLearn more https://github.com/HighCapable/KavaRef</string>
 </resources>

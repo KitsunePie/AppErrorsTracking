@@ -155,4 +155,5 @@
     <string name="stack_trace_share_system_build_id">系統建置 ID</string>
     <string name="stack_trace_share_package_name">應用程式包名稱</string>
     <string name="stack_trace_share_other">其它必要資訊</string>
+    <string name="about_module_extension">此模組使用 KavaRef 強力驅動。\n瞭解更多 https://github.com/HighCapable/KavaRef</string>
 </resources>

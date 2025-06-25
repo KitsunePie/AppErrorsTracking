@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2022/5/7.
  */
-@file:Suppress("unused", "NotificationPermission")
+@file:Suppress("unused", "NotificationPermission", "DEPRECATION")
 
 package com.fankes.apperrorstracking.utils.factory
 

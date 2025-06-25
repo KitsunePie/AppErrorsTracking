@@ -82,6 +82,8 @@ dependencies {
     compileOnly(de.robv.android.xposed.api)
     implementation(com.highcapable.yukihookapi.api)
     ksp(com.highcapable.yukihookapi.ksp.xposed)
+    implementation(com.highcapable.kavaref.kavaref.core)
+    implementation(com.highcapable.kavaref.kavaref.extension)
     implementation(com.fankes.projectpromote.project.promote)
     implementation(com.microsoft.appcenter.appcenter.analytics)
     implementation(com.microsoft.appcenter.appcenter.crashes)
