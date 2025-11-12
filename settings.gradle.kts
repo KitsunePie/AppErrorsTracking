@@ -5,27 +5,41 @@ pluginManagement {
         mavenCentral()
     }
 }
-plugins {
-    id("com.highcapable.sweetdependency") version "1.0.4"
-    id("com.highcapable.sweetproperty") version "1.0.8"
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+        maven("https://api.xposed.info/")
+        maven("https://raw.githubusercontent.com/fankes/maven-repository/main/repository/releases")
+    }
 }
-sweetProperty {
+plugins {
+    id("com.highcapable.gropify") version "1.0.0"
+}
+gropify {
     global {
-        all {
+        common {
             permanentKeyValues(
                 "GITHUB_CI_COMMIT_ID" to "",
                 "APP_CENTER_SECRET" to ""
             )
-            generateFrom(ROOT_PROJECT, SYSTEM_ENV)
+            includeKeys(
+                "GITHUB_CI_COMMIT_ID" to "",
+                "APP_CENTER_SECRET" to "",
+                "^project\\..*\$".toRegex()
+            )
+            locations(GropifyLocation.RootProject, GropifyLocation.SystemEnv)
         }
-        sourcesCode {
-            propertiesFileNames(".secret/secret.properties")
+        android {
+            existsPropertyFiles(".secret/secret.properties")
             includeKeys("GITHUB_CI_COMMIT_ID", "APP_CENTER_SECRET")
             // 关闭类型自动转换功能，防止一些特殊 "COMMIT ID" 被生成为数值
-            isEnableTypeAutoConversion = false
+            useTypeAutoConversion = false
         }
     }
-    rootProject { all { isEnable = false } }
+    rootProject { common { isEnabled = false } }
 }
 rootProject.name = "AppErrorsTracking"
 include(":module-app", ":demo-app")

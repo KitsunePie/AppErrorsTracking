@@ -1,29 +1,29 @@
 plugins {
-    autowire(libs.plugins.android.application)
-    autowire(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = property.project.demo.app.packageName
-    compileSdk = property.project.android.compileSdk
-    ndkVersion = property.project.android.ndk.version
+    namespace = gropify.project.demo.app.packageName
+    compileSdk = gropify.project.android.compileSdk
+    ndkVersion = gropify.project.android.ndk.version
 
     signingConfigs {
         create("universal") {
-            keyAlias = property.project.demo.app.signing.keyAlias
-            keyPassword = property.project.demo.app.signing.keyPassword
-            storeFile = rootProject.file(property.project.demo.app.signing.storeFilePath)
-            storePassword = property.project.demo.app.signing.storePassword
+            keyAlias = gropify.project.demo.app.signing.keyAlias
+            keyPassword = gropify.project.demo.app.signing.keyPassword
+            storeFile = rootProject.file(gropify.project.demo.app.signing.storeFilePath)
+            storePassword = gropify.project.demo.app.signing.storePassword
             enableV1Signing = true
             enableV2Signing = true
         }
     }
     defaultConfig {
-        applicationId = property.project.demo.app.packageName
-        minSdk = property.project.android.minSdk
-        targetSdk = property.project.android.targetSdk
-        versionName = property.project.demo.app.versionName
-        versionCode = property.project.demo.app.versionCode
+        applicationId = gropify.project.demo.app.packageName
+        minSdk = gropify.project.android.minSdk
+        targetSdk = gropify.project.android.targetSdk
+        versionName = gropify.project.demo.app.versionName
+        versionCode = gropify.project.demo.app.versionCode
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,7 +36,7 @@ android {
     externalNativeBuild {
         cmake {
             path("src/main/cpp/CMakeLists.txt")
-            version = property.project.android.cmake.version
+            version = gropify.project.android.cmake.version
         }
     }
     compileOptions {
@@ -55,33 +55,24 @@ androidComponents {
     onVariants(selector().all()) {
         it.outputs.forEach { output ->
             val currentType = it.buildType
-
-            // Workaround for GitHub Actions.
-            // Why? I don't know, but it works.
-            // Unresolved reference. None of the following candidates is applicable because of receiver type mismatch:
-            //                       public inline fun CharSequence.isNotBlank(): Boolean defined in kotlin.text.
-            @Suppress("UNNECESSARY_SAFE_CALL", "RemoveRedundantCallsOfConversionMethods")
-            val currentSuffix = property.github.ci.commit.id?.let { suffix ->
-                // Workaround for GitHub Actions.
-                // Strongly transfer type to [String].
-                val sSuffix = suffix.toString()
-                if (sSuffix.isNotBlank()) "-$sSuffix" else ""
+            val currentSuffix = gropify.github.ci.commit.id.let { suffix ->
+                if (suffix.isNotBlank()) "-$suffix" else ""
             }
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
             if (output is com.android.build.api.variant.impl.VariantOutputImpl)
-                output.outputFileName.set("${property.project.name}-demo-v$currentVersion-$currentType.apk")
+                output.outputFileName.set("${gropify.project.name}-demo-v$currentVersion-$currentType.apk")
         }
     }
 }
 
 dependencies {
-    implementation(com.fankes.projectpromote.project.promote)
-    implementation(com.highcapable.kavaref.kavaref.core)
-    implementation(com.highcapable.kavaref.kavaref.extension)
-    implementation(androidx.core.core.ktx)
-    implementation(androidx.appcompat.appcompat)
-    implementation(com.google.android.material.material)
-    testImplementation(junit.junit)
-    androidTestImplementation(androidx.test.ext.junit)
-    androidTestImplementation(androidx.test.espresso.espresso.core)
+    implementation(libs.project.promote)
+    implementation(libs.kavaref.core)
+    implementation(libs.kavaref.extension)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
