@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 plugins {
-    id("com.highcapable.gropify") version "1.0.0"
+    id("com.highcapable.gropify") version "1.0.1"
 }
 gropify {
     global {
@@ -26,8 +26,8 @@ gropify {
                 "APP_CENTER_SECRET" to ""
             )
             includeKeys(
-                "GITHUB_CI_COMMIT_ID" to "",
-                "APP_CENTER_SECRET" to "",
+                "GITHUB_CI_COMMIT_ID",
+                "APP_CENTER_SECRET",
                 "^project\\..*\$".toRegex()
             )
             locations(GropifyLocation.RootProject, GropifyLocation.SystemEnv)
@@ -35,8 +35,8 @@ gropify {
         android {
             existsPropertyFiles(".secret/secret.properties")
             includeKeys("GITHUB_CI_COMMIT_ID", "APP_CENTER_SECRET")
-            // 关闭类型自动转换功能，防止一些特殊 "COMMIT ID" 被生成为数值
-            useTypeAutoConversion = false
+            // 手动指定类型，防止一些特殊 "COMMIT ID" 被生成为数值
+            keyValuesRules("GITHUB_CI_COMMIT_ID" to ValueRule(String::class))
         }
     }
     rootProject { common { isEnabled = false } }
