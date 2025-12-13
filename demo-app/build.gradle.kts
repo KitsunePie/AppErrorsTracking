@@ -55,7 +55,11 @@ androidComponents {
     onVariants(selector().all()) {
         it.outputs.forEach { output ->
             val currentType = it.buildType
-            val currentSuffix = gropify.github.ci.commit.id.let { suffix ->
+
+            // Workaround for GitHub Actions.
+            // Strongly transfer type to [String].
+            @Suppress("UNNECESSARY_SAFE_CALL")
+            val currentSuffix = gropify.github.ci.commit.id?.let { suffix ->
                 if (suffix.isNotBlank()) "-$suffix" else ""
             }
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
