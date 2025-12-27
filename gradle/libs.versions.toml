@@ -8,6 +8,7 @@ rovo89-xposed-api = "82"
 yukihookapi = "1.3.1"
 kavaref-core = "1.0.2"
 kavaref-extension = "1.0.2"
+betterandroid-ui-extension = "1.0.0"
 microsoft-appcenter = "5.0.6"
 libsu = "5.2.2"
 drawabletoolbox = "1.0.7"
@@ -34,6 +35,7 @@ yukihookapi = { group = "com.highcapable.yukihookapi", name = "api", version.ref
 yukihookapi-ksp-xposed = { group = "com.highcapable.yukihookapi", name = "ksp-xposed", version.ref = "yukihookapi" }
 kavaref-core = { group = "com.highcapable.kavaref", name = "kavaref-core", version.ref = "kavaref-core" }
 kavaref-extension = { group = "com.highcapable.kavaref", name = "kavaref-extension", version.ref = "kavaref-extension" }
+betterandroid-ui-extension = { group = "com.highcapable.betterandroid", name = "ui-extension", version.ref = "betterandroid-ui-extension" }
 microsoft-appcenter-analytics = { group = "com.microsoft.appcenter", name = "appcenter-analytics", version.ref = "microsoft-appcenter" }
 microsoft-appcenter-crashes = { group = "com.microsoft.appcenter", name = "appcenter-crashes", version.ref = "microsoft-appcenter" }
 libsu = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }

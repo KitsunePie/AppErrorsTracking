@@ -47,6 +47,7 @@ import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool.bindAppAnalytics
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.fankes.apperrorstracking.utils.tool.GithubReleaseTool
 import com.fankes.projectpromote.ProjectPromote
+import com.highcapable.betterandroid.ui.extension.view.isUnderline
 import com.highcapable.yukihookapi.YukiHookAPI
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -130,6 +131,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/KitsunePie/AppErrorsTracking") }
         /** 恰饭！ */
         binding.paymentFollowingZhCnItem.isVisible = isSystemLanguageSimplifiedChinese
+        binding.linkWithFollowMe.isUnderline = true
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
