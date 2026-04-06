@@ -72,6 +72,7 @@ import java.util.Locale
 import java.util.concurrent.atomic.AtomicBoolean
 
 private val isRootAccessFallbackConfirmed = AtomicBoolean(false)
+private val rootUidPattern = Regex("\\buid=0\\b")
 
 /**
  * 当前系统环境是否为简体中文
@@ -423,7 +424,7 @@ val isRootAccess get() = runCatching {
     Shell.rootAccess()
 }.getOrNull() == true || isRootAccessFallbackConfirmed.get() || runCatching {
     @Suppress("DEPRECATION")
-    Shell.su("id").exec().out.any { Regex("\\buid=0\\b").containsMatchIn(it) }.also {
+    Shell.su("id").exec().out.any { rootUidPattern.containsMatchIn(it) }.also {
         if (it) isRootAccessFallbackConfirmed.set(true)
     }
 }.getOrNull() == true
