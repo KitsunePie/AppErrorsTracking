@@ -418,7 +418,10 @@ fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = r
 val isRootAccess get() = runCatching {
     @Suppress("DEPRECATION")
     Shell.rootAccess()
-}.getOrNull() ?: false
+}.getOrNull() == true || runCatching {
+    @Suppress("DEPRECATION")
+    Shell.su("id").exec().out.any { it.contains("uid=0") || it.trim() == "root" }
+}.getOrNull() == true
 
 /**
  * 执行命令
