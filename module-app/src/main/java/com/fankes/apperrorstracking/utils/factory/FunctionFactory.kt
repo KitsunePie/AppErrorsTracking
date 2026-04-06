@@ -69,6 +69,9 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicBoolean
+
+private val isRootAccessFallbackConfirmed = AtomicBoolean(false)
 
 /**
  * 当前系统环境是否为简体中文
@@ -418,9 +421,11 @@ fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = r
 val isRootAccess get() = runCatching {
     @Suppress("DEPRECATION")
     Shell.rootAccess()
-}.getOrNull() == true || runCatching {
+}.getOrNull() == true || isRootAccessFallbackConfirmed.get() || runCatching {
     @Suppress("DEPRECATION")
-    Shell.su("id").exec().out.any { it.contains("uid=0") || it.trim() == "root" }
+    Shell.su("id").exec().out.any { Regex("\\buid=0\\b").containsMatchIn(it) }.also {
+        if (it) isRootAccessFallbackConfirmed.set(true)
+    }
 }.getOrNull() == true
 
 /**
