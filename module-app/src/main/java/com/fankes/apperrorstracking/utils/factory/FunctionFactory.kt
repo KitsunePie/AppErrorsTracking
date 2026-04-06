@@ -73,6 +73,17 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 private val isRootAccessFallbackConfirmed = AtomicBoolean(false)
 private val rootUidPattern = Regex("\\buid=0\\b")
+private val rootAccessCheckLock = Any()
+
+private fun hasRootAccessFallback() = synchronized(rootAccessCheckLock) {
+    if (isRootAccessFallbackConfirmed.get()) true
+    else runCatching {
+        @Suppress("DEPRECATION")
+        Shell.su("id").exec().out.any { rootUidPattern.containsMatchIn(it) }.also {
+            if (it) isRootAccessFallbackConfirmed.set(true)
+        }
+    }.getOrNull() == true
+}
 
 /**
  * 当前系统环境是否为简体中文
@@ -422,12 +433,7 @@ fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = r
 val isRootAccess get() = runCatching {
     @Suppress("DEPRECATION")
     Shell.rootAccess()
-}.getOrNull() == true || isRootAccessFallbackConfirmed.get() || runCatching {
-    @Suppress("DEPRECATION")
-    Shell.su("id").exec().out.any { rootUidPattern.containsMatchIn(it) }.also {
-        if (it) isRootAccessFallbackConfirmed.set(true)
-    }
-}.getOrNull() == true
+}.getOrNull() == true || isRootAccessFallbackConfirmed.get() || hasRootAccessFallback()
 
 /**
  * 执行命令
