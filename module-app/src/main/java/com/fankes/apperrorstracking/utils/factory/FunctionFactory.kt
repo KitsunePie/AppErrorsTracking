@@ -416,8 +416,7 @@ fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = r
  * @return [Boolean]
  */
 val isRootAccess get() = runCatching {
-    @Suppress("DEPRECATION")
-    Shell.rootAccess()
+    Shell.isAppGrantedRoot() ?: true
 }.getOrNull() ?: false
 
 /**
