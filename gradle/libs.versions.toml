@@ -1,7 +1,9 @@
 [versions]
+# Flexi-Locale not supported.
+# noinspection AndroidGradlePluginVersion
 agp = "8.13.2"
-kotlin = "2.2.21"
-ksp = "2.2.21-2.0.4"
+kotlin = "2.3.21"
+ksp = "2.3.7"
 flexi-locale = "1.0.2"
 project-promote = "1.0.1"
 rovo89-xposed-api = "82"
@@ -12,8 +14,11 @@ betterandroid-ui-extension = "1.0.9"
 microsoft-appcenter = "5.0.6"
 libsu = "5.2.2"
 drawabletoolbox = "1.0.7"
-gson = "2.13.2"
+gson = "2.14.0"
 okhttp = "5.3.2"
+# The project current support min sdk version is 21,
+# suppress the warning about using newer versions of dependencies that may require higher min sdk version.
+# noinspection GradleDependency
 androidx-core-ktx = "1.17.0"
 androidx-appcompat = "1.7.1"
 material = "1.13.0"
