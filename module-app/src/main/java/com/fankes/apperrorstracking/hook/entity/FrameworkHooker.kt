@@ -98,8 +98,9 @@ object FrameworkHooker : YukiBaseHooker() {
      * @param errors [AppErrorsClass] 实例
      * @param proc [ProcessRecordClass] 实例
      * @param resultData [AppErrorDialog_DataClass] 实例 - 默认空
+     * @param isAnr 是否为 ANR - 默认 false
      */
-    private class AppErrorsProcessData(errors: Any?, proc: Any?, resultData: Any? = null) {
+    private class AppErrorsProcessData(errors: Any?, proc: Any?, resultData: Any? = null, val isAnr: Boolean = false) {
 
         /**
          * 获取当前包列表实例
@@ -330,7 +331,12 @@ object FrameworkHooker : YukiBaseHooker() {
         val appNameWithUserId = if (userId != 0) "$appName (${locale.userId(userId)})" else appName
 
         /** 崩溃标题 */
-        val errorTitle = if (isRepeatingCrash) locale.aerrRepeatedTitle(appNameWithUserId) else locale.aerrTitle(appNameWithUserId)
+        val errorTitle = when {
+            isAnr && isRepeatingCrash -> locale.anrRepeatedTitle(appNameWithUserId)
+            isAnr -> locale.anrTitle(appNameWithUserId)
+            isRepeatingCrash -> locale.aerrRepeatedTitle(appNameWithUserId)
+            else -> locale.aerrTitle(appNameWithUserId)
+        }
 
         /** 使用通知推送异常信息 */
         fun showAppErrorsWithNotify() =
@@ -406,6 +412,16 @@ object FrameworkHooker : YukiBaseHooker() {
     private fun AppErrorsProcessData.handleAppErrorsInfo(context: Context, info: ApplicationErrorReport.CrashInfo?) {
         AppErrorsRecordData.add(AppErrorsInfoBean.clone(context, pid, userId, appInfo?.packageName, info))
         YLog.info("Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
+    }
+
+    /**
+     * 处理 APP 进程 ANR 数据
+     * @param context 当前实例
+     * @param info ANR 错误报告数据实例
+     */
+    private fun AppErrorsProcessData.handleAppAnrInfo(context: Context, info: ApplicationErrorReport.AnrInfo?) {
+        AppErrorsRecordData.add(AppErrorsInfoBean.cloneAnr(context, pid, userId, appInfo?.packageName, info))
+        YLog.info("Received ANR application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
     }
 
     override fun onHook() {
@@ -501,6 +517,31 @@ object FrameworkHooker : YukiBaseHooker() {
                 val proc = args().first().any() ?: return@after YLog.warn("Received but got null ProcessRecord")
                 /** 创建 APP 进程异常数据类 */
                 AppErrorsProcessData(instance, proc).handleAppErrorsInfo(context, args(index = 1).cast())
+            }
+            /** Hook ANR handling methods */
+            firstMethodOrNull {
+                name = "appNotResponding"
+            }?.hook()?.after {
+                /** 当前实例 */
+                val context = appContext ?: firstFieldOrNull { name = "mContext" }?.of(instance)?.get<Context>() ?: return@after
+
+                /** 当前进程信息 - 第一个参数是 ProcessRecord */
+                val proc = args().first().any() ?: return@after YLog.warn("Received ANR but got null ProcessRecord")
+                
+                /** 创建 APP 进程异常数据类并展示 ANR UI */
+                AppErrorsProcessData(instance, proc, isAnr = true).handleShowAppErrorUi(context)
+            }
+            firstMethodOrNull {
+                name = "handleAnrInActivityController"
+                returnType = Boolean::class
+            }?.hook()?.after {
+                /** 当前实例 */
+                val context = appContext ?: firstFieldOrNull { name = "mContext" }?.of(instance)?.get<Context>() ?: return@after
+
+                /** 当前进程信息 */
+                val proc = args().first().any() ?: return@after YLog.warn("Received ANR but got null ProcessRecord")
+                /** 创建 ANR 数据 - args(1) 应该包含 AnrInfo */
+                AppErrorsProcessData(instance, proc, isAnr = true).handleAppAnrInfo(context, args(index = 1).cast())
             }
         }
     }

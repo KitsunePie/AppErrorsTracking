@@ -59,7 +59,7 @@ androidComponents {
             // Workaround for GitHub Actions.
             // Strongly transfer type to [String].
             @Suppress("UNNECESSARY_SAFE_CALL")
-            val currentSuffix = gropify.github.ci.commit.id?.let { suffix ->
+            val currentSuffix = gropify.github.ci.commit.id?.let { suffix: String ->
                 if (suffix.isNotBlank()) "-$suffix" else ""
             }
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"

@@ -50,6 +50,7 @@ import java.util.Locale
  * @param targetSdk 目标 SDK 版本
  * @param minSdk 最低 SDK 版本
  * @param isNativeCrash 是否为原生层异常
+ * @param isAnr 是否为 ANR (Application Not Responding)
  * @param exceptionClassName 异常类名
  * @param exceptionMessage 异常信息
  * @param throwClassName 抛出异常的类名
@@ -78,6 +79,8 @@ data class AppErrorsInfoBean(
     var minSdk: Int = -1,
     @SerializedName("isNativeCrash")
     var isNativeCrash: Boolean = false,
+    @SerializedName("isAnr")
+    var isAnr: Boolean = false,
     @SerializedName("exceptionClassName")
     var exceptionClassName: String = "",
     @SerializedName("exceptionMessage")
@@ -134,6 +137,37 @@ data class AppErrorsInfoBean(
                     timestamp = System.currentTimeMillis()
                 )
             }
+
+        /**
+         * 从 [ApplicationErrorReport.AnrInfo] 克隆
+         * @param context 当前实例
+         * @param pid APP 进程 ID
+         * @param userId APP 用户 ID
+         * @param packageName APP 包名
+         * @param anrInfo [ApplicationErrorReport.AnrInfo]
+         * @return [AppErrorsInfoBean]
+         */
+        fun cloneAnr(context: Context, pid: Int, userId: Int, packageName: String?, anrInfo: ApplicationErrorReport.AnrInfo?) =
+            AppErrorsInfoBean(
+                pid = pid,
+                userId = userId,
+                cpuAbi = packageName?.let { context.appCpuAbiOf(it) } ?: "",
+                packageName = packageName ?: "unknown",
+                versionName = packageName?.let { context.appVersionNameOf(it).ifBlank { "unknown" } } ?: "",
+                versionCode = packageName?.let { context.appVersionCodeOf(it) } ?: -1L,
+                targetSdk = packageName?.let { context.appTargetSdkOf(it) } ?: -1,
+                minSdk = packageName?.let { context.appMinSdkOf(it) } ?: -1,
+                isNativeCrash = false,
+                isAnr = true,
+                exceptionClassName = "ANR",
+                exceptionMessage = anrInfo?.cause ?: "Application Not Responding",
+                throwFileName = anrInfo?.activity?.toString() ?: "unknown",
+                throwClassName = packageName ?: "unknown",
+                throwMethodName = "unknown",
+                throwLineNumber = -1,
+                stackTrace = anrInfo?.info?.trim() ?: "unknown",
+                timestamp = System.currentTimeMillis()
+            )
     }
 
     /**
@@ -248,7 +282,11 @@ data class AppErrorsInfoBean(
           [Version Code]: ${versionCode.takeIf { it != -1L } ?: "unknown"}
           [Target SDK]: ${targetSdk.takeIf { it != -1 } ?: "unknown"}
           [Min SDK]: ${minSdk.takeIf { it != -1 } ?: "unknown"}
-          [Error Type]: ${if (isNativeCrash) "Native" else "JVM"}
+          [Error Type]: ${when {
+            isAnr -> "ANR"
+            isNativeCrash -> "Native"
+            else -> "JVM"
+        }}
           [Crash Time]: $utcTime
           [Stack Trace]:
     """.trimIndent() + "\n$stackTrace"

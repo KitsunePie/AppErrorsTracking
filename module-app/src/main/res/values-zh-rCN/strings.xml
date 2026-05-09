@@ -10,6 +10,8 @@
     <string name="close_app">关闭应用</string>
     <string name="aerr_title">%1$s 已停止运行</string>
     <string name="aerr_repeated_title">%1$s 屡次停止运行</string>
+  <string name="anr_title">%1$s 无响应</string>
+  <string name="anr_repeated_title">%1$s 屡次无响应</string>
     <string name="mute_if_unlock_tip">忽略“%1$s”的错误直到设备重新解锁</string>
     <string name="mute_if_restart_tip">忽略“%1$s”的错误直到设备重新启动</string>
     <string name="back">返回</string>
