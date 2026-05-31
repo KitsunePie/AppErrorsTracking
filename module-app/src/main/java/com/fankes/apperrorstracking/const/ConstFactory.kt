@@ -36,6 +36,15 @@ object PackageName {
 }
 
 /**
+ * Logcat 标签常量定义类
+ */
+object LogcatTag {
+
+    /** 异常堆栈输出 */
+    const val APP_ERRORS_STACK_TRACE = "AppErrorsTrackingCrash"
+}
+
+/**
  * 模块版本常量定义类
  */
 object ModuleVersion {

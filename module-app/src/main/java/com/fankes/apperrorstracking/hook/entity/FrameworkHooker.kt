@@ -42,6 +42,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.bean.enum.AppFiltersType
+import com.fankes.apperrorstracking.const.LogcatTag
 import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
@@ -404,7 +405,17 @@ object FrameworkHooker : YukiBaseHooker() {
      * @param info 系统错误报告数据实例
      */
     private fun AppErrorsProcessData.handleAppErrorsInfo(context: Context, info: ApplicationErrorReport.CrashInfo?) {
-        AppErrorsRecordData.add(AppErrorsInfoBean.clone(context, pid, userId, appInfo?.packageName, info))
+        val appErrorsInfo = AppErrorsInfoBean.clone(context, pid, userId, appInfo?.packageName, info)
+        AppErrorsRecordData.add(appErrorsInfo)
+        if (ConfigData.isAutoPrintStackTraceToLogcat)
+            runCatching {
+                YLog.error(
+                    msg = appErrorsInfo.stackTrace,
+                    tag = LogcatTag.APP_ERRORS_STACK_TRACE,
+                    env = YLog.EnvType.LOGD
+                )
+            }
+                .onFailure { YLog.error("Failed to auto print app error stack trace to logcat", it) }
         YLog.info("Received crash application data${if (userId != 0) " --user $userId" else ""} --pid $pid")
     }
 

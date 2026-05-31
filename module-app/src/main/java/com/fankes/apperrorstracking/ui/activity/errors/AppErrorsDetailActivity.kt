@@ -33,6 +33,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
+import com.fankes.apperrorstracking.const.LogcatTag
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.factory.bind
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
@@ -48,7 +49,7 @@ import com.fankes.apperrorstracking.utils.factory.openSelfSetting
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.StackTraceShareHelper
-import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.log.YLog
 import java.io.File
 
 class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
@@ -122,7 +123,11 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.printIcon.setOnClickListener {
-            loggerE(msg = appErrorsInfo.stackTrace)
+            YLog.error(
+                msg = appErrorsInfo.stackTrace,
+                tag = LogcatTag.APP_ERRORS_STACK_TRACE,
+                env = YLog.EnvType.LOGD
+            )
             toast(locale.printToLogcatSuccess)
         }
         binding.copyIcon.setOnClickListener {

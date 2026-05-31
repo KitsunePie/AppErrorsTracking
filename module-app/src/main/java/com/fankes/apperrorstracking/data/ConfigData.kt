@@ -59,6 +59,9 @@ object ConfigData {
     /** 禁止异常堆栈内容自动换行 */
     val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PrefsData("_disable_auto_wrap_error_stack_trace", false)
 
+    /** 自动打印异常堆栈到 Logcat */
+    val AUTO_PRINT_STACK_TRACE_TO_LOGCAT = PrefsData("_auto_print_stack_trace_to_logcat", false)
+
     /** 分享时使用文件 */
     val SHARE_WITH_FILE = PrefsData("_share_with_file", false)
 
@@ -227,5 +230,14 @@ object ConfigData {
         get() = getBoolean(SHARE_WITH_FILE)
         set(value) {
             putBoolean(SHARE_WITH_FILE, value)
+        }
+
+    /**
+     * 是否自动打印异常堆栈到 Logcat
+     */
+    var isAutoPrintStackTraceToLogcat
+        get() = getBoolean(AUTO_PRINT_STACK_TRACE_TO_LOGCAT)
+        set(value) {
+            putBoolean(AUTO_PRINT_STACK_TRACE_TO_LOGCAT, value)
         }
 }

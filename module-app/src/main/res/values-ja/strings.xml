@@ -157,5 +157,7 @@
   <string name="stack_trace_share_system_build_id">システムビルド ID</string>
   <string name="stack_trace_share_package_name">アプリのパッケージ名</string>
   <string name="stack_trace_share_other">その他の要件</string>
+  <string name="auto_print_stack_trace_to_logcat">エラースタックを logcat に自動出力</string>
+  <string name="auto_print_stack_trace_to_logcat_tip">有効化すると、新しく検出されたクラッシュのスタックトレースを AppErrorsTrackingCrash タグで logcat へ自動出力します。</string>
   <string name="about_module_extension">このモジュールは KavaRef を搭載しています。\n詳細はこちら https://github.com/HighCapable/KavaRef</string>
 </resources>
