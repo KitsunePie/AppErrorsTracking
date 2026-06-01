@@ -411,7 +411,7 @@ object FrameworkHooker : YukiBaseHooker() {
             runCatching {
                 YLog.error(
                     msg = appErrorsInfo.stackTrace,
-                    tag = LogcatTag.APP_ERRORS_STACK_TRACE,
+                    tag = LogcatTag.APP_ERRORS_TRACKING,
                     env = YLog.EnvType.LOGD
                 )
             }

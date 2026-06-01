@@ -40,8 +40,8 @@ object PackageName {
  */
 object LogcatTag {
 
-    /** 异常堆栈输出 */
-    const val APP_ERRORS_STACK_TRACE = "AppErrorsTrackingCrash"
+    /** 模块日志输出 */
+    const val APP_ERRORS_TRACKING = "AppErrorsTracking"
 }
 
 /**
