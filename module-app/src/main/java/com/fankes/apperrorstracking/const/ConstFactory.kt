@@ -36,15 +36,6 @@ object PackageName {
 }
 
 /**
- * Logcat 标签常量定义类
- */
-object LogcatTag {
-
-    /** 模块日志输出 */
-    const val APP_ERRORS_TRACKING = "AppErrorsTracking"
-}
-
-/**
  * 模块版本常量定义类
  */
 object ModuleVersion {

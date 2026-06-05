@@ -33,7 +33,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
-import com.fankes.apperrorstracking.const.LogcatTag
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.data.factory.bind
 import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDetailBinding
@@ -125,7 +124,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.printIcon.setOnClickListener {
             YLog.error(
                 msg = appErrorsInfo.stackTrace,
-                tag = LogcatTag.APP_ERRORS_TRACKING,
+                tag = "AppErrorsTracking",
                 env = YLog.EnvType.LOGD
             )
             toast(locale.printToLogcatSuccess)
