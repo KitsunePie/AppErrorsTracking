@@ -26,6 +26,9 @@ package com.fankes.apperrorstracking.const
 import com.fankes.apperrorstracking.generated.ModuleAppProperties
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
 
+/** 项目名称 */
+const val PROJECT_NAME = ModuleAppProperties.PROJECT_NAME
+
 /**
  * 包名常量定义类
  */

@@ -42,6 +42,7 @@ import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
 import com.fankes.apperrorstracking.bean.enum.AppFiltersType
+import com.fankes.apperrorstracking.const.PROJECT_NAME
 import com.fankes.apperrorstracking.data.AppErrorsConfigData
 import com.fankes.apperrorstracking.data.AppErrorsRecordData
 import com.fankes.apperrorstracking.data.ConfigData
@@ -410,7 +411,7 @@ object FrameworkHooker : YukiBaseHooker() {
             runCatching {
                 YLog.error(
                     msg = appErrorsInfo.stackTrace,
-                    tag = "AppErrorsTracking",
+                    tag = PROJECT_NAME,
                     env = YLog.EnvType.LOGD
                 )
             }

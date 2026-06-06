@@ -21,6 +21,7 @@
  */
 package com.fankes.apperrorstracking.hook
 
+import com.fankes.apperrorstracking.const.PROJECT_NAME
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.generated.locale.ModuleAppLocale
 import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
@@ -35,7 +36,7 @@ object HookEntry : IYukiHookXposedInit {
 
     override fun onInit() = configs {
         debugLog {
-            tag = "AppErrorsTracking"
+            tag = PROJECT_NAME
             isRecord = true
         }
         isDebug = false

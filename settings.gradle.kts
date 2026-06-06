@@ -34,7 +34,7 @@ gropify {
         }
         android {
             existsPropertyFiles(".secret/secret.properties")
-            includeKeys("GITHUB_CI_COMMIT_ID", "APP_CENTER_SECRET")
+            includeKeys("GITHUB_CI_COMMIT_ID", "APP_CENTER_SECRET", "project.name")
             // 手动指定类型，防止一些特殊 "COMMIT ID" 被生成为数值
             keyValuesRules("GITHUB_CI_COMMIT_ID" to ValueRule(String::class))
         }
