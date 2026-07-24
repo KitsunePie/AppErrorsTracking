@@ -21,15 +21,29 @@
  */
 package com.fankes.apperrorstracking.service
 
+import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.content.Intent
+import android.os.Build
 import android.service.quicksettings.TileService
 import com.fankes.apperrorstracking.ui.activity.errors.AppErrorsRecordActivity
-import com.fankes.apperrorstracking.utils.factory.navigate
+import com.fankes.apperrorstracking.utils.factory.toast
+import com.highcapable.kavaref.extension.classOf
 
 class QuickStartTileService : TileService() {
 
+    @Suppress("DEPRECATION")
+    @SuppressLint("StartActivityAndCollapseDeprecated")
     override fun onClick() {
         super.onClick()
-        /** 启动异常历史记录窗口 */
-        navigate<AppErrorsRecordActivity>()
+        val activity = classOf<AppErrorsRecordActivity>()
+        runCatching {
+            val intent = Intent(this, activity).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE))
+            else startActivityAndCollapse(intent)
+        }.onFailure { toast(msg = "Start ${activity.name} failed") }
     }
 }
