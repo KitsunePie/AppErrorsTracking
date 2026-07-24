@@ -128,7 +128,7 @@ fun Resources.colorOf(@ColorRes resId: Int) = ResourcesCompat.getColor(this, res
  */
 private fun Context.getPackageInfoCompat(packageName: String, flag: Number = 0) = runCatching {
     @Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
-    if (Build.VERSION.SDK_INT >= 33)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         packageManager?.getPackageInfo(packageName, PackageInfoFlags.of(flag.toLong()))
     else packageManager?.getPackageInfo(packageName, flag.toInt())
 }.getOrNull()
@@ -145,7 +145,7 @@ private val PackageInfo.versionCodeCompat get() = PackageInfoCompat.getLongVersi
  */
 fun Context.listOfPackages() = runCatching {
     @Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
-    if (Build.VERSION.SDK_INT >= 33)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         packageManager?.getInstalledPackages(PackageInfoFlags.of(PackageManager.GET_CONFIGURATIONS.toLong()))
     else packageManager?.getInstalledPackages(PackageManager.GET_CONFIGURATIONS)
 }.getOrNull() ?: emptyList()
@@ -218,7 +218,7 @@ fun Context.appIconOf(packageName: String = getPackageName()) =
  */
 inline fun <reified T : Serializable> Intent.getSerializableExtraCompat(key: String): T? {
     @Suppress("DEPRECATION")
-    return if (Build.VERSION.SDK_INT >= 33)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         getSerializableExtra(key, T::class.java)
     else getSerializableExtra(key) as? T?
 }

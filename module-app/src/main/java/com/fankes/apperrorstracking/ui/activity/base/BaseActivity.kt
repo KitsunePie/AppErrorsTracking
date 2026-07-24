@@ -49,7 +49,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             name = "inflate"
             parameters(LayoutInflater::class)
         }?.invoke<VB>(layoutInflater) ?: error("binding failed")
-        if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
