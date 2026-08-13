@@ -93,7 +93,7 @@ PCに接続できない、ADBが実行できない状態である場合にこの
 
 ## Starの推移
 
-![Star History Chart](https://api.star-history.com/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
+![Star History Chart](https://star-history.dera.page/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
 
 ## ライセンス
 

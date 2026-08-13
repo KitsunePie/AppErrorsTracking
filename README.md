@@ -99,7 +99,7 @@ We have nothing to do with versions downloaded from other informal channels or a
 
 ## Star History
 
-![Star History Chart](https://api.star-history.com/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
+![Star History Chart](https://star-history.dera.page/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
 
 ## License
 

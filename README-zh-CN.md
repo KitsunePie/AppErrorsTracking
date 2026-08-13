@@ -103,7 +103,7 @@
 
 ## Star History
 
-![Star History Chart](https://api.star-history.com/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
+![Star History Chart](https://star-history.dera.page/svg?repos=KitsunePie/AppErrorsTracking&type=Date)
 
 ## 许可证
 
