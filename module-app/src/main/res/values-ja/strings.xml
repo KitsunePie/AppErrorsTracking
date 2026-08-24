@@ -10,6 +10,8 @@
   <string name="close_app">アプリを閉じる</string>
   <string name="aerr_title">%1$s が停止しました</string>
   <string name="aerr_repeated_title">%1$s が繰り返し停止しています</string>
+  <string name="anr_title">%1$s は応答していません</string>
+  <string name="anr_repeated_title">%1$s は繰り返し応答していません</string>
   <string name="mute_if_unlock_tip">デバイスのロックが解除されるまで「%1$s」のエラーをミュートにします</string>
   <string name="mute_if_restart_tip">デバイスが再起動されるまで「%1$s」のエラーをミュートにします</string>
   <string name="back">戻る</string>
