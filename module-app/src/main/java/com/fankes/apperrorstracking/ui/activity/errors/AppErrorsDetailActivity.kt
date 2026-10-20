@@ -40,13 +40,13 @@ import com.fankes.apperrorstracking.utils.factory.appIconOf
 import com.fankes.apperrorstracking.utils.factory.appNameOf
 import com.fankes.apperrorstracking.utils.factory.copyToClipboard
 import com.fankes.apperrorstracking.utils.factory.dp
-import com.fankes.apperrorstracking.utils.factory.getSerializableExtraCompat
 import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openSelfSetting
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.StackTraceShareHelper
-import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.betterandroid.system.extension.component.getSerializableExtraCompat
+import com.highcapable.yukihookapi.hook.log.YLog
 import java.io.File
 
 class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
@@ -120,7 +120,7 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         }
         binding.appInfoItem.setOnClickListener { openSelfSetting(appErrorsInfo.packageName) }
         binding.printIcon.setOnClickListener {
-            loggerE(msg = appErrorsInfo.stackTrace)
+            YLog.error(msg = appErrorsInfo.stackTrace)
             toast(getString(R.string.print_to_logcat_success))
         }
         binding.copyIcon.setOnClickListener {
@@ -166,10 +166,10 @@ class AppErrorsDetailActivity : BaseActivity<ActivityAppErrorsDetailBinding>() {
         binding.appNameText.text = appNameOf(appErrorsInfo.packageName).ifBlank { appErrorsInfo.packageName }
         binding.appVersionText.text = appErrorsInfo.versionBrand
         binding.appUserIdText.isVisible = appErrorsInfo.userId > 0
-        binding.appUserIdText.text = getString(R.string.user_id, appErrorsInfo.userId)
+        binding.appUserIdText.text = getString(R.string.user_id, appErrorsInfo.userId.toString())
         binding.appCpuAbiText.text = appErrorsInfo.cpuAbi.ifBlank { getString(R.string.no_cpu_abi) }
-        binding.appTargetSdkText.text = getString(R.string.app_target_sdk, appErrorsInfo.targetSdk)
-        binding.appMinSdkText.text = getString(R.string.app_min_sdk, appErrorsInfo.minSdk)
+        binding.appTargetSdkText.text = getString(R.string.app_target_sdk, appErrorsInfo.targetSdk.toString())
+        binding.appMinSdkText.text = getString(R.string.app_min_sdk, appErrorsInfo.minSdk.toString())
         binding.jvmErrorPanel.isGone = appErrorsInfo.isNativeCrash
         binding.errorTypeIcon.setImageResource(if (appErrorsInfo.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
         binding.errorInfoText.text = appErrorsInfo.exceptionMessage

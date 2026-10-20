@@ -23,20 +23,18 @@ package com.fankes.apperrorstracking.hook
 
 import com.fankes.apperrorstracking.data.ConfigData
 import com.fankes.apperrorstracking.hook.entity.FrameworkHooker
-import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
-import com.highcapable.yukihookapi.hook.factory.configs
+import com.highcapable.yukihookapi.hook.factory.configure
 import com.highcapable.yukihookapi.hook.factory.encase
-import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
+import com.highcapable.yukihookapi.hook.xposed.YukiHookXposedModule
 
-@InjectYukiHookWithXposed(entryClassName = "AppErrorsTracking", isUsingResourcesHook = false)
-object HookEntry : IYukiHookXposedInit {
+object HookEntry : YukiHookXposedModule {
 
-    override fun onInit() = configs {
-        debugLog {
+    override fun onInit() = configure {
+        logging {
             tag = "AppErrorsTracking"
-            isRecord = true
+            recording = true
         }
-        isDebug = false
+        debug = false
     }
 
     override fun onHook() = encase {

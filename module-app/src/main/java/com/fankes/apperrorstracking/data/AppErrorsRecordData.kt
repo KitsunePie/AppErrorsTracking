@@ -19,8 +19,6 @@
  *
  * This file is created by fankes on 2023/1/17.
  */
-@file:Suppress("StaticFieldLeak")
-
 package com.fankes.apperrorstracking.data
 
 import android.content.Context
@@ -38,6 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  *  [AppErrorsInfoBean] 存储控制类
  */
+@Suppress("StaticFieldLeak")
 object AppErrorsRecordData {
 
     /** 异常记录数据文件目录路径 */

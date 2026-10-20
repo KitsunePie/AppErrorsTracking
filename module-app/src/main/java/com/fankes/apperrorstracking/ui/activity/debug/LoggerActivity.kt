@@ -30,7 +30,6 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
-import com.fankes.apperrorstracking.const.PackageName
 import com.fankes.apperrorstracking.databinding.ActivitiyLoggerBinding
 import com.fankes.apperrorstracking.databinding.AdapterLoggerBinding
 import com.fankes.apperrorstracking.databinding.DiaLoggerFilterBinding
@@ -40,7 +39,7 @@ import com.fankes.apperrorstracking.utils.factory.copyToClipboard
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toUtcTime
 import com.fankes.apperrorstracking.utils.factory.toast
-import com.highcapable.yukihookapi.hook.factory.dataChannel
+import com.highcapable.yukihookapi.hook.factory.systemDataChannel
 import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.log.data.YLogData
 import java.io.ByteArrayOutputStream
@@ -95,7 +94,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
                 }, WRITE_REQUEST_CODE)
             }.onFailure { toast(msg = "Start Android SAF failed") }
         }
-        /** 设置列表元素和 Adapter */
+        // 设置列表元素和 Adapter
         binding.listView.apply {
             bindAdapter {
                 onBindDatas { listData }
@@ -126,7 +125,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
 
     /** 更新列表数据 */
     private fun refreshData() {
-        dataChannel(PackageName.SYSTEM_FRAMEWORK).obtainLoggerInMemoryData { logData ->
+        systemDataChannel().obtainLoggerInMemoryData { logData ->
             listData.clear()
             logData.takeIf { e -> e.isNotEmpty() }?.reversed()?.filter { filters.any { e -> it.priority == e } }?.forEach { e -> listData.add(e) }
             onChanged?.invoke()
@@ -184,7 +183,7 @@ class LoggerActivity : BaseActivity<ActivitiyLoggerBinding>() {
 
     override fun onResume() {
         super.onResume()
-        /** 执行更新 */
+        // 执行更新
         refreshData()
     }
 }

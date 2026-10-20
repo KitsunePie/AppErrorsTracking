@@ -22,7 +22,6 @@
 package com.fankes.apperrorstracking.ui.activity.errors
 
 import android.content.Context
-import android.os.Build
 import androidx.core.view.isVisible
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.bean.AppErrorsDisplayBean
@@ -31,12 +30,13 @@ import com.fankes.apperrorstracking.databinding.ActivityAppErrorsDisplayBinding
 import com.fankes.apperrorstracking.databinding.DiaAppErrorsDisplayBinding
 import com.fankes.apperrorstracking.ui.activity.base.BaseActivity
 import com.fankes.apperrorstracking.utils.factory.colorOf
-import com.fankes.apperrorstracking.utils.factory.getSerializableExtraCompat
 import com.fankes.apperrorstracking.utils.factory.navigate
 import com.fankes.apperrorstracking.utils.factory.openSelfSetting
 import com.fankes.apperrorstracking.utils.factory.showDialog
 import com.fankes.apperrorstracking.utils.factory.toast
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
+import com.highcapable.betterandroid.system.extension.component.getSerializableExtraCompat
+import com.highcapable.betterandroid.system.extension.utils.AndroidVersion
 
 class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>() {
 
@@ -62,12 +62,12 @@ class AppErrorsDisplayActivity : BaseActivity<ActivityAppErrorsDisplayBinding>()
         instance = this
         val appErrorsDisplay = runCatching { intent?.getSerializableExtraCompat<AppErrorsDisplayBean>(EXTRA_APP_ERRORS_DISPLAY) }.getOrNull()
             ?: return toastAndFinish(name = "AppErrorsDisplay")
-        /** 设置 Material 3 动态颜色主题 */
+        // 设置 Material 3 动态颜色主题
         if (ConfigData.isEnableMaterial3StyleAppErrorsDialog) setTheme(R.style.Theme_AppErrorsTracking_Translucent_Material3)
-        /** 显示对话框 */
+        // 显示对话框
         showDialog<DiaAppErrorsDisplayBinding>(ConfigData.isEnableMaterial3StyleAppErrorsDialog.not()) {
             title = appErrorsDisplay.title
-            if (ConfigData.isEnableMaterial3StyleAppErrorsDialog && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (ConfigData.isEnableMaterial3StyleAppErrorsDialog && AndroidVersion.isAtLeast(AndroidVersion.S))
                 arrayOf(
                     binding.appInfoIcon, binding.closeAppIcon,
                     binding.reopenAppIcon, binding.errorDetailIcon,

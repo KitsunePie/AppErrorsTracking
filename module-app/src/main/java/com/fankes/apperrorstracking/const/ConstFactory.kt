@@ -31,6 +31,9 @@ import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
  */
 object PackageName {
 
+    /** 系统 */
+    const val SYSTEM = "system"
+
     /** 系统框架 */
     const val SYSTEM_FRAMEWORK = "android"
 }

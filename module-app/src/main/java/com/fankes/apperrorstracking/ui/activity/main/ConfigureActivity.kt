@@ -135,7 +135,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                 }
             }
         }
-        /** 模块未完全激活将显示警告 */
+        // 模块未完全激活将显示警告
         if (MainActivity.isModuleValied.not())
             showDialog {
                 title = getString(R.string.notice)
@@ -144,7 +144,7 @@ class ConfigureActivity : BaseActivity<ActivityConfigBinding>() {
                 cancelButton()
                 noCancelable()
             }
-        /** 开始刷新数据 */
+        // 开始刷新数据
         refreshData()
     }
 

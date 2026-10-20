@@ -28,7 +28,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -42,9 +41,10 @@ import com.fankes.apperrorstracking.data.ConfigData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.highcapable.betterandroid.ui.extension.binding.ViewBinding
+import com.highcapable.betterandroid.ui.extension.view.layoutInflater
+import com.highcapable.kavaref.extension.classOf
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
 /**
  * 构造 [VB] 自定义 View 对话框
@@ -53,7 +53,7 @@ import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
  */
 @JvmName(name = "showDialog_Generics")
 inline fun <reified VB : ViewBinding> Context.showDialog(isDisableMaterial3: Boolean = false, initiate: DialogBuilder<VB>.() -> Unit) =
-    DialogBuilder<VB>(context = this, isDisableMaterial3, VB::class.java).apply(initiate).show()
+    DialogBuilder(context = this, isDisableMaterial3, classOf<VB>()).apply(initiate).show()
 
 /**
  * 构造对话框
@@ -72,7 +72,7 @@ inline fun Context.showDialog(isDisableMaterial3: Boolean = false, initiate: Dia
 class DialogBuilder<VB : ViewBinding>(
     val context: Context,
     private val isDisableMaterial3: Boolean = false,
-    private val bindingClass: Class<*>? = null
+    private val bindingClass: Class<VB>? = null
 ) {
 
     /** 实例对象 */
@@ -94,11 +94,10 @@ class DialogBuilder<VB : ViewBinding>(
      * @return [VB]
      */
     val binding by lazy {
-        bindingClass?.method {
-            name = "inflate"
-            param(LayoutInflaterClass)
-        }?.get()?.invoke<VB>(LayoutInflater.from(context))?.apply {
-            customLayoutView = root
+        bindingClass?.let {
+            ViewBinding(it).inflate(context.layoutInflater).apply {
+                customLayoutView = root
+            }
         } ?: error("This dialog maybe not a custom view dialog")
     }
 
@@ -191,7 +190,7 @@ class DialogBuilder<VB : ViewBinding>(
 
     /** 显示对话框 */
     fun show() {
-        /** 若当前自定义 View 的对话框没有调用 [binding] 将会对其手动调用一次以确保显示布局 */
+        // 若当前自定义 View 的对话框没有调用 [binding] 将会对其手动调用一次以确保显示布局
         if (bindingClass != null) binding
         runCatching {
             instance?.create()?.apply {

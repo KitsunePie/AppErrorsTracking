@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">異常調查</string>
-    <string name="xposed_desc">為原生 FC 對話視窗增加更多功能並修復中國大陸定製 ROM 刪除 FC 對話視窗的問題，給 Android 開發者帶來更好的體驗。 \n開發者：酷安 @星夜不薈</string>
+    <string name="module_desc">為原生 FC 對話視窗增加更多功能並修復中國大陸定製 ROM 刪除 FC 對話視窗的問題，給 Android 開發者帶來更好的體驗。 \n開發者：酷安 @星夜不薈</string>
     <string name="app_info">程式情報</string>
     <string name="reopen_app">重新開啟</string>
     <string name="error_detail">異常詳解</string>
@@ -56,7 +56,7 @@
     <string name="hide_app_icon_on_launcher">在桌面隱藏模組圖示</string>
     <string name="hide_app_icon_on_launcher_tip">隱藏模組圖示後介面可能會被關閉，將不會再在桌面展示，你可以在 EdXposed、LSPosed 中找到模組設定並開啟。</string>
     <string name="hide_app_icon_on_launcher_notice">注意：請務必在 LSPosed 中關閉“強制展示桌面圖示”功能</string>
-    <string name="about_module">此模組使用 YukiHookAPI 構建。 \n瞭解更多 https://github.com/HighCapable/YukiHookAPI</string>
+    <string name="about_module">此模組使用 YukiHook 構建。 \n瞭解更多 https://github.com/HighCapable/YukiHook</string>
     <string name="module_not_fully_activated">模組未完全啟用，請重新開機</string>
     <string name="are_your_sure_restart_system">你確定要重新開機嗎？</string>
     <string name="fast_restart">急速重開</string>

@@ -25,6 +25,17 @@ android {
         versionCode = gropify.project.module.app.versionCode
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions += "runtime"
+    productFlavors {
+        create("modern") {
+            dimension = "runtime"
+            isDefault = true
+        }
+        create("legacy") {
+            dimension = "runtime"
+            minSdk = gropify.project.android.legacy.minSdk
+        }
+    }
     buildTypes {
         all { signingConfig = signingConfigs.getByName("universal") }
         release {
@@ -48,6 +59,7 @@ android {
 androidComponents {
     onVariants(selector().all()) {
         it.outputs.forEach { output ->
+            val currentFlavor = it.flavorName
             val currentType = it.buildType
 
             // Workaround for GitHub Actions.
@@ -58,20 +70,29 @@ androidComponents {
             }
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
             if (output is com.android.build.api.variant.impl.VariantOutputImpl)
-                output.outputFileName.set("${gropify.project.name}-module-v$currentVersion-$currentType.apk")
+                output.outputFileName.set("${gropify.project.name}-module-v$currentVersion-$currentFlavor-$currentType.apk")
         }
     }
 }
 
 dependencies {
-    compileOnly(libs.rovo89.xposed.api)
-    implementation(libs.yukihookapi)
-    ksp(libs.yukihookapi.ksp.xposed)
+    platform(libs.yukihook.bom).apply {
+        implementation(this)
+        ksp(this)
+    }
+    implementation(libs.yukihook.core)
+    ksp(libs.yukihook.compiler)
+    implementation(libs.yukihook.extension.kavaref)
+    "modernImplementation"(libs.yukihook.runtime.libxposed)
+    "modernCompileOnly"(libs.libxposed.api)
+    "legacyImplementation"(libs.yukihook.runtime.xposed82)
+    "legacyCompileOnly"(libs.xposed.framework.api)
     implementation(platform(libs.kavaref.bom))
     implementation(libs.kavaref.core)
     implementation(libs.kavaref.android)
     implementation(libs.kavaref.extension)
     implementation(libs.betterandroid.ui.extension)
+    implementation(libs.betterandroid.system.extension)
     implementation(libs.project.promote)
     implementation(libs.microsoft.appcenter.analytics)
     implementation(libs.microsoft.appcenter.crashes)

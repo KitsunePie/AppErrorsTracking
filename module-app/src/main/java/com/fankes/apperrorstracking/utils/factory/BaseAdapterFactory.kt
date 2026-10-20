@@ -24,14 +24,13 @@
 package com.fankes.apperrorstracking.utils.factory
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
 import androidx.viewbinding.ViewBinding
-import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
+import com.highcapable.betterandroid.ui.extension.binding.ViewBinding
+import com.highcapable.betterandroid.ui.extension.view.layoutInflater
 
 /**
  * 绑定 [BaseAdapter] 到 [ListView]
@@ -74,14 +73,11 @@ class BaseAdapterCreater(val context: Context) {
                 var holderView = convertView
                 val holder: VB
                 if (convertView == null) {
-                    holder = VB::class.java.method {
-                        name = "inflate"
-                        param(LayoutInflaterClass)
-                    }.get().invoke<VB>(LayoutInflater.from(context)) ?: error("ViewHolder binding failed")
+                    holder = ViewBinding<VB>().inflate(context.layoutInflater)
                     holderView = holder.root.apply { tag = holder }
                 } else holder = convertView.tag as VB
                 bindViews(holder, position)
-                return holderView ?: error("ViewHolder binding failed")
+                return holderView
             }
         }
     }

@@ -25,14 +25,14 @@ package com.fankes.apperrorstracking.data.factory
 
 import android.widget.CompoundButton
 import com.fankes.apperrorstracking.data.ConfigData
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+import com.highcapable.yukihookapi.hook.xposed.preference.data.PreferenceData
 
 /**
  * 绑定到 [CompoundButton] 自动设置选中状态
  * @param data 键值数据模板
  * @param initiate 方法体
  */
-fun CompoundButton.bind(data: PrefsData<Boolean>, initiate: CompoundButtonDataBinder.(CompoundButton) -> Unit = {}) {
+fun CompoundButton.bind(data: PreferenceData<Boolean>, initiate: CompoundButtonDataBinder.(CompoundButton) -> Unit = {}) {
     val binder = CompoundButtonDataBinder(button = this).also { initiate(it, this) }
     isChecked = ConfigData.getBoolean(data).also { binder.initializeCallback?.invoke(it) }
     binder.applyChangesCallback = { ConfigData.putBoolean(data, it) }

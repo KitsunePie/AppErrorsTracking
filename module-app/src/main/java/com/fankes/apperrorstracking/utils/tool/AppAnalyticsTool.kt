@@ -26,8 +26,8 @@ package com.fankes.apperrorstracking.utils.tool
 import android.app.Application
 import android.widget.CompoundButton
 import com.fankes.apperrorstracking.generated.ModuleAppProperties
-import com.highcapable.yukihookapi.hook.factory.prefs
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+import com.highcapable.yukihookapi.hook.factory.preferences
+import com.highcapable.yukihookapi.hook.xposed.preference.data.PreferenceData
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
@@ -41,7 +41,7 @@ object AppAnalyticsTool {
     private const val APP_CENTER_SECRET = ModuleAppProperties.APP_CENTER_SECRET
 
     /** 启用匿名统计收集使用情况功能 */
-    private val ENABLE_APP_CENTER_ANALYTICS = PrefsData("_enable_app_center_analytics", true)
+    private val ENABLE_APP_CENTER_ANALYTICS = PreferenceData("_enable_app_center_analytics", true)
 
     /** 当前实例 */
     private var instance: Application? = null
@@ -51,9 +51,9 @@ object AppAnalyticsTool {
      * @return [Boolean]
      */
     private var isEnableAppCenterAnalytics
-        get() = instance?.prefs()?.get(ENABLE_APP_CENTER_ANALYTICS) ?: true
+        get() = instance?.preferences()?.get(ENABLE_APP_CENTER_ANALYTICS) ?: true
         set(value) {
-            instance?.prefs()?.edit { put(ENABLE_APP_CENTER_ANALYTICS, value) }
+            instance?.preferences()?.edit { put(ENABLE_APP_CENTER_ANALYTICS, value) }
         }
 
     /** 是否可用 */

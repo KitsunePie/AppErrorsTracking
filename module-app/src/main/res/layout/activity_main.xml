@@ -749,7 +749,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@mipmap/ic_yukihookapi" />
+                    android:src="@mipmap/ic_yukihook" />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -25,10 +25,10 @@ package com.fankes.apperrorstracking.data
 
 import android.content.Context
 import android.os.Build
-import com.highcapable.yukihookapi.hook.factory.prefs
+import com.highcapable.yukihookapi.hook.factory.preferences
 import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.param.PackageParam
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+import com.highcapable.yukihookapi.hook.xposed.preference.data.PreferenceData
 
 /**
  * 全局配置存储控制类
@@ -36,31 +36,31 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 object ConfigData {
 
     /** 显示开发者提示 */
-    val SHOW_DEVELOPER_NOTICE = PrefsData("_show_developer_notice", true)
+    val SHOW_DEVELOPER_NOTICE = PreferenceData("_show_developer_notice", true)
 
     /** 启用 Material 3 风格的错误对话框 */
-    val ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG = PrefsData("_enable_material3_style_dialog", Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    val ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG = PreferenceData("_enable_material3_style_dialog", Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
 
     /** 仅对前台应用显示错误对话框 */
-    val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PrefsData("_enable_only_show_errors_in_front", false)
+    val ENABLE_ONLY_SHOW_ERRORS_IN_FRONT = PreferenceData("_enable_only_show_errors_in_front", false)
 
     /** 仅对应用主进程显示错误对话框 */
-    val ENABLE_ONLY_SHOW_ERRORS_IN_MAIN = PrefsData("_enable_only_show_errors_in_main", false)
+    val ENABLE_ONLY_SHOW_ERRORS_IN_MAIN = PreferenceData("_enable_only_show_errors_in_main", false)
 
     /** 错误对话框始终显示“重新打开”选项 */
-    val ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS = PrefsData("_enable_always_shows_reopen_app_options", false)
+    val ENABLE_ALWAYS_SHOWS_REOPEN_APP_OPTIONS = PreferenceData("_enable_always_shows_reopen_app_options", false)
 
     /** 启用应用配置模板 */
-    val ENABLE_APP_CONFIG_TEMPLATE = PrefsData("_enable_app_config_template", false)
+    val ENABLE_APP_CONFIG_TEMPLATE = PreferenceData("_enable_app_config_template", false)
 
     /** 启用对话框防误触 */
-    val ENABLE_PREVENT_MISOPERATION_FOR_DIALOG = PrefsData("_enable_prevent_misoperation_for_dialog", false)
+    val ENABLE_PREVENT_MISOPERATION_FOR_DIALOG = PreferenceData("_enable_prevent_misoperation_for_dialog", false)
 
     /** 禁止异常堆栈内容自动换行 */
-    val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PrefsData("_disable_auto_wrap_error_stack_trace", false)
+    val DISABLE_AUTO_WRAP_ERROR_STACK_TRACE = PreferenceData("_disable_auto_wrap_error_stack_trace", false)
 
     /** 分享时使用文件 */
-    val SHARE_WITH_FILE = PrefsData("_share_with_file", false)
+    val SHARE_WITH_FILE = PreferenceData("_share_with_file", false)
 
     /** 当前实例 - [Context] or [PackageParam] */
     private var instance: Any? = null
@@ -84,9 +84,9 @@ object ConfigData {
      * @return [Set]<[String]>
      */
     internal fun getStringSet(key: String) = when (instance) {
-        is Context -> (instance as Context).prefs().getStringSet(key, setOf())
-        is PackageParam -> (instance as PackageParam).prefs.getStringSet(key, setOf())
-        else -> error("Unknown type for get prefs data")
+        is Context -> (instance as Context).preferences().getStringSet(key, setOf())
+        is PackageParam -> (instance as PackageParam).preferences.getStringSet(key, setOf())
+        else -> error("Unknown type for get preferences data")
     }
 
     /**
@@ -96,9 +96,9 @@ object ConfigData {
      */
     internal fun putStringSet(key: String, value: Set<String>) {
         when (instance) {
-            is Context -> (instance as Context).prefs().edit { putStringSet(key, value) }
+            is Context -> (instance as Context).preferences().edit { putStringSet(key, value) }
             is PackageParam -> YLog.warn("Not support for this method")
-            else -> error("Unknown type for put prefs data")
+            else -> error("Unknown type for put preferences data")
         }
     }
 
@@ -107,10 +107,10 @@ object ConfigData {
      * @param data 键值数据模板
      * @return [Int]
      */
-    internal fun getInt(data: PrefsData<Int>) = when (instance) {
-        is Context -> (instance as Context).prefs().get(data)
-        is PackageParam -> (instance as PackageParam).prefs.get(data)
-        else -> error("Unknown type for get prefs data")
+    internal fun getInt(data: PreferenceData<Int>) = when (instance) {
+        is Context -> (instance as Context).preferences().get(data)
+        is PackageParam -> (instance as PackageParam).preferences.get(data)
+        else -> error("Unknown type for get preferences data")
     }
 
     /**
@@ -118,11 +118,11 @@ object ConfigData {
      * @param data 键值数据模板
      * @param value 键值内容
      */
-    internal fun putInt(data: PrefsData<Int>, value: Int) {
+    internal fun putInt(data: PreferenceData<Int>, value: Int) {
         when (instance) {
-            is Context -> (instance as Context).prefs().edit { put(data, value) }
+            is Context -> (instance as Context).preferences().edit { put(data, value) }
             is PackageParam -> YLog.warn("Not support for this method")
-            else -> error("Unknown type for put prefs data")
+            else -> error("Unknown type for put preferences data")
         }
     }
 
@@ -131,10 +131,10 @@ object ConfigData {
      * @param data 键值数据模板
      * @return [Boolean]
      */
-    internal fun getBoolean(data: PrefsData<Boolean>) = when (instance) {
-        is Context -> (instance as Context).prefs().get(data)
-        is PackageParam -> (instance as PackageParam).prefs.get(data)
-        else -> error("Unknown type for get prefs data")
+    internal fun getBoolean(data: PreferenceData<Boolean>) = when (instance) {
+        is Context -> (instance as Context).preferences().get(data)
+        is PackageParam -> (instance as PackageParam).preferences.get(data)
+        else -> error("Unknown type for get preferences data")
     }
 
     /**
@@ -142,11 +142,11 @@ object ConfigData {
      * @param data 键值数据模板
      * @param value 键值内容
      */
-    internal fun putBoolean(data: PrefsData<Boolean>, value: Boolean) {
+    internal fun putBoolean(data: PreferenceData<Boolean>, value: Boolean) {
         when (instance) {
-            is Context -> (instance as Context).prefs().edit { put(data, value) }
+            is Context -> (instance as Context).preferences().edit { put(data, value) }
             is PackageParam -> YLog.warn("Not support for this method")
-            else -> error("Unknown type for put prefs data")
+            else -> error("Unknown type for put preferences data")
         }
     }
 

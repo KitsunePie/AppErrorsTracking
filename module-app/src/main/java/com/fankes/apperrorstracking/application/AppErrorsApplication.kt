@@ -30,11 +30,11 @@ class AppErrorsApplication : ModuleApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        /** 跟随系统夜间模式 */
+        // 跟随系统夜间模式
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        /** 装载存储控制类 */
+        // 装载存储控制类
         ConfigData.init(this)
-        /** 装载 App Center */
+        // 装载 App Center
         AppAnalyticsTool.init(this)
     }
 }

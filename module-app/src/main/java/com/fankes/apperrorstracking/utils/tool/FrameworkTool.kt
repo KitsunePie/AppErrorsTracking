@@ -27,11 +27,10 @@ import com.fankes.apperrorstracking.bean.AppErrorsInfoBean
 import com.fankes.apperrorstracking.bean.AppFiltersBean
 import com.fankes.apperrorstracking.bean.AppInfoBean
 import com.fankes.apperrorstracking.bean.MutedErrorsAppBean
-import com.fankes.apperrorstracking.const.PackageName
 import com.fankes.apperrorstracking.utils.factory.execShell
 import com.fankes.apperrorstracking.utils.factory.isRootAccess
 import com.fankes.apperrorstracking.utils.factory.showDialog
-import com.highcapable.yukihookapi.hook.factory.dataChannel
+import com.highcapable.yukihookapi.hook.factory.systemDataChannel
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.xposed.channel.data.ChannelData
 
@@ -245,13 +244,13 @@ object FrameworkTool {
      * @param result 成功后回调
      */
     fun checkingActivated(context: Context, result: (Boolean) -> Unit) =
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).checkingVersionEquals(result = result)
+        context.systemDataChannel().checkVersionMatch(result = result)
 
     /**
      * 通知系统框架刷新存储的数据
      * @param context 实例
      */
-    fun refreshFrameworkPrefsData(context: Context) = context.dataChannel(PackageName.SYSTEM_FRAMEWORK).put(CALL_REFRESH_HOST_PREFS_DATA)
+    fun refreshFrameworkPrefsData(context: Context) = context.systemDataChannel().put(CALL_REFRESH_HOST_PREFS_DATA)
 
     /**
      * 使用系统框架打开 [packageName]
@@ -260,7 +259,7 @@ object FrameworkTool {
      * @param userId APP 用户 ID
      */
     fun openAppUsedFramework(context: Context, packageName: String, userId: Int) =
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).put(CALL_OPEN_SPECIFY_APP, Pair(packageName, userId))
+        context.systemDataChannel().put(CALL_OPEN_SPECIFY_APP, Pair(packageName, userId))
 
     /**
      * 获取指定 APP 异常信息
@@ -269,7 +268,7 @@ object FrameworkTool {
      * @param result 回调数据
      */
     fun fetchAppErrorInfoData(context: Context, pid: Int, result: (AppErrorsInfoBean) -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_APP_ERROR_DATA_GET_RESULT) { result(it) }
             put(CALL_APP_ERROR_DATA_GET, pid)
         }
@@ -281,7 +280,7 @@ object FrameworkTool {
      * @param result 回调数据
      */
     fun fetchAppErrorsInfoData(context: Context, result: (ArrayList<AppErrorsInfoBean>) -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_APP_ERRORS_DATA_GET_RESULT) { result(it) }
             put(CALL_APP_ERRORS_DATA_GET)
         }
@@ -294,7 +293,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun removeAppErrorsInfoData(context: Context, appErrorsInfo: AppErrorsInfoBean, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_APP_ERRORS_DATA_REMOVE_RESULT) { callback() }
             put(CALL_APP_ERRORS_DATA_REMOVE, appErrorsInfo)
         }
@@ -306,7 +305,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun clearAppErrorsInfoData(context: Context, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_APP_ERRORS_DATA_CLEAR_RESULT) { callback() }
             put(CALL_APP_ERRORS_DATA_CLEAR)
         }
@@ -319,7 +318,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun mutedErrorsIfUnlock(context: Context, packageName: String, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_MUTED_ERRORS_IF_UNLOCK_RESULT) { callback() }
             put(CALL_MUTED_ERRORS_IF_UNLOCK, packageName)
         }
@@ -332,7 +331,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun mutedErrorsIfRestart(context: Context, packageName: String, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_MUTED_ERRORS_IF_RESTART_RESULT) { callback() }
             put(CALL_MUTED_ERRORS_IF_RESTART, packageName)
         }
@@ -344,7 +343,7 @@ object FrameworkTool {
      * @param result 回调数据
      */
     fun fetchMutedErrorsAppsData(context: Context, result: (ArrayList<MutedErrorsAppBean>) -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_MUTED_ERRORS_APP_DATA_GET_RESULT) { result(it) }
             put(CALL_MUTED_ERRORS_APP_DATA_GET)
         }
@@ -357,7 +356,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun unmuteErrorsApp(context: Context, mutedErrorsApp: MutedErrorsAppBean, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_UNMUTE_ERRORS_APP_DATA_RESULT) { callback() }
             put(CALL_UNMUTE_ERRORS_APP_DATA, mutedErrorsApp)
         }
@@ -369,7 +368,7 @@ object FrameworkTool {
      * @param callback 成功后回调
      */
     fun unmuteAllErrorsApps(context: Context, callback: () -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_UNMUTE_ALL_ERRORS_APPS_DATA_RESULT) { callback() }
             put(CALL_UNMUTE_ALL_ERRORS_APPS_DATA)
         }
@@ -382,7 +381,7 @@ object FrameworkTool {
      * @param result 回调数据
      */
     fun fetchAppListData(context: Context, appFilters: AppFiltersBean, result: (ArrayList<AppInfoBean>) -> Unit) {
-        context.dataChannel(PackageName.SYSTEM_FRAMEWORK).with {
+        context.systemDataChannel().with {
             wait(CALL_APP_LIST_DATA_GET_RESULT) { result(it) }
             put(CALL_APP_LIST_DATA_GET, appFilters)
         }

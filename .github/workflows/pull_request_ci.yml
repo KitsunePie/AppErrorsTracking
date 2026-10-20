@@ -59,20 +59,32 @@ jobs:
           ./gradlew :module-app:assembleRelease
           ./gradlew :demo-app:assembleDebug
           ./gradlew :demo-app:assembleRelease
-          echo "MODULE_DEBUG_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
-          echo "MODULE_RELEASE_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_MODERN_DEBUG_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/modern/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_MODERN_RELEASE_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/modern/release -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_LEGACY_DEBUG_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/legacy/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "MODULE_LEGACY_RELEASE_APK_PATH=$(find ${{ env.MODULE_APK_OUTPUT_PATH }}/legacy/release -name '*.apk')" >> $GITHUB_ENV
           echo "DEMO_DEBUG_APK_PATH=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
           echo "DEMO_RELEASE_APK_PATH=$(find ${{ env.DEMO_APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
-      - name: Upload Artifacts (Module-Debug)
+      - name: Upload Artifacts (Module-Modern-Debug)
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.MODULE_DEBUG_APK_PATH }}
-          name: AppErrorsTracking-module-debug-${{ github.event.head_commit.id }}
-      - name: Upload Artifacts (Module-Release)
+          path: ${{ env.MODULE_MODERN_DEBUG_APK_PATH }}
+          name: AppErrorsTracking-module-modern-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Module-Modern-Release)
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.MODULE_RELEASE_APK_PATH }}
-          name: AppErrorsTracking-module-release-${{ github.event.head_commit.id }}
+          path: ${{ env.MODULE_MODERN_RELEASE_APK_PATH }}
+          name: AppErrorsTracking-module-modern-release-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Module-Legacy-Debug)
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.MODULE_LEGACY_DEBUG_APK_PATH }}
+          name: AppErrorsTracking-module-legacy-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Module-Legacy-Release)
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.MODULE_LEGACY_RELEASE_APK_PATH }}
+          name: AppErrorsTracking-module-legacy-release-${{ github.event.head_commit.id }}
       - name: Upload Artifacts (Demo-Debug)
         uses: actions/upload-artifact@v4
         with:

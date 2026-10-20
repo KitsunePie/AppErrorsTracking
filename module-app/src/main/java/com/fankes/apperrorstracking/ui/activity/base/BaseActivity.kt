@@ -27,12 +27,12 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.utils.factory.isNotSystemInDarkMode
 import com.fankes.apperrorstracking.utils.factory.toast
+import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.kavaref.extension.genericSuperclassTypeArguments
 import com.highcapable.kavaref.extension.toClassOrNull
@@ -51,20 +51,20 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         }?.invoke<VB>(layoutInflater) ?: error("binding failed")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
-        /** 隐藏系统的标题栏 */
+        // 隐藏系统的标题栏
         supportActionBar?.hide()
-        /** 初始化沉浸状态栏 */
+        // 初始化沉浸状态栏
         WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = isNotSystemInDarkMode
             isAppearanceLightNavigationBars = isNotSystemInDarkMode
         }
         @Suppress("DEPRECATION")
-        ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
+        resources.getColorCompat(R.color.colorThemeBackground, null).also {
             window?.statusBarColor = it
             window?.navigationBarColor = it
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
         }
-        /** 装载子类 */
+        // 装载子类
         onCreate()
     }
 

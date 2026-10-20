@@ -100,8 +100,8 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                             cancel()
                             showDialog<DiaAppErrorsStatisticsBinding> {
                                 title = getString(R.string.app_errors_statistics)
-                                binding.totalErrorsUnitText.text = getString(R.string.total_errors_unit, listData.size)
-                                binding.totalAppsUnitText.text = getString(R.string.total_apps_unit, beans.size)
+                                binding.totalErrorsUnitText.text = getString(R.string.total_errors_unit, listData.size.toString())
+                                binding.totalAppsUnitText.text = getString(R.string.total_apps_unit, beans.size.toString())
                                 binding.mostErrorsAppIcon.setImageDrawable(appIconOf(mostAppPackageName))
                                 binding.mostErrorsAppText.text = appNameOf(mostAppPackageName).ifBlank { mostAppPackageName }
                                 binding.mostErrorsTypeText.text = mostErrorsType
@@ -134,7 +134,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                 cancelButton()
             }
         }
-        /** 设置列表元素和 Adapter */
+        // 设置列表元素和 Adapter
         binding.listView.apply {
             bindAdapter {
                 onBindDatas { listData }
@@ -143,7 +143,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
                         binding.appIcon.setImageDrawable(appIconOf(bean.packageName))
                         binding.appNameText.text = appNameOf(bean.packageName).ifBlank { bean.packageName }
                         binding.appUserIdText.isVisible = bean.userId > 0
-                        binding.appUserIdText.text = getString(R.string.user_id, bean.userId)
+                        binding.appUserIdText.text = getString(R.string.user_id, bean.userId.toString())
                         binding.errorsTimeText.text = bean.crossTime(this@AppErrorsRecordActivity)
                         binding.errorTypeIcon.setImageResource(if (bean.isNativeCrash) R.drawable.ic_cpp else R.drawable.ic_java)
                         binding.errorTypeText.text = if (bean.isNativeCrash) "Native crash" else bean.exceptionClassName.simpleThwName()
@@ -159,7 +159,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
     /** 更新列表数据 */
     private fun refreshData() {
         FrameworkTool.fetchAppErrorsInfoData(context = this) {
-            binding.titleCountText.text = getString(R.string.record_count, it.size)
+            binding.titleCountText.text = getString(R.string.record_count, it.size.toString())
             binding.listProgressView.isVisible = false
             binding.appErrorSisIcon.isVisible = it.size >= 5
             binding.clearAllIcon.isVisible = it.isNotEmpty()
@@ -245,7 +245,7 @@ class AppErrorsRecordActivity : BaseActivity<ActivityAppErrorsRecordBinding>() {
 
     override fun onResume() {
         super.onResume()
-        /** 执行更新 */
+        // 执行更新
         refreshData()
     }
 }

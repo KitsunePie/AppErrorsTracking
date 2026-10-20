@@ -118,6 +118,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-Powered by [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI)
+Powered by [YukiHook](https://github.com/HighCapable/YukiHook)
 
 Copyright © 2017 Fankes Studio(qzmmcn@163.com)

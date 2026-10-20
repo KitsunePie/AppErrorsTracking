@@ -42,6 +42,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.UserHandle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -51,18 +52,16 @@ import androidx.core.content.getSystemService
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.net.toUri
 import com.fankes.apperrorstracking.R
 import com.fankes.apperrorstracking.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
-import com.highcapable.yukihookapi.hook.factory.field
-import com.highcapable.yukihookapi.hook.factory.method
+import com.highcapable.betterandroid.system.extension.component.hasLaunchActivity
+import com.highcapable.betterandroid.system.extension.component.isComponentEnabled
+import com.highcapable.betterandroid.system.extension.component.primaryCpuAbi
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.log.YLog
-import com.highcapable.yukihookapi.hook.type.android.ApplicationInfoClass
-import com.highcapable.yukihookapi.hook.type.android.ContextClass
-import com.highcapable.yukihookapi.hook.type.android.IntentClass
-import com.highcapable.yukihookapi.hook.type.android.UserHandleClass
 import com.topjohnwu.superuser.Shell
-import java.io.Serializable
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -198,9 +197,7 @@ fun Context.appMinSdkOf(packageName: String = getPackageName()) = getPackageInfo
  * @param packageName APP 包名 - 默认为当前 APP
  * @return [String] 无法获取时返回 ""
  */
-fun Context.appCpuAbiOf(packageName: String = getPackageName()) = runCatching {
-    ApplicationInfoClass.field { name = "primaryCpuAbi" }.get(getPackageInfoCompat(packageName)?.applicationInfo).string()
-}.getOrNull() ?: ""
+fun Context.appCpuAbiOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.applicationInfo?.primaryCpuAbi ?: ""
 
 /**
  * 得到 APP 图标
@@ -209,18 +206,6 @@ fun Context.appCpuAbiOf(packageName: String = getPackageName()) = runCatching {
  */
 fun Context.appIconOf(packageName: String = getPackageName()) =
     getPackageInfoCompat(packageName)?.applicationInfo?.loadIcon(packageManager) ?: resources.drawableOf(R.drawable.ic_android)
-
-/**
- * 获取 [Serializable] (兼容)
- * @param key 键值名称
- * @return [T] or null
- */
-inline fun <reified T : Serializable> Intent.getSerializableExtraCompat(key: String): T? {
-    @Suppress("DEPRECATION")
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-        getSerializableExtra(key, T::class.java)
-    else getSerializableExtra(key) as? T?
-}
 
 /**
  * [List]<[T]> 转换为 [ArrayList]<[T]>
@@ -382,8 +367,8 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
     startActivity(Intent().apply {
         if (packageName.isNotBlank()) setPackage(packageName)
         action = Intent.ACTION_VIEW
-        data = Uri.parse(url)
-        /** 防止顶栈一样重叠在自己的 APP 中 */
+        data = url.toUri()
+        // 防止顶栈一样重叠在自己的 APP 中
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }.onFailure {
@@ -396,7 +381,7 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
  * @param packageName 包名
  */
 fun Context.isAppCanOpened(packageName: String = this.packageName) =
-    runCatching { packageManager?.getLaunchIntentForPackage(packageName) != null }.getOrNull() ?: false
+    runCatching { packageManager?.hasLaunchActivity(packageName) }.getOrNull() ?: false
 
 /**
  * 启动指定 APP
@@ -404,10 +389,11 @@ fun Context.isAppCanOpened(packageName: String = this.packageName) =
  * @param userId APP 用户 ID - 默认 0
  */
 fun Context.openApp(packageName: String = getPackageName(), userId: Int = 0) = runCatching {
-    ContextClass.method {
+    val result = UserHandle::class.resolve().optional().firstMethodOrNull { name = "of" }?.invokeQuietly(userId)
+    Context::class.resolve().optional().firstMethodOrNull {
         name = "startActivityAsUser"
-        param(IntentClass, UserHandleClass)
-    }.get(this).call(packageManager.getLaunchIntentForPackage(packageName), UserHandleClass.method { name = "of" }.get().call(userId))
+        parameters(Intent::class, UserHandle::class)
+    }?.of(this)?.invokeQuietly(packageManager.getLaunchIntentForPackage(packageName), result)
 }.onFailure { toast(msg = "Cannot start \"$packageName\"${if (userId > 0) " for user $userId" else ""}") }
 
 /**
@@ -450,6 +436,4 @@ fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
  * @return [Boolean] 是否显示
  */
 val Context.isLauncherIconShowing
-    get() = packageManager?.getComponentEnabledSetting(
-        ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home")
-    ) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    get() = packageManager?.isComponentEnabled(ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home")) == true

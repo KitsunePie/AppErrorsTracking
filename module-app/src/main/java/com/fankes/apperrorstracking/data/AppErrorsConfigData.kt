@@ -22,7 +22,7 @@
 package com.fankes.apperrorstracking.data
 
 import com.fankes.apperrorstracking.data.enum.AppErrorsConfigType
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+import com.highcapable.yukihookapi.hook.xposed.preference.data.PreferenceData
 
 /**
  * 应用配置模版存储控制类
@@ -42,7 +42,7 @@ object AppErrorsConfigData {
     private const val SHOW_ERRORS_NOTHING_APPS = "_show_errors_nothing_apps"
 
     /** 全局错误显示类型 */
-    private val GLOBAL_SHOW_ERRORS_TYPE = PrefsData("_global_show_errors_type", AppErrorsConfigType.DIALOG.ordinal)
+    private val GLOBAL_SHOW_ERRORS_TYPE = PreferenceData("_global_show_errors_type", AppErrorsConfigType.DIALOG.ordinal)
 
     /** 显示错误对话框的 APP 包名数组 */
     private var showDialogApps = HashSet<String>()

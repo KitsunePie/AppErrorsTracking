@@ -53,7 +53,7 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
                 cancelButton()
             }
         }
-        /** 设置列表元素和 Adapter */
+        // 设置列表元素和 Adapter
         binding.listView.bindAdapter {
             onBindDatas { listData }
             onBindViews<AdapterAppErrorsMutedBinding> { binding, position ->
@@ -84,7 +84,7 @@ class AppErrorsMutedActivity : BaseActivity<ActivityAppErrorsMutedBinding>() {
 
     override fun onResume() {
         super.onResume()
-        /** 执行更新 */
+        // 执行更新
         refreshData()
     }
 }

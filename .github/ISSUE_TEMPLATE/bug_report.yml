@@ -7,11 +7,11 @@ body:
     attributes:
       value: |
         ### Please fill in the specific reason and steps to reproduce the problem below.
-        
+
         In the event of an exception, crash functional problem, you must submit a problem log, if not, your issues will be closed directly.
-        
+
         ### 请在下方填写问题发生的具体原因和复现步骤。
-        
+
         发生异常、崩溃、闪退或功能性问题，必须提交问题 Log (日志)，没有 Log 的 issues 将直接被关闭。
   - type: input
     attributes:
@@ -19,6 +19,19 @@ body:
       description: |
         Please fill in the complete version of the Module App currently in use, for example: **1.0**
         请填写当前使用的模块完整版本号，例如：**1.0**
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Module type / 模块类型
+      description: |
+        Please select the currently installed module type, which can be found in the file name of the installation package, for example: **AppErrorsTracking-module-vXxx(Xxx)-modern-release.apk**
+        **modern** is for Xposed Frameworks that support the libxposed API, **legacy** is for traditional Xposed Frameworks that only support the Xposed API 82
+        请选择当前安装的模块类型，可以从安装包的文件名中查看，例如：**AppErrorsTracking-module-vXxx(Xxx)-modern-release.apk**
+        **modern** 适用于支持 libxposed API 的 Xposed 框架，**legacy** 适用于仅支持 Xposed API 82 的传统 Xposed 框架
+      options:
+        - modern
+        - legacy
     validations:
       required: true
   - type: input
@@ -33,6 +46,9 @@ body:
     attributes:
       label: Android version / Android 版本
       options:
+        - 17
+        - 16
+        - 15
         - 14
         - 13
         - 12L/12.1

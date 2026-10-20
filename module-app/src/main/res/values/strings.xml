@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AppErrorsTracking</string>
-    <string name="xposed_desc">Added more features to app\'s errors dialog, fixed custom rom deleted dialog, the best experience to Android developer.</string>
+    <string name="module_desc">Added more features to app\'s errors dialog, fixed custom rom deleted dialog, the best experience to Android developer.</string>
     <string name="empty_lable" translatable="false" />
     <string name="app_info">App Info</string>
     <string name="reopen_app">Reopen App</string>
@@ -56,7 +56,7 @@
     <string name="hide_app_icon_on_launcher">Hide app icon on launcher</string>
     <string name="hide_app_icon_on_launcher_tip">After hiding the app icon, the interface may be closed and will no longer be displayed on the launcher. You can find and open the module settings in EdXposed or LSPosed.</string>
     <string name="hide_app_icon_on_launcher_notice">Note: Be sure to turn off the \"Force apps to show launcher icons\" feature in LSPosed</string>
-    <string name="about_module">This Xposed Module is made by YukiHookAPI. \nLearn more https://github.com/HighCapable/YukiHookAPI</string>
+    <string name="about_module">This Xposed Module is made by YukiHook. \nLearn more https://github.com/HighCapable/YukiHook</string>
     <string name="module_not_fully_activated">Module not fully activated</string>
     <string name="are_your_sure_restart_system">Are you sure you want to restart system?</string>
     <string name="fast_restart">Fast Restart</string>

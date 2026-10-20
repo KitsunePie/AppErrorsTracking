@@ -46,8 +46,11 @@ import com.fankes.apperrorstracking.utils.tool.AppAnalyticsTool.bindAppAnalytics
 import com.fankes.apperrorstracking.utils.tool.FrameworkTool
 import com.fankes.apperrorstracking.utils.tool.GithubReleaseTool
 import com.fankes.projectpromote.ProjectPromote
+import com.highcapable.betterandroid.ui.extension.component.runDelayed
 import com.highcapable.betterandroid.ui.extension.view.isUnderline
-import com.highcapable.yukihookapi.YukiHookAPI
+import com.highcapable.yukihookapi.YukiHook
+import com.highcapable.yukihookapi.runtime.YukiHookRuntime
+import kotlinx.coroutines.Job
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -60,9 +63,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         var isModuleValied = false
     }
 
-    override fun onCreate() {
+    override fun onCreate() { 
         checkingTopComponentName()
-        /** 检查更新 */
+        if (YukiHook.Status.runtime == YukiHookRuntime.LIBXPOSED) {
+            var unavailableJob: Job? = null
+            YukiHook.Status.observeFrameworkService(lifecycle) { available ->
+                // 第一次回调可能是 false，稍后连上会再回调 true，所以 false 先等一会
+                unavailableJob?.cancel()
+                if (available) onCreate(available = true)
+                else unavailableJob = runDelayed(500) { onCreate(available = false) }
+            }
+        } else onCreate(available = true)
+    }
+
+    private fun onCreate(available: Boolean) {
+        // 检查更新
         GithubReleaseTool.checkingForUpdate(context = this, ModuleVersion.NAME) { version, function ->
             binding.mainTextReleaseVersion.apply {
                 text = getString(R.string.click_to_update, version)
@@ -70,9 +85,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 setOnClickListener { function() }
             }
         }
-        /** 推广、恰饭 */
-        if (YukiHookAPI.Status.isXposedModuleActive) ProjectPromote.show(activity = this, ModuleVersion.toString())
-        /** 显示开发者提示 */
+        // 推广、恰饭
+        if (available && YukiHook.Status.isModuleActive) ProjectPromote.show(activity = this, ModuleVersion.toString())
+        // 显示开发者提示
         if (ConfigData.isShowDeveloperNotice)
             showDialog {
                 title = getString(R.string.developer_notice)
@@ -80,7 +95,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 confirmButton(getString(R.string.got_it)) { ConfigData.isShowDeveloperNotice = false }
                 noCancelable()
             }
-        /** 设置 CI 自动构建标识 */
+        // 设置 CI 自动构建标识
         if (ModuleVersion.isCiMode)
             binding.mainTextReleaseVersion.apply {
                 text = "CI ${ModuleVersion.GITHUB_COMMIT_ID}"
@@ -106,10 +121,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         binding.errorsDialogPreventMisoperationSwitch.bind(ConfigData.ENABLE_PREVENT_MISOPERATION_FOR_DIALOG)
         binding.enableMaterial3AppErrorsDialogSwitch.bind(ConfigData.ENABLE_MATERIAL3_STYLE_APP_ERRORS_DIALOG)
-        /** 设置匿名统计 */
+        // 设置匿名统计
         binding.appAnalyticsConfigItem.isVisible = AppAnalyticsTool.isAvailable
         binding.enableAnonymousStatisticsSwitch.bindAppAnalytics()
-        /** 系统版本点击事件 */
+        // 系统版本点击事件
         binding.mainTextSystemVersion.setOnClickListener {
             showDialog {
                 title = getString(R.string.notice)
@@ -117,53 +132,54 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 confirmButton(getString(R.string.got_it))
             }
         }
-        /** 管理应用配置模板按钮点击事件 */
+        // 管理应用配置模板按钮点击事件
         binding.mgrAppsConfigsTemplateButton.setOnClickListener { whenActivated { navigate<ConfigureActivity>() } }
-        /** 功能管理按钮点击事件 */
+        // 功能管理按钮点击事件
         binding.viewErrorsRecordButton.setOnClickListener { whenActivated { navigate<AppErrorsRecordActivity>() } }
         binding.viewMutedErrorsAppsButton.setOnClickListener { whenActivated { navigate<AppErrorsMutedActivity>() } }
-        /** 调试日志按钮点击事件 */
+        // 调试日志按钮点击事件
         binding.titleLoggerIcon.setOnClickListener { navigate<LoggerActivity>() }
-        /** 重启按钮点击事件 */
+        // 重启按钮点击事件
         binding.titleRestartIcon.setOnClickListener { FrameworkTool.restartSystem(context = this) }
-        /** 项目地址按钮点击事件 */
+        // 项目地址按钮点击事件
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/KitsunePie/AppErrorsTracking") }
-        /** 恰饭！ */
+        // 恰饭！
         binding.paymentFollowingZhCnItem.isVisible = isSystemLanguageSimplifiedChinese
         binding.linkWithFollowMe.isUnderline = true
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
-        /** 设置桌面图标显示隐藏 */
+        // 设置桌面图标显示隐藏
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
         }
+        checkModuleStatus()
     }
 
     /** 刷新模块状态 */
     private fun refreshModuleStatus() {
         binding.mainLinStatus.setBackgroundResource(
             when {
-                YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> R.drawable.bg_yellow_round
-                YukiHookAPI.Status.isXposedModuleActive -> R.drawable.bg_green_round
+                YukiHook.Status.isModuleActive && isModuleValied.not() -> R.drawable.bg_yellow_round
+                YukiHook.Status.isModuleActive -> R.drawable.bg_green_round
                 else -> R.drawable.bg_dark_round
             }
         )
         binding.mainImgStatus.setImageResource(
             when {
-                YukiHookAPI.Status.isXposedModuleActive -> R.drawable.ic_success
+                YukiHook.Status.isModuleActive -> R.drawable.ic_success
                 else -> R.drawable.ic_warn
             }
         )
         binding.mainTextStatus.text = when {
-            YukiHookAPI.Status.isXposedModuleActive && isModuleValied.not() -> getString(R.string.module_not_fully_activated)
-            YukiHookAPI.Status.isXposedModuleActive -> getString(R.string.module_is_activated)
+            YukiHook.Status.isModuleActive && isModuleValied.not() -> getString(R.string.module_not_fully_activated)
+            YukiHook.Status.isModuleActive -> getString(R.string.module_is_activated)
             else -> getString(R.string.module_not_activated)
         }
-        binding.mainTextApiWay.isVisible = YukiHookAPI.Status.isXposedModuleActive
-        binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
+        binding.mainTextApiWay.isVisible = YukiHook.Status.isModuleActive
+        binding.mainTextApiWay.text = "Activated by ${YukiHook.Status.Executor.name} API ${YukiHook.Status.Executor.apiVersion}"
     }
 
     /**
@@ -171,17 +187,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      * @param callback 激活后回调
      */
     private inline fun whenActivated(callback: () -> Unit) {
-        if (YukiHookAPI.Status.isXposedModuleActive) callback() else toast(getString(R.string.module_not_activated))
+        if (YukiHook.Status.isModuleActive) callback() else toast(getString(R.string.module_not_activated))
     }
 
-    override fun onResume() {
-        super.onResume()
-        /** 刷新模块状态 */
+    private fun checkModuleStatus() {
+        // 刷新模块状态
         refreshModuleStatus()
-        /** 检查模块激活状态 */
+        // 检查模块激活状态
         FrameworkTool.checkingActivated(context = this) { isValied ->
             isModuleValied = isValied
             refreshModuleStatus()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkModuleStatus()
     }
 }
